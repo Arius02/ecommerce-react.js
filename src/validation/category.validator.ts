@@ -1,0 +1,31 @@
+import * as yup from "yup"
+export const addCategorySchema = yup.object({
+    name: yup.string().min(2,"Category Name can't be less than 2 charchters").max(40,"Category Name can't be more than 40 charchters").required("Name is required"),
+    image: yup.mixed<FileList>()
+    .test("fileReqired","Category Image is required.",(value)=>value?.length!=0)
+    .test('fileSize', 'File size is too large', (value) => {
+        if (value&& value.length >0) return value[0].size <= 5242880; // 5MB
+         return true; // No file selected, so no size to check
+    })
+    .test('fileType', 'Unsupported file type', (value) => {
+      if (value && value.length >0)   return ["image/jpeg", "image/png"].includes(value[0].type);
+        return true; // No file selected, so no type to check
+    })
+})
+export const editCategorySchema = yup.object({
+  name: yup
+    .string()
+    .min(2, "Category Name can't be less than 2 charchters")
+    .max(40, "Category Name can't be more than 40 charchters"),
+  image: yup
+    .mixed<FileList>()
+    .test("fileSize", "File size is too large", (value) => {
+      if (value && value.length > 0) return value[0].size <= 5242880; // 5MB
+      return true; // No file selected, so no size to check
+    })
+    .test("fileType", "Unsupported file type", (value) => {
+      if (value && value.length > 0)
+        return ["image/jpeg", "image/png"].includes(value[0].type);
+      return true; // No file selected, so no type to check
+    }),
+});
