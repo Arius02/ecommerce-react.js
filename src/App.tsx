@@ -2,8 +2,6 @@
 import {createBrowserRouter,RouterProvider} from "react-router-dom"
 import { Dashboard, Main, AddCoupon, AddCategory, AddSubCategory, AddBrand, AddProduct, CouponsList, CategoriesList, SubCategoriesList, BrandsList, ProductsList, CategoryDetails, SubCategoryDetails, BrandDetails, ProductDetails, Home } from "./pages";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-
-import "./app.css"
 import { SnackbarProvider } from "notistack";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
