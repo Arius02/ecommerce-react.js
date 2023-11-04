@@ -182,7 +182,7 @@ const AddCoupon = () => {
               name="fromDate"
               control={control}
               defaultValue={null}
-              render={({ field, ...props }) => {
+              render={({ field,  }) => {
                 return (
                   <FormControl error={!!errors.fromDate} sx={{ width: "100%" }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -213,7 +213,7 @@ const AddCoupon = () => {
               name="toDate"
               control={control}
               defaultValue={null}
-              render={({ field, ...props }) => {
+              render={({ field,  }) => {
                 return (
                   <FormControl error={!!errors.toDate} sx={{ width: "100%" }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>

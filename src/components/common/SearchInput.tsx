@@ -7,9 +7,8 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { grey, pink } from '@mui/material/colors';
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-type Props = {}
 
-const SearchInput = (props: Props) => {
+const SearchInput = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [searchCategory, setSearchCategory]=React.useState("");
   const open = Boolean(anchorEl);

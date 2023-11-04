@@ -1,8 +1,7 @@
-import React from "react";
-import { Box, Stack, Typography, Tooltip, Skeleton } from "@mui/material";
-type Props = {};
+import { Box, Stack,  Skeleton } from "@mui/material";
 
-const ItemDetailsHederSkeleton = (props: Props) => {
+
+const ItemDetailsHederSkeleton = () => {
   return (
     <Stack
       flexDirection={{ md: "row", xs: "column-reverse" }}

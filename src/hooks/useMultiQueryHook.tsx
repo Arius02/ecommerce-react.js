@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react'
 import fetchData from '../utils/fetchData';
 
 type Props = {
@@ -10,7 +9,7 @@ type Props = {
 
 const useMultiQueryHook = ({queries,url,selectedProp}: Props) => {
   return useQuery({
-    queryKey:queries,
+    queryKey: queries,
     queryFn: async () => {
       const res = await fetchData({
         url,
@@ -18,8 +17,8 @@ const useMultiQueryHook = ({queries,url,selectedProp}: Props) => {
       });
       return res.data[selectedProp];
     },
-    refetchOnWindowFocus:false,
-    staleTime:3000000
+    refetchOnWindowFocus: false,
+    staleTime: 3000000,
   });
 }
 

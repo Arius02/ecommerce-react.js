@@ -21,7 +21,7 @@ export const addSubCategorySchema = yup.object({
         return ["image/jpeg", "image/png"].includes(value[0].type);
       return true; // No file selected, so no type to check
     }),
-    categotryId:yup.string().length(24).required()
+    categoryId:yup.string().length(24).required()
 });
 
 export const editSubCategorySchema = yup.object({
@@ -41,5 +41,5 @@ export const editSubCategorySchema = yup.object({
         return ["image/jpeg", "image/png"].includes(value[0].type);
       return true; // No file selected, so no type to check
     }),
-  categotryId: yup.string(),
+  categoryId: yup.string(),
 });

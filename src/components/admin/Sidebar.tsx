@@ -82,7 +82,9 @@ const Sidebar = ({ open, setOpen, Content }: Props) => {
   const [active, setActive] = useState(window.location.pathname);
 
   const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: string) =>
+    (event: React.SyntheticEvent /*@ts-igonre*/, isExpanded: boolean) => {
+      console.log(event) //to be cleared
       setExpanded(isExpanded ? panel : false);
     };
   const theme = useTheme();

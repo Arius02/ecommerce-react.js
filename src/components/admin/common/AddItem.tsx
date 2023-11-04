@@ -54,6 +54,7 @@ const AddItem = ({schema,addItem,snack,setSnack,isPending,name,enabled=false}: P
 
         addItem(formData)
       };
+      console.log(errors)
       const { data: classifications, isPending: isClassificationsLoading } =
         useQuery({
           queryKey: ["getClassifications"],
@@ -98,7 +99,7 @@ const AddItem = ({schema,addItem,snack,setSnack,isPending,name,enabled=false}: P
                   {...register("categoryId")}
                 >
                   {classifications.data.classifications.map((category: any) => (
-                    <MenuItem value={category.id} key={category.id}>
+                    <MenuItem value={category._id} key={category._id}>
                       {category.name}
                     </MenuItem>
                   ))}

@@ -1,12 +1,9 @@
-import React from 'react'
 
 
 import {
   Box,
   Stack,
-  Typography,
-  Pagination,
-  Link,
+ 
   Skeleton,
 } from "@mui/material";
 const RelatedItemsListSkeleton = () => {

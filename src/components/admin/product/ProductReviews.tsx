@@ -12,15 +12,11 @@ import {
   Tooltip,
   ListItemIcon,
   Typography,
-  Stack,
   Rating,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteModal from "../../../components/admin/modals/DeleteModal";
-import EditItem from "../modals/EditItemModal";
-import { editCategorySchema } from "../../../validation/category.validator";
 import useTableQueryHook from "../../../hooks/useTableQueryHook";
 import {Link as RouterLink} from "react-router-dom"
 import Link from "@mui/material/Link";
@@ -62,7 +58,7 @@ const ProductReviews = ({id}: Props) => {
         {
           accessorKey: "userId",
           header: "User ID",
-          Cell: ({ renderedCellValue, row }) => (
+          Cell: ({ renderedCellValue }) => (
             <Tooltip title={renderedCellValue}>
               <Link
                 to={`/dashboard/user/details/${renderedCellValue}`}
@@ -83,7 +79,7 @@ const ProductReviews = ({id}: Props) => {
         {
           accessorKey: "reviewDisc",
           header: "Review",
-          Cell: ({ renderedCellValue, row }) => (
+          Cell: ({ renderedCellValue }) => (
             <>
               {renderedCellValue &&
               typeof renderedCellValue == "string" &&

@@ -34,6 +34,7 @@ const RelatedItemsList = ({
   setLoadingIndecator,
 }: Props) => {
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    console.log(event) // to be clear
     setPage(value);
     setLoadingIndecator(url)
   };

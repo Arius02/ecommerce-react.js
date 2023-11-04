@@ -1,10 +1,9 @@
-import React from 'react'
+import BigOffersCarousels from '../components/carousels/BigOffersCarousels'
 
-type Props = {}
 
-const Home = (props: Props) => {
+const Home = () => {
   return (
-    <div>Home</div>
+    <BigOffersCarousels/>
   )
 }
 
