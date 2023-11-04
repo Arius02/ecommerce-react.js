@@ -1,5 +1,5 @@
 
-import {createBrowserRouter,RouterProvider} from "react-router-dom"
+import {createHashRouter,RouterProvider} from "react-router-dom"
 import { Dashboard, Main, AddCoupon, AddCategory, AddSubCategory, AddBrand, AddProduct, CouponsList, CategoriesList, SubCategoriesList, BrandsList, ProductsList, CategoryDetails, SubCategoryDetails, BrandDetails, ProductDetails, Home } from "./pages";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
@@ -8,7 +8,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const App = () => {
   const queryClient = new QueryClient();
-  const router = createBrowserRouter([
+  const router = createHashRouter([
     {
       path: "/",
       element: <Main />,
