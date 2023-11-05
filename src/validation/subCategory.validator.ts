@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { imageType, imageSize } from "../constants/imageTerm";
 export const addSubCategorySchema = yup.object({
   name: yup
     .string()
@@ -13,12 +14,12 @@ export const addSubCategorySchema = yup.object({
       (value) => value?.length != 0
     )
     .test("fileSize", "File size is too large", (value) => {
-      if (value && value.length > 0) return value[0].size <= 5242880; // 5MB
+      if (value && value.length > 0) return value[0].size <= imageSize; // 5MB
       return true; // No file selected, so no size to check
     })
     .test("fileType", "Unsupported file type", (value) => {
       if (value && value.length > 0)
-        return ["image/jpeg", "image/png"].includes(value[0].type);
+        return imageType.includes(value[0].type);
       return true; // No file selected, so no type to check
     }),
     categoryId:yup.string().length(24).required()
@@ -33,12 +34,12 @@ export const editSubCategorySchema = yup.object({
     .mixed<FileList>()
    
     .test("fileSize", "File size is too large", (value) => {
-      if (value && value.length > 0) return value[0].size <= 5242880; // 5MB
+      if (value && value.length > 0) return value[0].size <= imageSize; // 5MB
       return true; // No file selected, so no size to check
     })
     .test("fileType", "Unsupported file type", (value) => {
       if (value && value.length > 0)
-        return ["image/jpeg", "image/png"].includes(value[0].type);
+        return imageType.includes(value[0].type);
       return true; // No file selected, so no type to check
     }),
   categoryId: yup.string(),

@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { imageSize, imageType } from "../constants/imageTerm";
 
 export const addProductSchema = yup.object().shape({
   name: yup
@@ -37,11 +38,11 @@ export const addProductSchema = yup.object().shape({
       (value) => value?.length != 0
     )
     .test("fileSize", "File size is too large", (value) => {
-      if (value && value.length > 0) return value[0].size <= 5242880; // 5MB
+      if (value && value.length > 0) return value[0].size <= imageSize; // 5MB
     })
     .test("fileType", "Unsupported file type", (value) => {
       if (value && value.length > 0)
-        return ["image/jpeg", "image/png"].includes(value[0].type);
+        return imageType.includes(value[0].type);
     }),
   images: yup
     .mixed<FileList>()
@@ -59,8 +60,8 @@ export const addProductSchema = yup.object().shape({
     .test("fileSize", "Size of eaech image must be less than 5MB", (value) => {
       if (value && value.length > 0) {
         for (let i = 0; i < value.length; i++) {
-          console.log(value[i].size >= 5242880);
-          if (value[i].size >= 5242880) {
+          console.log(value[i].size >= imageSize);
+          if (value[i].size >= imageSize) {
             return false;
           }
         }
@@ -74,15 +75,8 @@ export const addProductSchema = yup.object().shape({
         if (value && value.length > 0) {
           console.log(value[0].type);
           for (let i = 0; i < value.length; i++) {
-            const imageType = [
-              "image/jpeg",
-              "image/png",
-              "image/PNG",
-              "image/JPEG",
-              "image/jpg",
-              "image/JPG",
-            ].includes(value[i].type);
-            if (!!imageType) {
+            const isValidType =imageType.includes(value[i].type);
+            if (!!isValidType) {
               return true;
             }
           }
@@ -127,14 +121,14 @@ export const editProductSchema = yup.object().shape({
     .mixed<FileList>()
     .test("fileSize", "File size is too large", (value) => {
       if (value && value.length > 0) {
-        return value[0].size <= 5242880;
+        return value[0].size <= imageSize;
       } else {
         return true;
       }
     })
     .test("fileType", "Unsupported file type", (value) => {
       if (value && value.length > 0) {
-        return ["image/jpeg", "image/png"].includes(value[0].type);
+        return imageType.includes(value[0].type);
       } else {
         return true;
       }
@@ -144,8 +138,8 @@ export const editProductSchema = yup.object().shape({
     .test("fileSize", "Size of eaech image must be less than 5MB", (value) => {
       if (value && value.length > 0) {
         for (let i = 0; i < value.length; i++) {
-          console.log(value[i].size >= 5242880);
-          if (value[i].size >= 5242880) {
+          console.log(value[i].size >= imageSize);
+          if (value[i].size >= imageSize) {
             return false;
           }
         }
@@ -160,16 +154,8 @@ export const editProductSchema = yup.object().shape({
       (value) => {
         if (value && value.length > 0) {
           for (let i = 0; i < value.length; i++) {
-            const imageType = [
-              "image/jpeg",
-              "image/png",
-              "image/PNG",
-              "image/JPEG",
-              "image/jpg",
-              "image/JPG",
-            ].includes(value[i].type);
-            console.log(imageType);
-            if (!imageType) {
+            const isValidType = imageType.includes(value[i].type);
+            if (!isValidType) {
               return false;
             }
           }

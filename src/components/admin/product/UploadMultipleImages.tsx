@@ -1,10 +1,24 @@
-import { Typography, Stack,  IconButton, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Box } from "@mui/material";
+import {
+  Typography,
+  Stack,
+  IconButton,
+  TableContainer,
+  Tooltip,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
+  Box,
+} from "@mui/material";
 import * as React from "react";
 import { styled } from "@mui/material";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import { UseFormSetValue, UseFormRegister } from "react-hook-form";
 import CloseIcon from "@mui/icons-material/Close";
+import { formatFileSize } from "../../../constants/imageTerm";
 type Props = {
   errors: any;
   register: UseFormRegister<any>;
@@ -70,7 +84,7 @@ React.useEffect(()=>{
                     <Box sx={{ position: "relative" }}>
                       <img
                         src={URL.createObjectURL(image)}
-                        style={{ width: "100px", height: "100px" }}
+                        style={{ width: "100px" }}
                       />
                       <IconButton
                         onClick={() => {
@@ -83,8 +97,14 @@ React.useEffect(()=>{
                       </IconButton>
                     </Box>
                   </TableCell>
-                  <TableCell align="center">{image.name}</TableCell>
-                  <TableCell align="center">{image.size}</TableCell>
+                  <Tooltip title={image.name}>
+                    <TableCell align="center">
+                      {image.name.slice(0, 4)}...
+                    </TableCell>
+                  </Tooltip>
+                  <TableCell align="center" sx={{fontSize:{md:"14px",xs:"12px",whiteSpace:"nowrap"}}}>
+                    {formatFileSize(image.size)}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -98,7 +118,7 @@ React.useEffect(()=>{
               imagesArr.length == 1
                 ? "100px"
                 : imagesArr.length == 2
-                ? "50px"
+                ? "60px"
                 : imagesArr.length == 3
                 ? 0
                 : "200px",
@@ -114,8 +134,9 @@ React.useEffect(()=>{
           <Typography
             variant="body1"
             color="gray"
-            fontSize={{ md: "18px", xs: "14px" }}
+            fontSize={{ md: "18px", sm: "14px", xs: "12px" }}
             fontWeight="smeibold"
+            textAlign={"center"}
           >
             Drag & drop Product Images here or{" "}
             <span style={{ color: "black", fontWeight: "bold" }}>Browse</span>
