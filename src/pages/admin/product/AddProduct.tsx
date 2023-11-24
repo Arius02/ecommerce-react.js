@@ -9,7 +9,6 @@ import {
   Skeleton,
   FormHelperText,
 } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,6 +20,7 @@ import fetchData from "../../../utils/fetchData.ts";
 import { addProductSchema } from "../../../validation/peoduct.validator.ts";
 import useMutationHook from "../../../hooks/useMutationHook.tsx";
 import { UploadImage, UploadMultipleImages } from "../../../components/admin/index.ts";
+import { LoadingButton } from "@mui/lab";
 
 
 

@@ -1,18 +1,21 @@
 import { Box } from '@mui/material'
 import { Outlet } from 'react-router-dom'
-import {useState} from 'react'
+import { useState, useEffect } from "react";
 import { Navbar, Sidebar } from '../../components/admin';
+import { useSelector } from 'react-redux';
 
 const Dashboard = () => {
-    const [open, setOpen] = useState(false);
+  const show = useSelector((state: any) => state.screenSize.show);
+  const [open, setOpen] = useState(show ? false : true);
+  
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
 
-    const handleDrawerOpen = () => {
-      setOpen(true);
-    };
-const drawerWidth = 280;
+const drawerWidth = show?"100%":"280px";
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex" ,overflowX:"hidden"}}>
       <Navbar
         open={open}
         handleDrawerOpen={handleDrawerOpen}
@@ -22,6 +25,8 @@ const drawerWidth = 280;
         setOpen={setOpen}
         open={open}
         Content={<Outlet />}
+        drawerWidth={drawerWidth}
+        show={show}
       />
     </Box>
   );

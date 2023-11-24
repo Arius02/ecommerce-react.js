@@ -56,7 +56,6 @@ type SnackbarType = {
 
 // items category, subCategory and brand 
 type AddItemType = {
-  [key: string]: any;
   name: string;
   image: FileList;
   categoryId?: string;
@@ -143,10 +142,38 @@ type ProductListType = {
   sold:number;
 
 };
-
+//review
 type RivewsListType = {
   Rating: number;
  reviewDisc:string,
   _id: string;
   userId: string;
+};
+
+type AddReviewType = {
+  rating: number;
+  reviewDisc:string
+};
+
+// auth 
+type RgisterType={
+  name:string;
+  email:string;
+  password:string;
+  rePassword:string;
+}
+type LoginType={
+  email:string;
+  password:string;
+}
+type ResetPasswordType={
+  newPassword:string;
+  rePassword:string;
+}
+type EditProfileType = {
+  [key: string]: any;
+  name: string;
+  email: string;
+  gender: string;
+  birth: date;
 };

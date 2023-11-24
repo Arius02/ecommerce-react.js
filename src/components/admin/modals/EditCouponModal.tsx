@@ -92,7 +92,7 @@ const EditCouponModal = ({ title, open, setOpen, item ,refetch }: Props) => {
         aria-labelledby="edit-modal-title"
         aria-describedby="edit-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={{...style, width:{md:"50%",sm:"75%",xs:"98%"}}}>
           <Typography id="edit-modal-title" variant="h6" component="h2">
             {title}
           </Typography>

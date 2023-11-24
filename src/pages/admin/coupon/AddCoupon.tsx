@@ -84,12 +84,12 @@ const AddCoupon = () => {
               defaultValue={"fixed_amount"}
               render={({ field }) => (
                 <FormControl error={!!errors.couponType}>
-                  <FormLabel id="demo-row-radio-buttons-group-label">
+                  <FormLabel id="cpoupon-type">
                     Coupon Type
                   </FormLabel>
                   <RadioGroup
                     row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    aria-labelledby="cpoupon-type"
                     {...field}
                   >
                     <FormControlLabel
@@ -127,14 +127,8 @@ const AddCoupon = () => {
               defaultValue={"all"}
               render={({ field }) => (
                 <FormControl error={!!errors.userRestrictions}>
-                  <FormLabel id="demo-row-radio-buttons-group-label">
-                    User Restrictions
-                  </FormLabel>
-                  <RadioGroup
-                    row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    {...field}
-                  >
+                  <FormLabel id="userRestrictions">User Restrictions</FormLabel>
+                  <RadioGroup row aria-labelledby="userRestrictions" {...field}>
                     <FormControlLabel
                       value="all"
                       control={<Radio />}
@@ -182,7 +176,7 @@ const AddCoupon = () => {
               name="fromDate"
               control={control}
               defaultValue={null}
-              render={({ field,  }) => {
+              render={({ field }) => {
                 return (
                   <FormControl error={!!errors.fromDate} sx={{ width: "100%" }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -213,7 +207,7 @@ const AddCoupon = () => {
               name="toDate"
               control={control}
               defaultValue={null}
-              render={({ field,  }) => {
+              render={({ field }) => {
                 return (
                   <FormControl error={!!errors.toDate} sx={{ width: "100%" }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -248,7 +242,7 @@ const AddCoupon = () => {
           Add Coupon
         </LoadingButton>
       </form>
-      <SnackbarComponent  snack={snack} setSnack={setSnack}/>
+      <SnackbarComponent snack={snack} setSnack={setSnack} />
     </Paper>
   );
 };

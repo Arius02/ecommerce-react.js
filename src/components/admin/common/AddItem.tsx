@@ -73,7 +73,6 @@ const AddItem = ({schema,addItem,snack,setSnack,isPending,name,enabled=false}: P
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid
-          container
           rowSpacing={1}
           columnSpacing={{ xs: 1, sm: 2 }}
           sx={{ mt: 4 }}

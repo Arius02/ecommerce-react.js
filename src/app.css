@@ -1,0 +1,7 @@
+
+.MuiStack-root{
+    display: flex !important;
+}
+.slick-dots{
+    position: static;
+}

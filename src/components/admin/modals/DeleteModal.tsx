@@ -43,8 +43,9 @@ const DeleteModal = ({ title, open, setOpen,refetch,warning,name,url }: Props) =
         onClose={() => setOpen(false)}
         aria-labelledby="delete-modal-title"
         aria-describedby="delete-modal-description"
+
       >
-        <Box sx={style}>
+        <Box sx={{...style,width:{md:"450px",sm:"75%",xs:"95%"}}}>
           <Typography id="delete-modal-title" variant="h6" component="h2">
             {title}
           </Typography>
@@ -68,7 +69,6 @@ const DeleteModal = ({ title, open, setOpen,refetch,warning,name,url }: Props) =
           </Stack>
         </Box>
       </Modal>
-      <SnackbarComponent snack={snack} setSnack={setSnack} />
     </div>
   );
 };

@@ -112,7 +112,7 @@ const EditProductModal = ({open,setOpen, product,refetch}:Props) => {
 
   }
     if (data.hasOwnProperty("coverImage")) {
-            updatedKeys.coverImage = updatedKeys.coverImage;
+            updatedKeys.coverImage = data.coverImage;
       formData.append("coverImage", updatedKeys.coverImage[0]);
     }
     const keys = [
@@ -129,7 +129,6 @@ const EditProductModal = ({open,setOpen, product,refetch}:Props) => {
         if(data[key]!==product[key]){
             if(key=="categoryId"){
                 if (data.categoryId != product.category?.categoryId._id) {
-                    console.log("ya rab")
                   updatedKeys.categoryId = data.categoryId;
                   formData.append(key, updatedKeys.categoryId);
                 }    
@@ -153,7 +152,6 @@ const EditProductModal = ({open,setOpen, product,refetch}:Props) => {
         }
     }
     if(Object.keys(updatedKeys).length)
-    console.log(updatedKeys)
     editProduct(formData);
   };
   return (
@@ -164,7 +162,7 @@ const EditProductModal = ({open,setOpen, product,refetch}:Props) => {
         aria-labelledby="edit-modal-title"
         aria-describedby="edit-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={{...style,width:{md:"60%",sm:"75%",xs:"98%",overflowY:"scroll",height:"100%"}}}>
           <Typography id="edit-modal-title" variant="h6" component="h2">
             Edit Product
           </Typography>

@@ -13,7 +13,7 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 type Props = {
   open: boolean;
   handleDrawerOpen: () => void;
-  drawerWidth:number
+  drawerWidth:string
 };
 const Navbar = ({ open, handleDrawerOpen, drawerWidth }: Props) => {
   interface AppBarProps extends MuiAppBarProps {
@@ -30,7 +30,7 @@ const Navbar = ({ open, handleDrawerOpen, drawerWidth }: Props) => {
     }),
     ...(open && {
       marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
+      width: `calc(100% - ${drawerWidth})`,
       transition: theme.transitions.create(["width", "margin"], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,

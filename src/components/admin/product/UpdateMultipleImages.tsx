@@ -78,7 +78,7 @@ const UpdateMultipleImages = ({
           flexDirection={"row"}
           justifyContent={"space-around"}
           my={3}
-          flexWrap={"nowrap"}
+          flexWrap={"wrap"}
         >
           {imagesArr.map((image) => (
             <Box sx={{ position: "relative" }} key={image.secure_url}>

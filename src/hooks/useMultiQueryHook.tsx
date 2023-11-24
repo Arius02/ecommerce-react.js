@@ -4,7 +4,7 @@ import fetchData from '../utils/fetchData';
 type Props = {
   queries: (string|number)[];
   url: string;
-  selectedProp: string;
+  selectedProp?: string;
 };
 
 const useMultiQueryHook = ({queries,url,selectedProp}: Props) => {
@@ -14,11 +14,12 @@ const useMultiQueryHook = ({queries,url,selectedProp}: Props) => {
       const res = await fetchData({
         url,
         method: "GET",
+        token: localStorage.getItem("token") || "",
       });
-      return res.data[selectedProp];
+      return selectedProp?res.data[selectedProp]:res.data;
     },
     refetchOnWindowFocus: false,
-    staleTime: 3000000,
+    // staleTime: 3000000,
   });
 }
 

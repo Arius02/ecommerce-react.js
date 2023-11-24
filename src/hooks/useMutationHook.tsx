@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { QueryObserverResult, RefetchOptions, useMutation } from "@tanstack/react-query";
+import {  QueryObserverResult, RefetchOptions, useMutation } from "@tanstack/react-query";
 import fetchData from "../utils/fetchData";
 import { Dispatch, SetStateAction } from "react";
 type Props = {
@@ -10,7 +10,8 @@ type Props = {
   refetch?: (
     options?: RefetchOptions | undefined
   ) => Promise<QueryObserverResult<any, Error>>;
-  setOpen?:Dispatch<SetStateAction<boolean>>
+  setOpen?: Dispatch<SetStateAction<boolean>>;
+  handleNavigate?:()=>void;
 };
 const useMutationHook = ({
   url,
@@ -18,7 +19,8 @@ const useMutationHook = ({
   message,
   setSnack,
   refetch,
-  setOpen
+  setOpen,
+  handleNavigate,
 }: Props) => {
   return useMutation({
     mutationFn: (data: any) =>
@@ -27,7 +29,7 @@ const useMutationHook = ({
         method,
         data,
         token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNhZGU1NjMwNTJjNDgyNzBjZWE0NTUiLCJpYXQiOjE2OTgzNTcwMTQsImV4cCI6MTY5OTIyMTAxNH0.hLInwqX-TYMk6FU03Z10hKFL4_noguM0KjLS5e2qKKM",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTUyZDMwNTUyOTY4M2Q5Mzk0YTVmODYiLCJpYXQiOjE3MDA0Mzc5MTEsImV4cCI6MTcwMTMwMTkxMX0.4RLiN_IJ251sla5iA2ESYWnSm9bAkKaNvomAFe1GgBw",
       }),
     onSuccess: () => {
       setSnack &&
@@ -37,7 +39,8 @@ const useMutationHook = ({
           severity: "success",
         });
       refetch && refetch();
-      setOpen && setOpen(false)
+      setOpen && setOpen(false);
+      handleNavigate && handleNavigate();
     },
     onError: (error: any) => {
       setSnack &&

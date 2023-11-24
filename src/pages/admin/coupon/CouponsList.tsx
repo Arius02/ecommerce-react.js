@@ -39,8 +39,8 @@ const CouponsList = () => {
     columnFilters,
     globalFilter,
     pagination,
-    url: "/coupon",
-    selectionName: "subCoupons",
+    url: "coupon",
+    selectionName: "coupons",
     queryName: "getCoupons",
   });
   const columns = useMemo<MRT_ColumnDef<CouponListType>[]>(

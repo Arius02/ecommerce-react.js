@@ -4,5 +4,5 @@
  * filter in tables 
  * pagination pages 
  * description validation 
- * product images size
- * image name length
+ * close sidebar on navigation in xs  
+ * resend it function

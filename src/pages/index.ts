@@ -18,8 +18,29 @@ export { default as BrandDetails } from "./admin/brand/BrandDetails";
 
 export { default as AddProduct } from "./admin/product/AddProduct";
 export { default as ProductsList } from "./admin/product/ProductsList";
-export { default as ProductDetails } from "./admin/product/ProductDetails";
+export { default as ProductDetailsAdmin } from "./admin/product/ProductDetails";
 
 //========================== USER PAGES =========================
 export { default as Main } from "./Main";
 export { default as Home } from "./Home";
+export { default as SearchPage } from "./SearchPage";
+export { default as ProductDetails } from "./ProductDetails";
+export { default as CartPage } from "./CartPage";
+export { default as Checkout } from "./checkout/Checkout";
+export { default as DirectOrder } from "./checkout/DirectOrder";
+
+
+//========================== AUTH PAGES =========================
+export { default as Login } from "./auth/Login";
+export { default as Register } from "./auth/Register";
+export { default as ForgetPassword } from "./auth/ForgetPassword";
+export { default as ResetPassword } from "./auth/ResetPassword";
+
+// ====================== USER INFO PAGES =======================
+
+export { default as UserMainPage } from "./user/UserMainPage";
+export { default as Profile } from "./user/Profile";
+export { default as UserOrders } from "./user/UserOrders";
+export { default as UserOrderDetails } from "./user/UserOrderDetails";
+export { default as Wishlist } from "./user/Wishlist";
+export { default as Address } from "./user/Address";
