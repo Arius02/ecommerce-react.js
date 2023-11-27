@@ -17,7 +17,7 @@ import * as React from "react";
 import UploadImage from "./UploadImage.tsx";
 import { UseMutateFunction, useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import SnackbarComponent from "../../SnackBar.tsx";
+import SnackbarComponent from "../../common/SnackBar.tsx";
 import fetchData from "../../../utils/fetchData.ts";
 type Props = {
   schema: any;

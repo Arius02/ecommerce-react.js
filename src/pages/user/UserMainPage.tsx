@@ -8,7 +8,7 @@ const UserMainPage = () => {
   return (
     <Grid container mt={5} minHeight={"100vh"}>
       <Grid item md={3} xs={0}>
-        <UserDashboard />
+        <UserDashboard  />
       </Grid>
       <Grid item md={9} xs={12}>
         <Box p={2}>{<Outlet />}</Box>

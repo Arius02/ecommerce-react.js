@@ -7,7 +7,7 @@ import Modal from "@mui/material/Modal";
 import useMutationHook from "../../../hooks/useMutationHook";
 import {  Stack } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import SnackbarComponent from "../../SnackBar";
+import SnackbarComponent from "../../common/SnackBar";
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { editCouponSchema } from '../../../validation/coupon.validator';

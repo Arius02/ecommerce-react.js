@@ -24,12 +24,11 @@ import { useForm,  } from "react-hook-form";
 import { registerSchema } from '../../validation/auth.validator';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import useAuthMutationHook from '../../hooks/useAuthMutationHook';
-import SnackbarComponent from '../../components/SnackBar';
+import SnackbarComponent from '../../components/common/SnackBar';
 
 
-type Props = {}
 
-const Register = (props: Props) => {
+const Register = () => {
       const [showPassword, setShowPassword] = React.useState(false);
       const handleClickShowPassword = () => setShowPassword((show) => !show);
 

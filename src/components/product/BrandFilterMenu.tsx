@@ -19,7 +19,6 @@ const BrandFilterMenu = ({
   setAnchorEl,
   brandQueryName,
   subCategory,
-  filterWord,
   setFilterWord,
   setPage,
 }: Props) => {

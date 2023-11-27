@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import {
   MaterialReactTable,
   type MRT_ColumnDef,
-  type MRT_ColumnFiltersState,
+  // type MRT_ColumnFiltersState,
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
@@ -28,9 +28,9 @@ type Props = {
 
 const ProductReviews = ({id}: Props) => {
 
-   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-     []
-   );
+  //  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
+  //    []
+  //  );
    const [globalFilter, setGlobalFilter] = useState("");
    const [sorting, setSorting] = useState<MRT_SortingState>([]);
    const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -45,7 +45,6 @@ const ProductReviews = ({id}: Props) => {
      refetch,
    } = useTableQueryHook({
      sorting,
-     columnFilters,
      globalFilter,
      pagination,
      url: `review/${id}`,
@@ -112,8 +111,9 @@ const ProductReviews = ({id}: Props) => {
     <MaterialReactTable
       columns={columns}
       data={cateegories ?? []} //data is undefined on first render
-      initialState={{ showColumnFilters: true }}
-      manualFiltering
+      // initialState={{ showColumnFilters: true }}
+      // manualFiltering
+      enableFilters={false}
       manualPagination
       enablePagination
       manualSorting
@@ -142,7 +142,7 @@ const ProductReviews = ({id}: Props) => {
             }
           : undefined
       }
-      onColumnFiltersChange={setColumnFilters}
+      // onColumnFiltersChange={setColumnFilters}
       onGlobalFilterChange={setGlobalFilter}
       onPaginationChange={setPagination}
       onSortingChange={setSorting}
@@ -154,7 +154,6 @@ const ProductReviews = ({id}: Props) => {
         </Tooltip>
       )}
       state={{
-        columnFilters,
         globalFilter,
         isLoading,
         pagination,

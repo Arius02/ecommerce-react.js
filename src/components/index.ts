@@ -10,3 +10,5 @@ export { default as ProductCard } from "./product/ProductCard";
 export { default as  ProductImagesShow} from "./product/ProductImagesShow";
 export { default as  RelatedProducts} from "./product/RelatedProducts";
 export { default as TopRated } from "./product/TopRated";
+export { default as NotAuthRouter } from "./protect/NotAuthRouter";
+export { default as AuthRouter } from "./protect/AuthRouter";

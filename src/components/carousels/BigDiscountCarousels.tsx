@@ -4,6 +4,7 @@ import Gift from "../../SVGs/Gift";
 import SectionHeader from "../common/SectionHeader";
 import { formatPrice } from "../../utils/priceFormat";
 import Slider from "react-slick";
+import ProductBoxSkeleton from "../skeleton/product/ProductBoxSkeleton";
 const settings = {
   dots: true,
   infinite: true,
@@ -46,7 +47,7 @@ const BigDiscountCarousels = () => {
   return (
     <Box mt={5} overflow={"hidden"}>
       <SectionHeader Icon={Gift} title="New Arrivals" />
-      {isPending && "loading...."}
+      {isPending && <ProductBoxSkeleton/>}
       {products && (
         <Slider {...settings}>
           {products.map((product: any) => (

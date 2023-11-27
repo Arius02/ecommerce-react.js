@@ -10,13 +10,14 @@ import {
 import { pink, blueGrey } from "@mui/material/colors";
 import useQueryHook from "../../hooks/useQueryHook";
 import EditIcon from "@mui/icons-material/Edit";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DeleteModal from "../../components/admin/modals/DeleteModal";
 import AddAddressDialog from "../../components/dailogs/AddAddressDialog";
 import AddressesSkeleton from "../../components/skeleton/user/AddressesSkeleton";
-
+import MenuIcon from "@mui/icons-material/Menu";
+import { AppContext } from "../../context/AppContext";
 const Address = () => {
   const [addAddresOpen, setAddAddresOpen] = useState(false);
   const [idToDelete, setIdToDelete] = useState("");
@@ -29,36 +30,46 @@ const Address = () => {
     url: "/auth",
     query: "getUser",
     selectedProp: "user",
-  });
-
+  }) as {
+    data: any;
+    isPending: boolean;
+    refetch: any;
+  };
+const {show,setOpenUserDashboard}=useContext(AppContext)
   return (
     <>
       {user && (
         <>
-          <Stack
-            flexDirection={"row"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-          >
-            <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
-              <LocationOnIcon sx={{ color: pink[500] }} />
-              <Typography
-                fontWeight={"bold"}
-                color={blueGrey[900]}
-                fontSize={"24px"}
-              >
-                My Addresses
-              </Typography>
+          <Stack flexDirection={"row"} justifyContent={"space-between"}>
+            <Stack
+              flexDirection={{ sm: "row", xs: "column" }}
+              alignItems={"center"}
+              justifyContent={"space-between"}
+              flexGrow={1}
+            >
+              <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
+                <LocationOnIcon sx={{ color: pink[500] }} />
+                <Typography
+                  fontWeight={"bold"}
+                  color={blueGrey[900]}
+                  fontSize={"24px"}
+                >
+                  My Addresses
+                </Typography>
+              </Stack>
+              {user.deliveryDetails.length < 3 && (
+                <Button
+                  onClick={() => setAddAddresOpen(true)}
+                  variant="outlined"
+                  color="secondary"
+                >
+                  Add Address
+                </Button>
+              )}
             </Stack>
-            {user.deliveryDetails.length < 3 && (
-              <Button
-                onClick={() => setAddAddresOpen(true)}
-                variant="outlined"
-                color="secondary"
-              >
-                Add Address
-              </Button>
-            )}
+           { show&&<IconButton>
+              <MenuIcon onClick={()=>setOpenUserDashboard(true)}/>
+            </IconButton>}
           </Stack>
           <Box mt={2}>
             {user.deliveryDetails &&

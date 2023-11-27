@@ -1,6 +1,6 @@
 import { Box, Stack, } from "@mui/material";
 import { Skeleton } from "@mui/lab";
-const ProductReviewsReviews = () => {
+const ProductReviewsSkeleton = () => {
   return (
     <>
       <Skeleton
@@ -27,4 +27,4 @@ const ProductReviewsReviews = () => {
   );
 };
 
-export default ProductReviewsReviews;
+export default ProductReviewsSkeleton;

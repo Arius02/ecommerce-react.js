@@ -81,10 +81,10 @@ const UpdateMultipleImages = ({
           flexWrap={"wrap"}
         >
           {imagesArr.map((image) => (
-            <Box sx={{ position: "relative" }} key={image.secure_url}>
+            <Box sx={{ position: "relative" ,width:{md:"100px",xs:"50px"}}} key={image.secure_url}>
               <img
                 src={image.secure_url}
-                style={{ width: "160px", height: "160px" }}
+                style={{ width: "100%" }}
               />
               <IconButton
                 onClick={() => {

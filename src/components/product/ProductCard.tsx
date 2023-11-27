@@ -201,10 +201,16 @@ const ProductCard = ({
           >
             <IconButton
               aria-label="wishlist"
-              onClick={() => wishlistToggle({ productId: product._id })}
+              onClick={() => wishlistToggle({ productId: product?._id })}
             >
               {isPending ? (
-                "loading"
+                <CircularProgress
+                  color="secondary"
+                  sx={{
+                    width: "20px !important",
+                    height: "20px !important",
+                  }}
+                />
               ) : wishlist.includes(product._id) ? (
                 <FavoriteOutlinedIcon sx={{ color: "red" }} />
               ) : (

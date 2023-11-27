@@ -38,18 +38,18 @@ const PaymentMethod = ({
           justifyContent="center"
           alignItems="center"
           sx={{
-            width: "40px",
-            height: "40px",
+            width: { md: "40px", xs: "25px" },
+            height: { md: "40px", xs: "25px" },
             borderRadius: "50%",
             color: "white",
             fontWeight: "bold",
-            fontSize: "20px",
+            fontSize: { md: "20px", xs: "14px" },
           }}
           bgcolor={pink[600]}
         >
           2
         </Stack>
-        <Typography fontSize={{ md: "24px", xs: "18px" }}>
+        <Typography variant="h6">
           Payment Method
         </Typography>
       </Stack>

@@ -3,7 +3,6 @@ import { useMemo, useState } from "react";
 import {
   MaterialReactTable,
   type MRT_ColumnDef,
-  type MRT_ColumnFiltersState,
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
@@ -26,9 +25,7 @@ import { DeleteModal, EditItemModal } from "../../../components/admin";
 
 
 const SubCategoriesList = () => {
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-    []
-  );
+  
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
   const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -43,7 +40,6 @@ const SubCategoriesList = () => {
     refetch,
   } =useTableQueryHook({
     sorting,
-    columnFilters,
     globalFilter,
     pagination,
     url:"subCategory",
@@ -103,11 +99,7 @@ const SubCategoriesList = () => {
           </Link>
         ),
       },
-      // {
-      //   accessorKey: "createdBy",
-      //   header:"Created By",
-
-      // }
+  
     ],
     []
   );
@@ -118,10 +110,13 @@ const SubCategoriesList = () => {
 
   return (
     <>
+      <Typography fontWeight={"bold"} variant={"h5"} mb={4}>
+        Sub Categories List
+      </Typography>
       <MaterialReactTable
         columns={columns}
         data={cateegories ?? []} //data is undefined on first render
-        initialState={{ showColumnFilters: true }}
+        enableFilters={false}
         manualFiltering
         manualPagination
         enablePagination
@@ -166,7 +161,6 @@ const SubCategoriesList = () => {
               }
             : undefined
         }
-        onColumnFiltersChange={setColumnFilters}
         onGlobalFilterChange={setGlobalFilter}
         onPaginationChange={setPagination}
         onSortingChange={setSorting}
@@ -178,7 +172,6 @@ const SubCategoriesList = () => {
           </Tooltip>
         )}
         state={{
-          columnFilters,
           globalFilter,
           isLoading,
           pagination,

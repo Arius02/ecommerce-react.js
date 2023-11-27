@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {  QueryObserverResult, RefetchOptions, useMutation } from "@tanstack/react-query";
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  useMutation,
+} from "@tanstack/react-query";
 import fetchData from "../utils/fetchData";
-import { Dispatch, SetStateAction } from "react";
-import auth from "../utils/auth";
+import { Dispatch, SetStateAction, useContext } from "react";
+import decode from "../utils/decode";
+import { AppContext } from "../context/AppContext";
 type Props = {
   url: string;
   method: string;
@@ -11,7 +16,7 @@ type Props = {
   refetch?: (
     options?: RefetchOptions | undefined
   ) => Promise<QueryObserverResult<any, Error>>;
-  handleNavigate?:()=>void;
+  handleNavigate?: () => void;
 };
 const useAuthMutationHook = ({
   url,
@@ -21,25 +26,40 @@ const useAuthMutationHook = ({
   refetch,
   handleNavigate,
 }: Props) => {
+  const { setAuth, setAuthDialog } = useContext(AppContext);
   return useMutation({
     mutationFn: (data: any) =>
       fetchData({
         url,
         method,
         data,
-        // token:
-        //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNhZGU1NjMwNTJjNDgyNzBjZWE0NTUiLCJpYXQiOjE2OTkyNzM0NDQsImV4cCI6MTcwMDEzNzQ0NH0.9N0GJOb6iWuHbw_8FbJOrqXcmnjlaTrJ_1788NK8hsY",
+        token: localStorage.getItem("token") ||"",
       }),
     onSuccess: (data) => {
       setSnack &&
-      //   setSnack({
-      //     open: true,
-      //     message: message || "",
-      //     severity: "success",
-      //   });
+        setSnack({
+          open: true,
+          message: message || "",
+          severity: "success",
+        });
+     if(data.data.token){
+       localStorage.setItem("token", data.data.token);
+       setAuth(decode(localStorage.getItem("token") as string));
+       setAuthDialog({
+         open: false,
+         to: "",
+       });
+    }
+    
       refetch && refetch();
       handleNavigate && handleNavigate();
-      localStorage.setItem("token", data.data.token);
+      if (url == "/auth/logout") {
+        localStorage.removeItem("token");
+        setAuth({
+          _id: null,
+          role: "",
+        });
+      }
     },
     onError: (error: any) => {
       setSnack &&

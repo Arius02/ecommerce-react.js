@@ -13,7 +13,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as React from "react";
-import SnackbarComponent from "../../../components/SnackBar.tsx";
+import SnackbarComponent from "../../../components/common/SnackBar.tsx";
 
 import {  useQuery } from "@tanstack/react-query";
 import fetchData from "../../../utils/fetchData.ts";

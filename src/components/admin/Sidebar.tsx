@@ -13,16 +13,13 @@ import ListItemText from "@mui/material/ListItemText";
 import { blueGrey, blue } from "@mui/material/colors";
 import logo from "../../assets/logo.svg";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import { sidebarAccordoin } from "../../constants/sidbarAccordion";
+import { sidebarAccordoin, directLinks } from "../../constants/sidebarLinks";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
-import TuneIcon from "@mui/icons-material/Tune";
-import LogoutIcon from "@mui/icons-material/Logout";
-import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import {Link} from "react-router-dom"
 import scrollBarStyles from "../../style/scrollBar"
 type Props = {
@@ -249,12 +246,26 @@ const Sidebar = ({ open, setOpen, Content, drawerWidth, show }: Props) => {
         </List>
         <Divider />
         <List sx={{ px: open ? "15px" : 0 }}>
-          {[
-            { name: "Customers", key: "iohug", icon: RecentActorsIcon },
-            { name: "Settings", key: "uhu", icon: TuneIcon },
-            { name: "Log Out", key: "huh", icon: LogoutIcon },
-          ].map((elm) => (
-            <ListItem key={elm.key} disablePadding sx={{ display: "block" }}>
+          {directLinks.map((elm) => (
+            <ListItem
+              key={elm.key}
+              disablePadding
+              sx={{
+                display: "block",
+                backgroundColor:
+                  active == elm.link && open
+                    ? "rgba(220,220,220,.1)"
+                    : "transparent",
+                borderRadius: "8px",
+                color: elm.link == active ? blue[300] : "white",
+              }}
+              onClick={() => {
+                setActive(elm.link);
+                show && setOpen(false);
+              }}
+              component={Link}
+              to={elm.link}
+            >
               <ListItemButton
                 sx={{
                   minHeight: 48,

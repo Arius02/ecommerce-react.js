@@ -20,6 +20,12 @@ export { default as AddProduct } from "./admin/product/AddProduct";
 export { default as ProductsList } from "./admin/product/ProductsList";
 export { default as ProductDetailsAdmin } from "./admin/product/ProductDetails";
 
+export { default as OrdersList } from "./admin/order/OrdersList";
+export { default as OrderDetails } from "./admin/order/OrderDetails";
+
+
+export { default as UsersList } from "./admin/user/UsersList";
+
 //========================== USER PAGES =========================
 export { default as Main } from "./Main";
 export { default as Home } from "./Home";
@@ -35,6 +41,7 @@ export { default as Login } from "./auth/Login";
 export { default as Register } from "./auth/Register";
 export { default as ForgetPassword } from "./auth/ForgetPassword";
 export { default as ResetPassword } from "./auth/ResetPassword";
+export { default as Unauthorized } from "./auth/Unauthorized";
 
 // ====================== USER INFO PAGES =======================
 

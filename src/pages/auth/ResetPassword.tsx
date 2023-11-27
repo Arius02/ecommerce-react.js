@@ -21,7 +21,7 @@ import {
   resetPasswordSchema,
 } from "../../validation/auth.validator";
 import { Link as RouterLink, useNavigate,  useSearchParams } from "react-router-dom";
-import SnackbarComponent from "../../components/SnackBar";
+import SnackbarComponent from "../../components/common/SnackBar";
 import useMutationHook from "../../hooks/useMutationHook";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";

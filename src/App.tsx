@@ -32,17 +32,22 @@ import {
   UserOrders,
   Address,
   UserMainPage,
+  Unauthorized,
+  OrdersList,
+  OrderDetails,
+  UsersList,
 } from "./pages";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "./app.css";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { setShow } from "./reducers/screenSlice";
+import { useContext, useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { pink } from "@mui/material/colors";
+import { AppContext } from "./context/AppContext";
+import systemRoles from "./utils/systemRoles";
+import { AuthRouter, NotAuthRouter } from "./components";
 const App = () => {
   const queryClient = new QueryClient();
   const router = createBrowserRouter([
@@ -72,19 +77,37 @@ const App = () => {
         //order
         {
           path: "/checkout",
-          element: <Checkout />,
+          element: (
+            <AuthRouter
+              allowedRoles={[systemRoles.User, systemRoles.FakeAdmin]}
+            >
+              <Checkout />
+            </AuthRouter>
+          ),
         },
         {
           path: "/directOrder/:id",
-          element: <DirectOrder />,
+          element: (
+            <AuthRouter
+              allowedRoles={[systemRoles.User, systemRoles.FakeAdmin]}
+            >
+              <DirectOrder />
+            </AuthRouter>
+          ),
         },
         //user info
         {
           path: "/user",
-          element: <UserMainPage />,
+          element: (
+            <AuthRouter
+              allowedRoles={[systemRoles.User, systemRoles.FakeAdmin]}
+            >
+              <UserMainPage />
+            </AuthRouter>
+          ),
           children: [
             {
-              path: "/user/profile",
+              path: "/user",
               element: <Profile />,
             },
             {
@@ -110,24 +133,54 @@ const App = () => {
     //auth
     {
       path: "/auth/register",
-      element: <Register />,
+      element: (
+        <NotAuthRouter>
+          <Register />,
+        </NotAuthRouter>
+      ),
     },
     {
       path: "/auth/login",
-      element: <Login />,
+      element: (
+        <NotAuthRouter>
+          <Login />,
+        </NotAuthRouter>
+      ),
     },
     {
       path: "/auth/forget-passwrod/",
-      element: <ForgetPassword />,
+      element: (
+        <NotAuthRouter>
+          <ForgetPassword />,
+        </NotAuthRouter>
+      ),
     },
     {
       path: "/auth/reset-password",
-      element: <ResetPassword />,
+      element: (
+        <NotAuthRouter>
+          <ResetPassword />,
+        </NotAuthRouter>
+      ),
+    },
+    {
+      path: "/auth/unauthorized",
+      element: <Unauthorized />,
     },
 
     {
       path: "dashboard",
-      element: <Dashboard />,
+      element: (
+        <AuthRouter
+          allowedRoles={[
+            systemRoles.SuperAdmin,
+            systemRoles.Admin,
+            systemRoles.FakeAdmin,
+          ]}
+        >
+          <Dashboard />
+        </AuthRouter>
+      ),
       children: [
         //coupon
         {
@@ -136,7 +189,11 @@ const App = () => {
         },
         {
           path: "/dashboard/coupon/add",
-          element: <AddCoupon />,
+          element: (
+            <AuthRouter allowedRoles={[systemRoles.SuperAdmin]}>
+              <AddCoupon />,
+            </AuthRouter>
+          ),
         },
         // category
         {
@@ -145,7 +202,11 @@ const App = () => {
         },
         {
           path: "/dashboard/category/add",
-          element: <AddCategory />,
+          element: (
+            <AuthRouter allowedRoles={[systemRoles.SuperAdmin]}>
+              <AddCategory />
+            </AuthRouter>
+          ),
         },
         {
           path: "/dashboard/category/details/:id",
@@ -158,7 +219,11 @@ const App = () => {
         },
         {
           path: "/dashboard/subCategory/add",
-          element: <AddSubCategory />,
+          element: (
+            <AuthRouter allowedRoles={[systemRoles.SuperAdmin]}>
+              <AddSubCategory />
+            </AuthRouter>
+          ),
         },
         {
           path: "/dashboard/subCategory/details/:id",
@@ -171,7 +236,11 @@ const App = () => {
         },
         {
           path: "/dashboard/brand/add",
-          element: <AddBrand />,
+          element: (
+            <AuthRouter allowedRoles={[systemRoles.SuperAdmin]}>
+              <AddBrand />
+            </AuthRouter>
+          ),
         },
         {
           path: "/dashboard/brand/dtails/:id",
@@ -190,18 +259,31 @@ const App = () => {
           path: "/dashboard/product/details/:id",
           element: <ProductDetailsAdmin />,
         },
+        // order
+        {
+          path: "/dashboard/order",
+          element: <OrdersList />,
+        },
+        {
+          path: "/dashboard/order/details/:id",
+          element: <OrderDetails />,
+        },
+        // user
+        {
+          path: "/dashboard/user",
+          element: <UsersList />,
+        },
+        
       ],
     },
   ]);
-  const dispatch = useDispatch();
-  const show = useSelector((state: any) => state.screenSize.show);
-
-  dispatch(setShow(window.innerWidth <= 900 ? true : false));
+  const { show, setShow } = useContext(AppContext);
+  setShow(window.innerWidth <= 900 ? true : false);
   const handleShow = () => {
     if (window.innerWidth <= 900) {
-      dispatch(setShow(true));
+      setShow(true);
     } else {
-      dispatch(setShow(false));
+      setShow(false);
     }
   };
   useEffect(() => {
@@ -212,7 +294,7 @@ const App = () => {
   const theme = createTheme({
     palette: {
       secondary: {
-        main:pink[600]
+        main: pink[600],
       },
     },
   });

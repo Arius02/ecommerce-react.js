@@ -1,14 +1,16 @@
-import CategoryIcon from '@mui/icons-material/Category';
-import ExtensionIcon from '@mui/icons-material/Extension';
-import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
+import CategoryIcon from "@mui/icons-material/Category";
+import ExtensionIcon from "@mui/icons-material/Extension";
+import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
 import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import LogoutIcon from "@mui/icons-material/Logout";
+import RecentActorsIcon from "@mui/icons-material/RecentActors";
 export const sidebarAccordoin = [
   {
     name: "Products",
     key: "sygsb",
-    link:"/product",
+    link: "/product",
     children: [
       {
         name: "Products List",
@@ -26,7 +28,8 @@ export const sidebarAccordoin = [
   {
     name: "Categories",
     key: "sdfid",
-    link:"/category",icon: CategoryIcon,
+    link: "/category",
+    icon: CategoryIcon,
     children: [
       {
         name: "Categories List",
@@ -43,7 +46,8 @@ export const sidebarAccordoin = [
   {
     name: "Sub Categories",
     key: "dsij",
-    link:"/subCategory",icon: CollectionsBookmarkIcon,
+    link: "/subCategory",
+    icon: CollectionsBookmarkIcon,
     children: [
       {
         name: "Sub Categories List",
@@ -60,7 +64,8 @@ export const sidebarAccordoin = [
   {
     name: "Brands",
     key: "dslk",
-    link:"/brand",icon: BrandingWatermarkIcon,
+    link: "/brand",
+    icon: BrandingWatermarkIcon,
     children: [
       {
         name: "Brands List",
@@ -77,7 +82,7 @@ export const sidebarAccordoin = [
   {
     name: "Coupons",
     key: "idnd",
-    link:"/coupon",
+    link: "/coupon",
     icon: CardGiftcardIcon,
     children: [
       {
@@ -92,22 +97,20 @@ export const sidebarAccordoin = [
       },
     ],
   },
+];
+
+export const directLinks = [
   {
-    name: "Orders",
+    name: "Orders List",
     key: "eojn",
-    link:"/order",
-    icon:CalendarMonthIcon,
-    children: [
-      {
-        name: "Orders List",
-        key: "dijd",
-        link: "/dashboard/order",
-      },
-      {
-        name: "Order Details",
-        key: "ojdsij",
-        link: "/dashboard/order/details",
-      },
-    ],
+    link: "/dashboard/order",
+    icon: CalendarMonthIcon,
   },
+  {
+    name: "Customers",
+    link: "/dashboard/user",
+    key: "iohug",
+    icon: RecentActorsIcon,
+  },
+  { name: "Log Out", link: "/", key: "huh", icon: LogoutIcon },
 ];

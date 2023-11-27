@@ -1,27 +1,22 @@
-import  { Dispatch, SetStateAction } from 'react'
-import {
-
-  Stack,
- 
-} from "@mui/material";
+import { Dispatch, SetStateAction } from "react";
+import { Stack } from "@mui/material";
 
 type Props = {
-    coverImage:{secure_url:string};
-    images:{
-        secure_url:string;
-        public_id:string;
-    }[];
-    imgToShow:string,
-    setImgToshow:Dispatch<SetStateAction<string>>
+  coverImage: { secure_url: string };
+  images: {
+    secure_url: string;
+    public_id: string;
+  }[];
+  imgToShow: string;
+  setImgToshow: Dispatch<SetStateAction<string>>;
+};
 
-
-}
-
-const ProductImagesShow = ({coverImage,images,imgToShow,
-setImgToshow}: Props) => {
-
-
-
+const ProductImagesShow = ({
+  coverImage,
+  images,
+  imgToShow,
+  setImgToshow,
+}: Props) => {
   return (
     <Stack flexDirection={{ md: "row", xs: "column-reverse" }}>
       <Stack
@@ -38,8 +33,7 @@ setImgToshow}: Props) => {
             overflow: "hidden",
             borderRadius: "5px",
             cursor: "pointer",
-            border:
-              imgToShow == coverImage.secure_url ? "1px pink solid" : 0,
+            border: imgToShow == coverImage.secure_url ? "1px pink solid" : 0,
           }}
           onClick={() => setImgToshow(coverImage.secure_url || "")}
         >
@@ -83,10 +77,14 @@ setImgToshow}: Props) => {
         mx="auto"
         mb={4}
       >
-        <img src={imgToShow} style={{ width: "80%" }} loading="lazy" />
+        <img
+          src={imgToShow}
+          style={{ width: "80%" }}
+          loading="lazy"
+        />
       </Stack>
     </Stack>
   );
-}
+};
 
-export default ProductImagesShow
+export default ProductImagesShow;

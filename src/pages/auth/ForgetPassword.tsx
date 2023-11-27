@@ -14,7 +14,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { forgetPasswordSchema } from "../../validation/auth.validator";
 import { Link as RouterLink } from "react-router-dom";
-import SnackbarComponent from "../../components/SnackBar";
+import SnackbarComponent from "../../components/common/SnackBar";
 import useMutationHook from "../../hooks/useMutationHook";
 
 const ForgetPassword = () => {

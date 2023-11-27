@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 import { LoadingButton } from "@mui/lab";
 import useMutationHook from "../../hooks/useMutationHook";
 import React, { useState } from "react";
-import SnackbarComponent from "../../components/SnackBar";
+import SnackbarComponent from "../common/SnackBar";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 type Props = {
   user: any;
@@ -37,7 +37,6 @@ type Props = {
 };
 
 const EditProfile = ({ user, refetch, setOpen, open }: Props) => {
-  console.log(user);
   const [snack, setSnack] = useState<SnackbarType>({
     open: false,
     message: "",

@@ -1,4 +1,4 @@
-import  { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useContext } from "react";
 import {
   Box,
   Stack,
@@ -8,26 +8,27 @@ import {
   FormControl,
   InputLabel,
   Select,
-            IconButton
-
+  IconButton,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import { AppContext } from "../../context/AppContext";
 type Props = {
-  sortTerm: string;
-  setSortTerm: Dispatch<SetStateAction<string>>;
+  sort: string;
+  setSort: Dispatch<SetStateAction<string>>;
   searchTerm: string;
   setFilterSearch: Dispatch<SetStateAction<boolean>>;
 };
-    
+
 const SearchInfo = ({
-  sortTerm,
-  setSortTerm,
+  sort,
+  setSort,
   searchTerm,
   setFilterSearch,
 }: Props) => {
   const handleChange = (event: any) => {
-    setSortTerm(event.target.value);
+    setSort(event.target.value);
   };
+  const { show } = useContext(AppContext);
   return (
     <Paper sx={{ p: 2 }}>
       <Stack
@@ -41,7 +42,6 @@ const SearchInfo = ({
           <Typography fontWeight="bold" fontSize="18px">
             Searching for “ {searchTerm} ”
           </Typography>
-          
         </Box>
         <Stack flexDirection={"row"}>
           <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
@@ -53,7 +53,7 @@ const SearchInfo = ({
               <Select
                 labelId="sort-label"
                 id="sort"
-                value={sortTerm}
+                value={sort}
                 label="Sort"
                 onChange={handleChange}
               >
@@ -66,14 +66,16 @@ const SearchInfo = ({
                 <MenuItem value={"-price"}>Price High to Low</MenuItem>
               </Select>
             </FormControl>
-            <IconButton
-              type="button"
-              sx={{ p: "14px" }}
-              aria-label="search"
-              onClick={() => setFilterSearch(true)}
-            >
-              <FilterListIcon />
-            </IconButton>
+            {show && (
+              <IconButton
+                type="button"
+                sx={{ p: "14px" }}
+                aria-label="search"
+                onClick={() => setFilterSearch(true)}
+              >
+                <FilterListIcon />
+              </IconButton>
+            )}
           </Stack>
         </Stack>
       </Stack>
@@ -81,4 +83,4 @@ const SearchInfo = ({
   );
 };
 
-export default SearchInfo
+export default SearchInfo;

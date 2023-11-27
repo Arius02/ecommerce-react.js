@@ -1,24 +1,21 @@
 import { Typography, Box, Stack, Pagination, IconButton } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import useMultiQueryHook from "../../hooks/useMultiQueryHook";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ProductCard from "./ProductCard";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import BrandFiltersBox from "./BrandFiltersBox";
 import BrandFilterMenu from "./BrandFilterMenu";
-import { useSelector } from "react-redux";
 import useCartMutationHook from "../../hooks/useCartMutationHook";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import ProductCardSkeleton from "../skeleton/product/ProductCardSkeleton";
+import { AppContext } from "../../context/AppContext";
 
 type Props = {
   title: string;
   subCategory: string;
   queryName: string;
   brandQueryName: string;
-  refetchCart: (
-    options?: RefetchOptions | undefined
-  ) => Promise<QueryObserverResult<unknown, Error>>;
   refetchWishlist: (
     options?: RefetchOptions | undefined
   ) => Promise<QueryObserverResult<unknown, Error>>;
@@ -34,9 +31,8 @@ const ProductsWithFilter = ({
   wishlist,
   refetchWishlist,
   cart,
-  refetchCart,
 }: Props) => {
-  const show = useSelector((state: any) => state.screenSize.show);
+  const {show} = useContext(AppContext);
   const [filterWord, setFilterWord] = useState("");
   const [page, setPage] = useState(1);
   const { data, isPending } = useMultiQueryHook({
@@ -59,7 +55,6 @@ const ProductsWithFilter = ({
   const { mutate: AddToCart } = useCartMutationHook({
     url: "add",
     method: "POST",
-    refetch: refetchCart,
     setLoadingIndecator,
   });
 
@@ -117,10 +112,10 @@ const ProductsWithFilter = ({
             </>
           )}
         </Stack>
-        <Grid container columns={12} rowGap={3} justifyContent={"center"}>
+        <Grid container columns={12} rowGap={3}>
           {data &&
             data.products.map((product: any) => (
-              <Grid lg={4} md={6} xs={12} key={product._id}>
+              <Grid lg={4} sm={6} xs={12} key={product._id}>
                 <Box px={1}>
                   <ProductCard
                     product={product}
@@ -134,7 +129,9 @@ const ProductsWithFilter = ({
                 </Box>
               </Grid>
             ))}
-          {isPending && <ProductCardSkeleton />}
+          {isPending && (
+            <ProductCardSkeleton columns={{ lg: 3, md: 6, xs: 12 }} />
+          )}
         </Grid>
         {data && (
           <Pagination

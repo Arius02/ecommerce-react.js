@@ -20,7 +20,7 @@ import useMutationHook from "../../hooks/useMutationHook";
 import { addAddressSchema } from "../../validation/address..validator";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
-import SnackbarComponent from "../SnackBar";
+import SnackbarComponent from "../common/SnackBar";
 import { LoadingButton } from "@mui/lab";
 type Props = {
   open: boolean;
@@ -58,7 +58,7 @@ const AddAddressDialog = ({ open, setOpen, refetch }: Props) => {
     console.log(governate);
     governate &&
       setAllowedCities(
-        cities.data.filter((city: any) => city.governorate_id === governate.id)
+        cities.data.filter((city: any) => city.governorate_id === (governate as any).id)
       );
   }, [governate]);
   const { mutate: addAddress, isPending } = useMutationHook({

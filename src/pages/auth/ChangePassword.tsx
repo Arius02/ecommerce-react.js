@@ -1,8 +1,6 @@
-import React from 'react'
 
-type Props = {}
 
-const ChangePassword = (props: Props) => {
+const ChangePassword = () => {
   return (
     <div>ChangePassword</div>
   )

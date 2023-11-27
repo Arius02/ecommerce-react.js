@@ -1,13 +1,11 @@
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import {
-  type MRT_ColumnFiltersState,
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
 import fetchData from "../utils/fetchData";
 type Props = {
   sorting: MRT_SortingState;
-  columnFilters: MRT_ColumnFiltersState;
   globalFilter: string;
   pagination: MRT_PaginationState;
   url:string;
@@ -17,7 +15,6 @@ type Props = {
 
 const useTableQueryHook = ({
   sorting,
-  columnFilters,
   globalFilter,
   pagination,
   url,
@@ -27,7 +24,6 @@ const useTableQueryHook = ({
   return useQuery({
     queryKey: [
       queryName,
-      columnFilters, //refetch when columnFilters changes
       globalFilter, //refetch when globalFilter changes
       pagination.pageIndex, //refetch when pagination.pageIndex changes
       pagination.pageSize, //refetch when pagination.pageSize changes
@@ -41,8 +37,7 @@ const useTableQueryHook = ({
           .map((s) => `${s.desc ? "-" : ""}${s.id}`)
           .join(",")}`,
         method: "GET",
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNhZGU1NjMwNTJjNDgyNzBjZWE0NTUiLCJpYXQiOjE2OTkyNzM0NDQsImV4cCI6MTcwMDEzNzQ0NH0.9N0GJOb6iWuHbw_8FbJOrqXcmnjlaTrJ_1788NK8hsY",
+        token: localStorage.getItem("token") || "",
       });
       return res.data[selectionName];
     },

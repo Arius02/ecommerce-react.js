@@ -18,7 +18,7 @@ const links = {
   accountSettings: [
     {
       name: "Profile Info",
-      to: "/user/profile",
+      to: "/user",
       icon: PersonIcon,
     },
     {

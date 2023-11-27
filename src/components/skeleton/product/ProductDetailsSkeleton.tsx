@@ -1,6 +1,6 @@
 import { Box, Stack, Grid } from "@mui/material";
 import { Skeleton } from "@mui/lab";
-import ProductReviewsReviews from "./ProductReviewsReviews";
+import ProductReviewsSkeleton from "./ProductReviewsSkeleton";
 const ProductDetailsSkeleton = () => {
   return (
     <>
@@ -62,8 +62,8 @@ const ProductDetailsSkeleton = () => {
             </Stack>
           </Box>
         </Grid>
-        <ProductReviewsReviews/>
       </Grid>
+        <ProductReviewsSkeleton/>
     </>
   );
 };

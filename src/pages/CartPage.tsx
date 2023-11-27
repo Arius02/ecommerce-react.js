@@ -1,4 +1,3 @@
-import useQueryHook from "../hooks/useQueryHook";
 import {
   Grid,
   Box,
@@ -19,26 +18,23 @@ import { Link } from "react-router-dom";
 import AddCoupon from "../components/cart/AddCoupon";
 import CartPageSkeleton from "../components/skeleton/cart/CartPageSkeleton";
 import bag from "../assets/shopping-bag.svg";
+import useCartQueryHook from "../hooks/useCartQueryHook";
 const CartPage = () => {
   const [couponCode, setCouponCode] = useState("");
   const {
     data: cart,
     isPending,
-    refetch,
-  } = useQueryHook({
-    url: "/cart",
+  } = useCartQueryHook({
     query: "getCart",
     selectedProp: "cart",
   });
   const { mutate: addToCart } = useCartMutationHook({
     url: "/cart",
     method: "POST",
-    refetch,
   });
   const { mutate: removeFromCart } = useCartMutationHook({
     url: "/cart",
     method: "PATCH",
-    refetch,
   });
 
   return (
@@ -198,7 +194,6 @@ const CartPage = () => {
                     <AddCoupon
                       couponCode={couponCode}
                       setCouponCode={setCouponCode}
-                      refetch={refetch}
                     />
                   )}
                   <Button

@@ -3,7 +3,6 @@ import { useMemo, useState } from "react";
 import {
   MaterialReactTable,
   type MRT_ColumnDef,
-  type MRT_ColumnFiltersState,
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
@@ -26,9 +25,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { EditItemModal } from "../../../components/admin";
 
 const BrandsList = () => {
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-    []
-  );
+  
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
   const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -43,7 +40,6 @@ const BrandsList = () => {
     refetch,
   } = useTableQueryHook({
     sorting,
-    columnFilters,
     globalFilter,
     pagination,
     url:"brand",
@@ -101,10 +97,13 @@ const BrandsList = () => {
 
   return (
     <>
+      <Typography fontWeight={"bold"} variant={"h5"} mb={4}>
+        Brand List
+      </Typography>
       <MaterialReactTable
         columns={columns}
         data={cateegories ?? []} //data is undefined on first render
-        initialState={{ showColumnFilters: true }}
+        enableFilters={false}
         manualFiltering
         manualPagination
         enablePagination
@@ -149,7 +148,6 @@ const BrandsList = () => {
               }
             : undefined
         }
-        onColumnFiltersChange={setColumnFilters}
         onGlobalFilterChange={setGlobalFilter}
         onPaginationChange={setPagination}
         onSortingChange={setSorting}
@@ -161,7 +159,7 @@ const BrandsList = () => {
           </Tooltip>
         )}
         state={{
-          columnFilters,
+          
           globalFilter,
           isLoading,
           pagination,
@@ -172,7 +170,7 @@ const BrandsList = () => {
       />
       <DeleteModal
         title="Delete Brand"
-        warning= { `By deleting this Brand, all products under this Brand will also be deleted.`}
+        warning={`By deleting this Brand, all products under this Brand will also be deleted.`}
         open={openDelete}
         setOpen={setOpenDelete}
         url={`/brand/${id}`}

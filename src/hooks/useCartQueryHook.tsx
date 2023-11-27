@@ -8,10 +8,11 @@ type Props = {
 
 const generateData = () => {
   const cartId = localStorage.getItem("cartId");
-  if (cartId) {
+  const token = localStorage.getItem("token");
+  if (cartId &&!token) {
     return { cartId };
-  } else if (localStorage.getItem("token")) {
-    return { token: localStorage.getItem("token")  };
+  } else if (token) {
+    return { token  };
   }
   return {};
 };
@@ -38,7 +39,6 @@ const useCartQueryHook = ({ query, selectedProp }: Props) => {
     },
     refetchOnWindowFocus: false,
     staleTime: 500000,
-    // enabled: Boolean(localStorage.getItem("cartId")),
   });
 };
 

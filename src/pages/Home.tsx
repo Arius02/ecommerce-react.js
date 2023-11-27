@@ -1,26 +1,28 @@
-import BigDiscountCarousels from '../components/carousels/BigDiscountCarousels';
-import BigOffersCarousels from '../components/carousels/BigOffersCarousels'
-import NewArrivals from '../components/product/NewArrivals';
-import ProductsWithFilter from '../components/product/ProductsWithFilter';
-import TopRated from '../components/product/TopRated';
+import BigDiscountCarousels from "../components/carousels/BigDiscountCarousels";
+import BigOffersCarousels from "../components/carousels/BigOffersCarousels";
+import NewArrivals from "../components/product/NewArrivals";
+import ProductsWithFilter from "../components/product/ProductsWithFilter";
+import TopRated from "../components/product/TopRated";
 import { Box, Container } from "@mui/material";
-import useQueryHook from '../hooks/useQueryHook';
-import useCartQueryHook from '../hooks/useCartQueryHook';
+import useQueryHook from "../hooks/useQueryHook";
+import useCartQueryHook from "../hooks/useCartQueryHook";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 const Home = () => {
-    const { data: user, refetch: refetchWishlist } = useQueryHook({
-      url: "/auth",
-      query: "getUser",
-      selectedProp: "user",
-      // options: {
-      //   enabled: localStorage.getItem("token") ? true : false,
-      // },
-    });
-    const { data: cart, refetch:refetchCart } = useCartQueryHook({
-      query: "getCart",
-      
-      selectedProp: "cart",
-    });
+  const { auth } = useContext(AppContext);
+  const { data: user, refetch: refetchWishlist } = useQueryHook({
+    url: "/auth",
+    query: "getUser",
+    selectedProp: "user",
+    options: {
+      enabled: auth._id ? true : false,
+    },
+  }) as { data: any; refetch: any };
+  const { data: cart,  } = useCartQueryHook({
+    query: "getCart",
+    selectedProp: "cart",
+  });
   return (
     <>
       <BigOffersCarousels />
@@ -37,7 +39,6 @@ const Home = () => {
             wishlist={user && user.wishlist}
             refetchWishlist={refetchWishlist}
             cart={cart}
-            refetchCart={refetchCart}
           />
           <ProductsWithFilter
             title="Mobiles"
@@ -46,13 +47,12 @@ const Home = () => {
             brandQueryName="getMobileBrands"
             wishlist={user && user.wishlist}
             refetchWishlist={refetchWishlist}
-            refetchCart={refetchCart}
             cart={cart}
           />
         </Box>
       </Container>
     </>
   );
-}
+};
 
-export default Home
+export default Home;

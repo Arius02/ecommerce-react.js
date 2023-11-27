@@ -9,7 +9,7 @@ import {
 import { LoadingButton } from "@mui/lab";
 import useMutationHook from "../../hooks/useMutationHook";
 import { ChangeEvent, useState } from "react";
-import SnackbarComponent from "../SnackBar";
+import SnackbarComponent from "../common/SnackBar";
 import { styled } from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButtonProps } from "@mui/material/IconButton";

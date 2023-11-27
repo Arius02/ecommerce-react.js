@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { Dispatch, SetStateAction, useState,useContext } from 'react'
 import {
   Drawer,
   Stack,
@@ -17,37 +17,55 @@ import AddIcon from "@mui/icons-material/Add";
 import useCartMutationHook from '../../hooks/useCartMutationHook';
 import scrollBarStyles from "../../style/scrollBar";
 import { formatPrice } from '../../utils/priceFormat';
-import { Link  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import bag from "../../assets/shopping-bag.svg";
 import CircularProgress from "@mui/material/CircularProgress";
 type Props = {
   setCartDrawerOpen: Dispatch<SetStateAction<boolean>>;
   cartDrawerOpen: boolean;
 };
+import {AppContext} from "../../context/AppContext"
+import AddressesSkeleton from '../skeleton/user/AddressesSkeleton';
 const CartDrawer = ({setCartDrawerOpen,
 cartDrawerOpen}: Props) => {
     const [loadingIndecator, setLoadingIndecator] = useState("");
 
-  const { data: cart, refetch: refetchCart } = useCartQueryHook({
+  const {
+    data: cart,
+    isPending,
+  } = useCartQueryHook({
     query: "getCart",
     selectedProp: "cart",
   });
   const { mutate: AddToCart } = useCartMutationHook({
     url: "add",
     method: "POST",
-    refetch: refetchCart,
     setLoadingIndecator,
   });
   const { mutate: RemovFromCart } = useCartMutationHook({
     url: `remove`,
     method: "PATCH",
-    refetch: refetchCart,
   });
   const handleAddToCart=(data:any)=>{
     AddToCart(data);
   }
   const handleDeleteFromCart=(data:any)=>{
     RemovFromCart(data);
+  }
+  const navigate= useNavigate()
+  const {auth, setAuthDialog} = useContext(AppContext)
+
+  const handleCheckout= ()=>{
+    if(auth._id){
+      setCartDrawerOpen(false)
+      navigate("/checkout")
+    } else{
+      setAuthDialog({
+        open: true,
+        to: "/checkout",
+      })
+      
+    }
   }
   return (
     <React.Fragment key={"right"}>
@@ -120,12 +138,12 @@ cartDrawerOpen}: Props) => {
                     >
                       <AddIcon />
                     </IconButton>
-                    {loadingIndecator!==product.productId._id && (
+                    {loadingIndecator !== product.productId._id && (
                       <Typography color="secondary" fontWeight="bold">
                         {product.quantity}
                       </Typography>
-                    ) }
-                    {loadingIndecator==product.productId._id&& (
+                    )}
+                    {loadingIndecator == product.productId._id && (
                       <CircularProgress
                         color="secondary"
                         sx={{
@@ -182,13 +200,12 @@ cartDrawerOpen}: Props) => {
                 </Stack>
               ))}
             </Box>
-            <Box>
+            <Box sx={{position:"absolute",bottom:0}} >
               <Button
-                component={Link}
-                to="/checkout"
                 variant={"contained"}
                 color="secondary"
                 sx={{ fontWeight: "bold", width: "100%", py: 1.5 }}
+                onClick={handleCheckout}
               >
                 Checkout Now (
                 {formatPrice(cart.priceAfterDiscount || cart.totalPrice)})
@@ -205,7 +222,7 @@ cartDrawerOpen}: Props) => {
             </Box>
           </>
         )}
-        {!cart && (
+        {!cart&&!isPending && (
           <Stack
             height={"100%"}
             gap={4}
@@ -218,6 +235,8 @@ cartDrawerOpen}: Props) => {
             </Typography>
           </Stack>
         )}
+        { isPending&&<AddressesSkeleton/>
+        }
       </Drawer>
     </React.Fragment>
   );

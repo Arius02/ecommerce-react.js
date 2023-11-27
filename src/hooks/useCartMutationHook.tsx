@@ -3,6 +3,7 @@ import {
   QueryObserverResult,
   RefetchOptions,
   useMutation,
+  useQueryClient,
 } from "@tanstack/react-query";
 import fetchData from "../utils/fetchData";
 import { Dispatch, SetStateAction } from "react";
@@ -19,7 +20,6 @@ type Props = {
 const useCartMutationHook = ({
   url,
   method,
-  refetch,
   setLoadingIndecator,
 }: Props) => {
   const isTokenPresent = Boolean(localStorage.getItem("token"));
@@ -32,7 +32,7 @@ const useCartMutationHook = ({
   } else {
     customUrl = "/cart/guest";
   }
-
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: any) => {
       let options = {
@@ -54,11 +54,13 @@ const useCartMutationHook = ({
       if (customUrl == "/cart/guest" && method == "POST") {
         localStorage.setItem("cartId", data.data.cart._id);
       }
-      refetch && refetch();
       if (url == "/cart/merge") {
         localStorage.removeItem("cartId");
       }
       setLoadingIndecator && setLoadingIndecator("");
+      queryClient.refetchQueries({
+        queryKey: ["getCart"],
+      });
     },
     onError: () => {
       setLoadingIndecator && setLoadingIndecator("");

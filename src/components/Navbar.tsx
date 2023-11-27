@@ -1,24 +1,54 @@
-import React, { Dispatch, SetStateAction } from 'react'
-import { Stack, Box, Drawer, Typography,Link,Container } from "@mui/material";
-import logo from "../assets/logo2.svg"
-import samllLogo from "../assets/bazaar-black-sm.svg"
-import SearchInput from './search/SearchInput'
+import React, { Dispatch, SetStateAction, useContext } from "react";
+import {
+  Stack,
+  Box,
+  Drawer,
+  Typography,
+  Link,
+  Container,
+  Badge,
+} from "@mui/material";
+import logo from "../assets/logo2.svg";
+import samllLogo from "../assets/bazaar-black-sm.svg";
+import SearchInput from "./search/SearchInput";
 import IconButton from "@mui/material/IconButton";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import { blueGrey } from '@mui/material/colors';
+import { blueGrey } from "@mui/material/colors";
 import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from '@mui/icons-material/Close';
-import {Link as LinkRouter} from "react-router-dom"
-import { useSelector } from 'react-redux';
+import CloseIcon from "@mui/icons-material/Close";
+import { Link as LinkRouter, useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
+import useCartQueryHook from "../hooks/useCartQueryHook";
+import useAuthMutationHook from "../hooks/useAuthMutationHook";
+import LogoutIcon from "@mui/icons-material/Logout";
+import systemRoles from "../utils/systemRoles";
 type Props = {
   setCartDrawerOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const Navbar = ({ setCartDrawerOpen,  }: Props) => {
+const Navbar = ({ setCartDrawerOpen }: Props) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
-    const show = useSelector((state: any) => state.screenSize.show);
-  
+  const navigate = useNavigate();
+  const { show, setAuthDialog, auth } = useContext(AppContext);
+  const handleUserIconClick = () => {
+    if (auth._id) {
+      navigate("/user");
+    } else {
+      setAuthDialog({
+        open: true,
+        to: "/user",
+      });
+    }
+  };
+  const { data: cart } = useCartQueryHook({
+    query: "getCart",
+    selectedProp: "cart",
+  });
+  const { mutate: logout } = useAuthMutationHook({
+    url: "/auth/logout",
+    method: "PATCH",
+  });
   return (
     <Box bgcolor={"white"}>
       <Container maxWidth="xl">
@@ -87,17 +117,35 @@ const Navbar = ({ setCartDrawerOpen,  }: Props) => {
                 <SearchIcon />
               </IconButton>
             )}
-            <IconButton component={LinkRouter} to="/auth/register" type="button" sx={{ p: "14px" }} aria-label="user">
-              <PersonOutlineIcon />
-            </IconButton>
             <IconButton
+              onClick={handleUserIconClick}
               type="button"
               sx={{ p: "14px" }}
-              aria-label="cart"
-              onClick={() => setCartDrawerOpen(true)}
+              aria-label="user"
             >
-              <ShoppingBagIcon sx={{ color: blueGrey[400] }} />
+              <PersonOutlineIcon />
             </IconButton>
+
+            <Badge badgeContent={cart?.products.length} color="secondary">
+              <IconButton
+                type="button"
+                sx={{ p: "14px" }}
+                aria-label="cart"
+                onClick={() => setCartDrawerOpen(true)}
+              >
+                <ShoppingBagIcon sx={{ color: blueGrey[400] }} />
+              </IconButton>
+            </Badge>
+            {auth._id &&auth.role==systemRoles.User && (
+              <IconButton
+                type="button"
+                sx={{ p: "14px" }}
+                aria-label="cart"
+                onClick={() => logout({})}
+              >
+                <LogoutIcon sx={{ color: blueGrey[400] }} />
+              </IconButton>
+            )}
           </Stack>
         </Stack>
       </Container>
@@ -105,4 +153,4 @@ const Navbar = ({ setCartDrawerOpen,  }: Props) => {
   );
 };
 
-export default Navbar
+export default Navbar;

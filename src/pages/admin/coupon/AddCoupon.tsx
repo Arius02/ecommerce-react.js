@@ -15,7 +15,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addCouponSchema } from "../../../validation/coupon.validator.ts";
 import * as React from "react";
-import SnackbarComponent from "../../../components/SnackBar.tsx";
+import SnackbarComponent from "../../../components/common/SnackBar.tsx";
 import useMutationHook from "../../../hooks/useMutationHook.tsx";
 
 const AddCoupon = () => {

@@ -6,16 +6,21 @@ import {
   Paper,
   Pagination,
   Chip,
+  
 } from "@mui/material";
 import { pink, blueGrey } from "@mui/material/colors";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import dayjs from "dayjs";
 import { formatPrice } from "../../utils/priceFormat";
 import { useNavigate } from "react-router-dom";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import useMultiQueryHook from "../../hooks/useMultiQueryHook";
 import UserOrdersSkeleton from "../../components/skeleton/user/UserOrdersSkeleton";
+import {Link} from "react-router-dom"
+import MenuIcon from "@mui/icons-material/Menu";
+import { AppContext } from "../../context/AppContext";
+import setColor from "../../utils/orderStatusColor";
 
 const UserOrders = () => {
   const [page, setPage] = useState(1);
@@ -23,25 +28,13 @@ const UserOrders = () => {
     url: `/order?size=5&page=${page}`,
     queries: ["getOrders", page],
   });
-  const setColor = (status: string) => {
-    switch (status) {
-      case "delivered":
-        return "success";
-      case "processing":
-        return "info";
-      case "waitPayment":
-        return "warning";
-      case "shipped":
-        return "primary";
-      default:
-        return "error";
-    }
-  };
+ 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     console.log(event); // to be clear
     setPage(value);
   };
   const navigate = useNavigate();
+  const {setOpenUserDashboard,show}= useContext(AppContext)
   return (
     <>
       <Stack
@@ -59,9 +52,12 @@ const UserOrders = () => {
             My Orders
           </Typography>
         </Stack>
+    {show&&    <IconButton>
+          <MenuIcon onClick={() => setOpenUserDashboard(true)} />
+        </IconButton>}
       </Stack>
-        {orders &&(
-      <Box mt={5}>
+      {orders && (
+        <Box mt={2}>
           {orders.orders.map((order: any) => (
             <Paper
               key={order._id}
@@ -71,7 +67,10 @@ const UserOrders = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                textDecoration: "none",
               }}
+              component={Link}
+              to={`/user/orders/${order._id}`}
             >
               <Typography
                 fontWeight={"bold"}
@@ -104,11 +103,9 @@ const UserOrders = () => {
             onChange={handleChange}
             sx={{ width: "fit-content", m: "auto", mt: 2 }}
           />
-      </Box>
-        )}
-        {
-          isPending&& <UserOrdersSkeleton/>
-        }
+        </Box>
+      )}
+      {isPending && <UserOrdersSkeleton />}
     </>
   );
 };

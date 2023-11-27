@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import {
   MaterialReactTable,
   type MRT_ColumnDef,
-  type MRT_ColumnFiltersState,
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
@@ -16,12 +15,11 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityOnIcon from "@mui/icons-material/Visibility";
 import useMutationHook from "../../../hooks/useMutationHook";
 import {green,red} from "@mui/material/colors"
-import SnackbarComponent from "../../../components/SnackBar";
+import SnackbarComponent from "../../../components/common/SnackBar";
 import useTableQueryHook from "../../../hooks/useTableQueryHook";
 import { DeleteModal, EditCouponModal } from "../../../components/admin";
 const CouponsList = () => {
-      const [columnFilters, setColumnFilters] =
-        useState<MRT_ColumnFiltersState>([]);
+     
       const [globalFilter, setGlobalFilter] = useState("");
       const [sorting, setSorting] = useState<MRT_SortingState>([]);
       const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -36,7 +34,6 @@ const CouponsList = () => {
     refetch,
   } = useTableQueryHook({
     sorting,
-    columnFilters,
     globalFilter,
     pagination,
     url: "coupon",
@@ -158,10 +155,13 @@ return (
         </Alert>
       </Collapse>
     </Box>
+    <Typography fontWeight={"bold"} variant={"h5"} mb={4}>
+      Coupons List
+    </Typography>
     <MaterialReactTable
       columns={columns}
       data={coupons ?? []} //data is undefined on first render
-      initialState={{ showColumnFilters: true }}
+      enableFilters={false}
       manualFiltering
       manualPagination
       enablePagination
@@ -175,7 +175,11 @@ return (
               setItem(row.original);
               setOpenEdit(true);
             } else {
-              setSnack({open:true,message:"This coupon is expired",severity:"error"})
+              setSnack({
+                open: true,
+                message: "This coupon is expired",
+                severity: "error",
+              });
             }
             closeMenu();
           }}
@@ -189,20 +193,21 @@ return (
         <MenuItem
           key={1}
           onClick={() => {
-            if(row.original.status!=="expired"){
+            if (row.original.status !== "expired") {
               setId(row.original._id);
               toggleVisibility({});
-            }else{
-              setSnack({open:true,message:"This coupon is expired",severity:"error"})
+            } else {
+              setSnack({
+                open: true,
+                message: "This coupon is expired",
+                severity: "error",
+              });
             }
             closeMenu();
           }}
           sx={{ m: 0 }}
         >
-          <ListItemIcon
-            onClick={() => {
-            }}
-          >
+          <ListItemIcon onClick={() => {}}>
             {row.original.status == "active" ? (
               <VisibilityOffIcon />
             ) : (
@@ -234,7 +239,6 @@ return (
             }
           : undefined
       }
-      onColumnFiltersChange={setColumnFilters}
       onGlobalFilterChange={setGlobalFilter}
       onPaginationChange={setPagination}
       onSortingChange={setSorting}
@@ -246,7 +250,6 @@ return (
         </Tooltip>
       )}
       state={{
-        columnFilters,
         globalFilter,
         isLoading,
         pagination,

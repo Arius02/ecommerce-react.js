@@ -7,7 +7,7 @@ import Modal from "@mui/material/Modal";
 import useMutationHook from "../../../hooks/useMutationHook";
 import { Stack } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import SnackbarComponent from "../../SnackBar";
+import SnackbarComponent from "../../common/SnackBar";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import style from "../../../utils/modalStyle";
 
@@ -69,6 +69,7 @@ const DeleteModal = ({ title, open, setOpen,refetch,warning,name,url }: Props) =
           </Stack>
         </Box>
       </Modal>
+      <SnackbarComponent snack={snack} setSnack={setSnack} />
     </div>
   );
 };

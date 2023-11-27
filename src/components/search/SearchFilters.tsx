@@ -11,21 +11,21 @@ import {
 
 
 type Props = {
-  selectedRatings: number[];
-  setSelectedRatings:Dispatch<SetStateAction<number[]>>;
+  ratings: number[];
+  setRatings:Dispatch<SetStateAction<number[]>>;
   priceValue:number[]
   setPriceValue:Dispatch<SetStateAction<number|number[]>>
 };
 
-const SearchFilters = ({selectedRatings,setSelectedRatings,priceValue,
+const SearchFilters = ({ratings,setRatings,priceValue,
 setPriceValue}: Props) => {
     const handleCheckboxChange = (value: number) => {
-      const index = selectedRatings.indexOf(value);
+      const index = ratings.indexOf(value);
       if (index === -1) {
-        setSelectedRatings([...selectedRatings, value]);
+        setRatings([...ratings, value]);
       } else {
-        setSelectedRatings(
-          selectedRatings.filter((rating: number) => rating !== value)
+        setRatings(
+          ratings.filter((rating: number) => rating !== value)
         );
       }
     };
@@ -67,7 +67,7 @@ const valuetext=(value: number)=> {
               control={
                 <Checkbox
                 color="secondary"
-                  checked={selectedRatings.includes(rating)}
+                  checked={ratings.includes(rating)}
                   onChange={() => handleCheckboxChange(rating)}
                 />
               }

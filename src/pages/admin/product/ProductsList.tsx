@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import {
   MaterialReactTable,
   type MRT_ColumnDef,
-  type MRT_ColumnFiltersState,
+  // type MRT_ColumnFiltersState,
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
@@ -14,6 +14,8 @@ import {
   ListItemIcon,
   Typography,
   Stack,
+  Box,
+  Switch,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import EditIcon from "@mui/icons-material/Edit";
@@ -22,17 +24,20 @@ import Link from "@mui/material/Link";
 import { Link as RouterLink } from "react-router-dom";
 import useTableQueryHook from "../../../hooks/useTableQueryHook";
 import { DeleteModal, EditProductModel } from "../../../components/admin";
+import { formatPrice } from "../../../utils/priceFormat";
 
+import useMutationHook from "../../../hooks/useMutationHook";
 const ProductsList = () => {
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-    []
-  );
+  // const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
+  //   []
+  // );
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 1,
     pageSize: 4,
   });
+
   const {
     data: cateegories,
     isError,
@@ -41,12 +46,16 @@ const ProductsList = () => {
     refetch,
   } = useTableQueryHook({
     sorting,
-    columnFilters,
     globalFilter,
     pagination,
     url: "product",
     selectionName: "products",
     queryName: "getProducts",
+  });
+  const { mutate: toggleVisibility } = useMutationHook({
+    url: `/product/visibility`,
+    method: "PATCH",
+    refetch,
   });
   const columns = useMemo<MRT_ColumnDef<ProductListType>[]>(
     () => [
@@ -77,16 +86,34 @@ const ProductsList = () => {
         accessorKey: "coverImage.secure_url",
         header: "Image",
         Cell: ({ renderedCellValue }) => (
-          <img
-            src={(renderedCellValue as string) || ""}
-            loading="lazy"
-            style={{ width: "100px", height: "100px" }}
+          <Box width={{ md: "100px", xs: "70px" }} p={2}>
+            <img
+              src={(renderedCellValue as string) || ""}
+              loading="lazy"
+              style={{ width: "100%" }}
+            />
+          </Box>
+        ),
+      },
+      {
+        accessorKey: "isDisabled",
+        header: "Visibility",
+        Cell: ({ renderedCellValue, row }) => (
+          <Switch
+            inputProps={{ "aria-label": "Switch Visibility" }}
+            defaultChecked={!renderedCellValue as boolean}
+            onChange={() => toggleVisibility({ productId: row.original._id })}
           />
         ),
       },
       {
         accessorKey: "price",
         header: "Price",
+        Cell: ({ renderedCellValue }) => (
+          <Typography>
+            {formatPrice((renderedCellValue as number) || 0)}
+          </Typography>
+        ),
       },
       {
         accessorKey: "appliedDiscount",
@@ -99,7 +126,9 @@ const ProductsList = () => {
         accessorKey: "priceAfterDiscount",
         header: "PAD",
         Cell: ({ renderedCellValue }) => (
-          <Typography>{renderedCellValue}</Typography>
+          <Typography>
+            {formatPrice((renderedCellValue as number) || 0)}
+          </Typography>
         ),
       },
       {
@@ -194,10 +223,13 @@ const ProductsList = () => {
 
   return (
     <>
+      <Typography fontWeight={"bold"} variant={"h5"} mb={4}>
+        Products List
+      </Typography>
       <MaterialReactTable
         columns={columns}
         data={cateegories ?? []} //data is undefined on first render
-        initialState={{ showColumnFilters: true }}
+        enableFilters={false}
         manualFiltering
         manualPagination
         enablePagination
@@ -218,7 +250,6 @@ const ProductsList = () => {
             </ListItemIcon>
             Edit
           </MenuItem>,
-
           <MenuItem
             key={1}
             onClick={() => {
@@ -242,7 +273,6 @@ const ProductsList = () => {
               }
             : undefined
         }
-        onColumnFiltersChange={setColumnFilters}
         onGlobalFilterChange={setGlobalFilter}
         onPaginationChange={setPagination}
         onSortingChange={setSorting}
@@ -254,7 +284,6 @@ const ProductsList = () => {
           </Tooltip>
         )}
         state={{
-          columnFilters,
           globalFilter,
           isLoading,
           pagination,

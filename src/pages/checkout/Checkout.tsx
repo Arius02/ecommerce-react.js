@@ -1,26 +1,17 @@
-import {
-  Container,
-  Stack,
-  Grid,
-  Typography,
-  Box,
-  Tooltip,
-  Divider,
-} from "@mui/material";
+import { Container, Grid, Box } from "@mui/material";
 import useQueryHook from "../../hooks/useQueryHook";
 import UserInfo from "../../components/user/UserInfo";
 import PaymentMethod from "../../components/checkeout/PaymentMethod";
 import useMutationHook from "../../hooks/useMutationHook";
 import { useState } from "react";
 import OrderDetails from "../../components/checkeout/OrderDetails";
-type Props = {};
 
-const Checkout = (props: Props) => {
+const Checkout = () => {
   const { data: cart } = useQueryHook({
     url: "/cart",
     query: "getCart",
     selectedProp: "cart",
-  });
+  }) as {data:any};
   
   const [paymentMethod, setPaymentMethod] = useState("cash");
 

@@ -27,7 +27,10 @@ const UserInfo = () => {
     url: "/auth",
     query: "getInfo",
     selectedProp: "user",
-  });
+  })as {
+    data:any,
+    refetch:any
+  };
 
   const { mutate: selectedAddres } =
     useMutationHook({
@@ -49,18 +52,18 @@ const UserInfo = () => {
               justifyContent="center"
               alignItems="center"
               sx={{
-                width: "40px",
-                height: "40px",
+                width: {md:"40px",xs:"25px"},
+                height: {md:"40px",xs:"25px"},
                 borderRadius: "50%",
                 color: "white",
                 fontWeight: "bold",
-                fontSize: "20px",
+                fontSize: {md:"20px",xs:"14px"},
               }}
               bgcolor={pink[600]}
             >
               1
             </Stack>
-            <Typography fontSize={{ md: "24px", xs: "18px" }}>
+            <Typography variant="h6">
               Delivery Details
             </Typography>
           </Stack>
@@ -69,6 +72,9 @@ const UserInfo = () => {
               color="secondary"
               variant="outlined"
               onClick={() => setAddAddresOpen(true)}
+              sx={{
+                fontSize: {md:"14px",xs:"10px"},
+              }}
             >
               Add new Address
             </Button>

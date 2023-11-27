@@ -5,11 +5,11 @@ type Props = {
   query: string;
   selectedProp?: string;
   url:string;
-  // options?:any
+  options?:any
 };
 
 
-const useQueryHook = ({ query, selectedProp,url, }: Props) => {
+const useQueryHook = ({ query, selectedProp,url,options }: Props) => {
 
   return useQuery({
     queryKey: [query],
@@ -24,7 +24,7 @@ const useQueryHook = ({ query, selectedProp,url, }: Props) => {
     refetchOnWindowFocus: false,
     staleTime: 500000,
     
-    // ...options
+    ...options
   });
 };
 

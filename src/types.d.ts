@@ -94,7 +94,8 @@ type SubCategoriesListType = {
     }
   };
   createdBy: string;
-};type BrandsListType = {
+};
+type BrandsListType = {
   name: string;
   image: {
     secure_url: string;
@@ -140,7 +141,7 @@ type ProductListType = {
     secure_url:string
   };
   sold:number;
-
+isDisabled:boolean
 };
 //review
 type RivewsListType = {
@@ -177,3 +178,39 @@ type EditProfileType = {
   gender: string;
   birth: date;
 };
+
+type AuthUserType={
+  _id:string |null;
+  role:string |null
+}
+
+type AuthDialogType={
+  open:boolean;
+  to:string ;
+}
+
+//orders list 
+type OrdersListType = {
+  _id: string;
+  createdBy: string;
+  status:string;
+  totalPrice: number;
+  priceAfterDiscount?:number;
+  deliveryDetails?:{
+    governorate:string;
+    city:string;
+    street:string;
+    phone:string;
+  }
+};
+
+type UserListType = {
+  _id: string;
+  name: string;
+  email: string;
+  status: string;
+  deliveryDetails?: {
+    phone: string;
+  }[],
+  
+} 

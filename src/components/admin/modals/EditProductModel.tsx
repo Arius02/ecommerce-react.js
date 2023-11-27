@@ -24,7 +24,7 @@ import useMutationHook from "../../../hooks/useMutationHook.tsx";
 import style from "../../../utils/modalStyle.ts";
 import UpdateMultipleImages from "../product/UpdateMultipleImages.tsx";
 import UploadImage from "../common/UploadImage.tsx";
-import SnackbarComponent from "../../SnackBar.tsx";
+import SnackbarComponent from "../../common/SnackBar.tsx";
 type Props = {
     open:boolean;
     setOpen:React.Dispatch<React.SetStateAction<boolean>>
