@@ -99,7 +99,7 @@ const AddCoupon = ({ couponCode, setCouponCode, refetch }: Props) => {
             value={couponCode}
             onChange={handleChange}
           />
-          {refetch && (
+           
             <LoadingButton
               sx={{ width: "100%", my: 2 }}
               loading={isPending}
@@ -109,7 +109,7 @@ const AddCoupon = ({ couponCode, setCouponCode, refetch }: Props) => {
             >
               Add Coupon
             </LoadingButton>
-          )}
+          
         </Collapse>
       </Box>
       <SnackbarComponent snack={snack} setSnack={setSnack} />
