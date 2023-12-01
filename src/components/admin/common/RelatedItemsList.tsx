@@ -6,6 +6,7 @@ import {
   Typography,
   Pagination,
   Link,
+  Tooltip
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 type Props = {
@@ -61,37 +62,46 @@ const RelatedItemsList = ({
               alignItems="center"
               justifyContent={"center"}
             >
-              <img
-                src={
-                  url == "product"
-                    ? item.coverImage.secure_url
-                    : item.image.secure_url
-                }
-                loading="lazy"
-                style={{ width: "100px", height: "100px" }}
-              />
-              <Typography
-                fontWeight="bold"
-                variant="h4"
-                fontSize={{ md: "18px", xs: "16px" }}
-                mt={1}
-              >
-                {item.name}
-              </Typography>
+              <Box width={"100px"} p={2}>
+                <img
+                  src={
+                    url == "product"
+                      ? item.coverImage.secure_url
+                      : item.image.secure_url
+                  }
+                  loading="lazy"
+                  style={{ width: "100%", }}
+                />
+              </Box>
+              <Tooltip title={item.name}>
+                <Typography
+                  fontWeight="bold"
+                  variant="h4"
+                  fontSize={{ md: "18px", xs: "16px" }}
+                  mt={1}
+                >
+                  {item.name.slice(0, 20)}
+                </Typography>
+              </Tooltip>
             </Stack>
           </Link>
         ))}
-        {items.length==0&&<Stack alignItems="center" justifyContent={"center"} height={"120px"} gap={2}>
-                <Typography>
-                  There are no {name} :)
-                </Typography>
-                <Typography>
-                Want to Add {name}? {" "} 
-                <Link component={RouterLink} to={`/dashboard/${url}/add`}>
-                  Add.
-                </Link>
-                </Typography>
-          </Stack>}
+        {items.length == 0 && (
+          <Stack
+            alignItems="center"
+            justifyContent={"center"}
+            height={"120px"}
+            gap={2}
+          >
+            <Typography>There are no {name} :)</Typography>
+            <Typography>
+              Want to Add {name}?{" "}
+              <Link component={RouterLink} to={`/dashboard/${url}/add`}>
+                Add.
+              </Link>
+            </Typography>
+          </Stack>
+        )}
       </Stack>
       <Pagination
         count={5}

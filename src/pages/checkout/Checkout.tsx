@@ -8,11 +8,11 @@ import OrderDetails from "../../components/checkeout/OrderDetails";
 import { Helmet } from "react-helmet";
 
 const Checkout = () => {
-  const { data: cart } = useQueryHook({
+  const { data: cart,refetch } = useQueryHook({
     url: "/cart",
     query: "getCart",
     selectedProp: "cart",
-  }) as {data:any};
+  }) as {data:any,refetch:any};
   
   const [paymentMethod, setPaymentMethod] = useState("cash");
 
@@ -21,6 +21,7 @@ const Checkout = () => {
       cart?._id
     }`,
     method: "POST",
+    refetch
   });
 
   return (

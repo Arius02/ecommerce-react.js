@@ -26,7 +26,6 @@ const PaymentMethod = ({
   data
 }: Props) => {
   useEffect(()=>{
-    console.log(data,"doane")
     if(data?.data.url){
       window.location.href = data?.data.url
     }
