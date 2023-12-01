@@ -19,6 +19,7 @@ import OrderDetails from "../../components/order/OrderDetails";
 import MoreOrderDetails from "../../components/order/MoreOrderDetails";
 import { AppContext } from "../../context/AppContext";
 import SnackbarComponent from "../../components/common/SnackBar";
+import { Helmet } from "react-helmet";
 
 const UserOrderDetails = () => {
   const { id } = useParams();
@@ -68,6 +69,9 @@ const UserOrderDetails = () => {
   const { setOpenUserDashboard, show } = useContext(AppContext);
   return (
     <>
+      <Helmet>
+        <title>Order Details</title>
+      </Helmet>
       <Stack
         flexDirection={"row"}
         alignItems={"center"}

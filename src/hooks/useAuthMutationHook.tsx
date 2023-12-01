@@ -8,6 +8,7 @@ import fetchData from "../utils/fetchData";
 import { Dispatch, SetStateAction, useContext } from "react";
 import decode from "../utils/decode";
 import { AppContext } from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
 type Props = {
   url: string;
   method: string;
@@ -27,13 +28,14 @@ const useAuthMutationHook = ({
   handleNavigate,
 }: Props) => {
   const { setAuth, setAuthDialog } = useContext(AppContext);
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: (data: any) =>
       fetchData({
         url,
         method,
         data,
-        token: localStorage.getItem("token") ||"",
+        token: localStorage.getItem("token") || "",
       }),
     onSuccess: (data) => {
       setSnack &&
@@ -42,15 +44,15 @@ const useAuthMutationHook = ({
           message: message || "",
           severity: "success",
         });
-     if(data.data.token){
-       localStorage.setItem("token", data.data.token);
-       setAuth(decode(localStorage.getItem("token") as string));
-       setAuthDialog({
-         open: false,
-         to: "",
-       });
-    }
-    
+      if (data.data.token) {
+        localStorage.setItem("token", data.data.token);
+        setAuth(decode(localStorage.getItem("token") as string));
+        setAuthDialog({
+          open: false,
+          to: "",
+        });
+      }
+
       refetch && refetch();
       handleNavigate && handleNavigate();
       if (url == "/auth/logout") {
@@ -59,6 +61,7 @@ const useAuthMutationHook = ({
           _id: null,
           role: "",
         });
+        navigate("/auth/login");
       }
     },
     onError: (error: any) => {

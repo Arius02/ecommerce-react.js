@@ -1,28 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { Box, } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Box } from "@mui/material";
+import { Helmet } from "react-helmet";
 
-import useMultiQueryHook from '../../../hooks/useMultiQueryHook';
-import { ItemDetailsHeader, ItemDetailsHederSkeleton, RelatedItemsList, RelatedItemsListSkeleton } from '../../../components/admin';
+import useMultiQueryHook from "../../../hooks/useMultiQueryHook";
+import {
+  ItemDetailsHeader,
+  ItemDetailsHederSkeleton,
+  RelatedItemsList,
+  RelatedItemsListSkeleton,
+} from "../../../components/admin";
 
 const CategoryDetails = () => {
-  const {id}= useParams()
-    const [subCategoryPage, setSubCategoryPage] = React.useState(1);
-    const [ProductPage, setProductPage] = React.useState(1);
-    const [loadingIndecator, setLoadingIndecator]=useState("all");
-  const { data } =  useMultiQueryHook({
+  const { id } = useParams();
+  const [subCategoryPage, setSubCategoryPage] = React.useState(1);
+  const [ProductPage, setProductPage] = React.useState(1);
+  const [loadingIndecator, setLoadingIndecator] = useState("all");
+  const { data } = useMultiQueryHook({
     queries: ["getCategory", subCategoryPage, ProductPage],
-        url: `/category/${id}?subCategoryPage=${subCategoryPage}&subCategorySize=3&productPage=${ProductPage}&productSize=3`,
-        selectedProp:"category"
+    url: `/category/${id}?subCategoryPage=${subCategoryPage}&subCategorySize=3&productPage=${ProductPage}&productSize=3`,
+    selectedProp: "category",
   });
-const [category,setCategory]=useState<any>(null)
-useEffect(()=>{
-  if(data){
-    setCategory(data)
-  }
-},[data])
+  const [category, setCategory] = useState<any>(null);
+  useEffect(() => {
+    if (data) {
+      setCategory(data);
+    }
+  }, [data]);
   return (
     <>
+      <Helmet>
+        <title>{category?.neme || "category Details"}</title>
+      </Helmet>
       {category && (
         <Box>
           <ItemDetailsHeader item={category} key={"saihf89asyui"} />
@@ -63,6 +72,6 @@ useEffect(()=>{
       )}
     </>
   );
-}
+};
 
-export default CategoryDetails
+export default CategoryDetails;

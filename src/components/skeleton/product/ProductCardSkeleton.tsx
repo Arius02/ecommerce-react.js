@@ -3,7 +3,7 @@ import { Skeleton } from "@mui/lab";
 
 type Props={
   columns:{
-    lg:number,
+    lg?:number,
     md:number,
     sm?:number,
     xs:number

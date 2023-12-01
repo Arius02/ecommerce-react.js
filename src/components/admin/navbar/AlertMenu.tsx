@@ -6,10 +6,8 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { MouseEvent, useState } from "react";
-type Props = {
-  isMobile: boolean;
-};
-const AlertMenu = ({isMobile}:Props) => {
+
+const AlertMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -27,7 +25,6 @@ const AlertMenu = ({isMobile}:Props) => {
           sx={{
             display: "flex",
             "&:hover": {
-              backgroundColor: isMobile ? "transparent" : grey[200],
             },
           }}
           aria-controls={open ? "account-menu" : undefined}
@@ -35,9 +32,9 @@ const AlertMenu = ({isMobile}:Props) => {
           aria-expanded={open ? "true" : undefined}
         >
           <NotificationsIcon
-            sx={{ color: grey[500], marginRight: `${isMobile ? "10px" : 0}` }}
+            sx={{ color: grey[500],}}
           />
-          {isMobile && <p style={{ fontSize: "16px",color:"black" }}>Notifications</p>}
+         
         </IconButton>
       </Tooltip>
 

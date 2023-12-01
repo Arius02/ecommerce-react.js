@@ -4,7 +4,6 @@ import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
 import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import LogoutIcon from "@mui/icons-material/Logout";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 export const sidebarAccordoin = [
   {
@@ -37,7 +36,7 @@ export const sidebarAccordoin = [
         link: "/dashboard/category",
       },
       {
-        name: "Add Product",
+        name: "Add Category",
         key: "suhw",
         link: "/dashboard/category/add",
       },
@@ -112,5 +111,4 @@ export const directLinks = [
     key: "iohug",
     icon: RecentActorsIcon,
   },
-  { name: "Log Out", link: "/", key: "huh", icon: LogoutIcon },
 ];

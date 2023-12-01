@@ -19,6 +19,7 @@ import AddCoupon from "../components/cart/AddCoupon";
 import CartPageSkeleton from "../components/skeleton/cart/CartPageSkeleton";
 import bag from "../assets/shopping-bag.svg";
 import useCartQueryHook from "../hooks/useCartQueryHook";
+import {Helmet} from "react-helmet"
 const CartPage = () => {
   const [couponCode, setCouponCode] = useState("");
   const {
@@ -36,10 +37,17 @@ const CartPage = () => {
     url: "/cart",
     method: "PATCH",
   });
+  const { mutate: reduceFromCart } = useCartMutationHook({
+    url: "/cart",
+    method: "PUT",
+  });
 
   return (
     <>
-      <Grid container mt={5}>
+      <Helmet>
+        <title>Cart</title>
+      </Helmet>
+      <Grid container mt={5} height={"100vh"}>
         {isPending && <CartPageSkeleton />}{" "}
         {cart && (
           <>
@@ -97,6 +105,11 @@ const CartPage = () => {
                           aria-label="reduce quantity"
                           color="secondary"
                           sx={{ border: 1, borderRadius: 1, p: 0 }}
+                          onClick={() =>
+                            reduceFromCart({
+                              productId: product.productId._id,
+                            })
+                          }
                         >
                           <RemoveIcon />
                         </IconButton>
@@ -221,7 +234,17 @@ const CartPage = () => {
         >
           <img src={bag} alt="bag" style={{ width: "150px" }} />
           <Typography color="grey" fontSize={"16px"} textAlign={"center"}>
-            Your shopping bag is empty. <Link to="/" style={{color:"grey", fontWeight:"bold",textDecoration:"none"}}>Start shopping</Link>
+            Your shopping bag is empty.{" "}
+            <Link
+              to="/"
+              style={{
+                color: "grey",
+                fontWeight: "bold",
+                textDecoration: "none",
+              }}
+            >
+              Start shopping
+            </Link>
           </Typography>{" "}
         </Stack>
       )}

@@ -13,12 +13,12 @@ import {
 type Props = {
   ratings: number[];
   setRatings:Dispatch<SetStateAction<number[]>>;
-  priceValue:number[]
-  setPriceValue:Dispatch<SetStateAction<number|number[]>>
+  price:number[]
+  setPrice:Dispatch<SetStateAction<number|number[]>>
 };
 
-const SearchFilters = ({ratings,setRatings,priceValue,
-setPriceValue}: Props) => {
+const SearchFilters = ({ratings,setRatings,price,
+setPrice}: Props) => {
     const handleCheckboxChange = (value: number) => {
       const index = ratings.indexOf(value);
       if (index === -1) {
@@ -31,7 +31,7 @@ setPriceValue}: Props) => {
     };
 
      const handleChange = (event: Event, newValue: number | number[]) => {
-       setPriceValue(newValue);
+       setPrice(newValue);
        console.log(event);
      };
 const valuetext=(value: number)=> {
@@ -46,13 +46,13 @@ const valuetext=(value: number)=> {
         </Typography>
         <Slider
           getAriaLabel={() => "Price range"}
-          value={priceValue}
+          value={price}
           onChange={handleChange}
           valueLabelDisplay="auto"
           getAriaValueText={valuetext}
           min={1}
-          step={200}
-          max={50000}
+          step={500}
+          max={100000}
           color="secondary"
         />
       </Box>

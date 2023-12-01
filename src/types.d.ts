@@ -171,6 +171,11 @@ type ResetPasswordType={
   newPassword:string;
   rePassword:string;
 }
+type ChangePasswordType={
+  oldPassword:string;
+  newPassword:string;
+  rePassword:string;
+}
 type EditProfileType = {
   [key: string]: any;
   name: string;

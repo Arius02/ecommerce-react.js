@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { MouseEvent, useContext, useMemo, useState } from "react";
 import {
   MaterialReactTable,
   type MRT_ColumnDef,
@@ -11,6 +11,8 @@ import {
   Typography,
   Stack,
   Chip,
+  MenuItem,
+  Menu,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import useTableQueryHook from "../../../hooks/useTableQueryHook";
@@ -18,6 +20,8 @@ import BlockIcon from "@mui/icons-material/Block";
 import EditRoadIcon from "@mui/icons-material/EditRoad";
 import { AppContext } from "../../../context/AppContext";
 import useMutationHook from "../../../hooks/useMutationHook";
+import { Helmet } from "react-helmet";
+
 const UsersList = () => {
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
@@ -36,16 +40,39 @@ const UsersList = () => {
     globalFilter,
     pagination,
     url: "auth/allUsers",
-    selectionName: "users",
+    selectedProp: "users",
     queryName: "getUsers",
   });
 
   const { auth } = useContext(AppContext);
   const { mutate: toggleBlock } = useMutationHook({
-    url: "auth/toggleBlock",
+    url: "/auth/toggleBlock",
     method: "PATCH",
     refetch,
   });
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const [id, setId] = useState("");
+
+  const handleClick = (
+    event: MouseEvent<HTMLButtonElement>,
+    userId: string
+  ) => {
+    setAnchorEl(event.currentTarget);
+    setId(userId);
+  };
+  const { mutate: changeRole } = useMutationHook({
+    url: "/auth/changeRole",
+    method: "PATCH",
+    refetch,
+  });
+  const handleClose = (role: string) => {
+    setAnchorEl(null);
+    changeRole({
+      userId: id,
+      role,
+    });
+  };
   const columns = useMemo<MRT_ColumnDef<UserListType>[]>(
     () => [
       {
@@ -84,6 +111,10 @@ const UsersList = () => {
         },
       },
       {
+        accessorKey: "role",
+        header: "Role",
+      },
+      {
         accessorKey: "status",
         header: "Status",
         Cell: ({ renderedCellValue }) => (
@@ -107,7 +138,12 @@ const UsersList = () => {
         Cell: ({ row }) => (
           <Stack direction="row" spacing={1}>
             {auth.role == "SuperAdmin" && (
-              <IconButton>
+              <IconButton
+                aria-controls={open ? "role-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={(e) => handleClick(e, row.original._id)}
+              >
                 <EditRoadIcon />
               </IconButton>
             )}
@@ -117,7 +153,7 @@ const UsersList = () => {
                 toggleBlock({
                   userId: row.original._id,
                   status:
-                    row.original.status === "Blocked" ? "Blocked" : "Offline",
+                    row.original.status == "Blocked" ? "Offline" : "Blocked",
                 })
               }
             >
@@ -132,13 +168,16 @@ const UsersList = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Customers List</title>
+      </Helmet>
       <Typography fontWeight={"bold"} variant={"h5"} mb={4}>
         Customers List
       </Typography>
       <MaterialReactTable
         columns={columns}
         data={users ?? []} //data is undefined on first render
-        enableFilters={false}
+        // enableFilters={false}
         manualPagination
         enablePagination
         manualSorting
@@ -169,6 +208,21 @@ const UsersList = () => {
           sorting,
         }}
       />
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem onClick={() => handleClose("User")}>User</MenuItem>
+        <MenuItem onClick={() => handleClose("Admin")}>Admin</MenuItem>
+        <MenuItem onClick={() => handleClose("SuperAdmin")}>
+          Super Admin
+        </MenuItem>
+      </Menu>
     </>
   );
 };

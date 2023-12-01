@@ -19,6 +19,7 @@ import Link from "@mui/material/Link";
 import setColor from "../../../utils/orderStatusColor";
 import { formatPrice } from "../../../utils/priceFormat";
 import Visibility from "@mui/icons-material/Visibility";
+import { Helmet } from "react-helmet";
 
 const OrdersList = () => {
  
@@ -29,7 +30,7 @@ const OrdersList = () => {
     pageSize: 4,
   });
   const {
-    data: cateegories,
+    data: orders,
     isError,
     isRefetching,
     isLoading,
@@ -40,7 +41,7 @@ const OrdersList = () => {
     globalFilter,
     pagination,
     url: "order/admin/getAllOrders",
-    selectionName: "orders",
+    selectedProp: "orders",
     queryName: "getAdminOrders",
   });
 
@@ -126,13 +127,15 @@ const OrdersList = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Orders List</title>
+      </Helmet>
       <Typography fontWeight={"bold"} variant={"h5"} mb={4}>
         Orders List
       </Typography>
       <MaterialReactTable
         columns={columns}
-        data={cateegories ?? []} //data is undefined on first render
-      enableFilters={false}
+        data={orders ?? []} //data is undefined on first render
         manualFiltering
         manualPagination
         enablePagination
@@ -156,7 +159,6 @@ const OrdersList = () => {
           </Tooltip>
         )}
         state={{
-          
           globalFilter,
           isLoading,
           pagination,

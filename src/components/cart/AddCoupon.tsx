@@ -8,11 +8,12 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import useMutationHook from "../../hooks/useMutationHook";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useContext } from "react";
 import SnackbarComponent from "../common/SnackBar";
 import { styled } from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButtonProps } from "@mui/material/IconButton";
+import { AppContext } from "../../context/AppContext";
 interface AddCouponExpendProps extends IconButtonProps {
   expand: boolean;
 }
@@ -45,10 +46,21 @@ const AddCoupon = ({ couponCode, setCouponCode, refetch }: Props) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCouponCode(e.target.value);
   };
+  const { auth } = useContext(AppContext);
   const handleAddCoupon = () => {
-    if (couponCode.length > 3 && couponCode.length < 40) {
+    if (
+      couponCode.length > 3 &&
+      couponCode.length < 40 &&
+      auth._id 
+    ) {
       applyCoupon({ couponCode });
       setCouponCode("");
+    } else if (!auth._id) {
+      setSnack({
+        open: true,
+        message: "Please login first.",
+        severity: "error",
+      });
     }
   };
   const { mutate: applyCoupon, isPending } = useMutationHook({
@@ -81,7 +93,7 @@ const AddCoupon = ({ couponCode, setCouponCode, refetch }: Props) => {
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <TextField
             label="Coupon Code"
-            sx={{ width: "100%" }}
+            sx={{ width: "100%", mb: 3 }}
             variant="outlined"
             id="couponCode"
             value={couponCode}

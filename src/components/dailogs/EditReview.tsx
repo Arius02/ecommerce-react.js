@@ -1,62 +1,69 @@
-import { Typography, Rating, TextField } from "@mui/material";
+import {
+  Typography,
+  Rating,
+  TextField,
+  Dialog,
+  Stack,
+  Button,
+} from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import useMutationHook from "../../hooks/useMutationHook";
 import { LoadingButton } from "@mui/lab";
 import SnackbarComponent from "../common/SnackBar";
-import { useContext, useState } from "react";
+import { useState, Dispatch, SetStateAction, useEffect } from "react";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
-import useQueryHook from "../../hooks/useQueryHook";
-import { AppContext } from "../../context/AppContext";
 
 type Props = {
-  productId: string;
   refetch: (
     options?: RefetchOptions | undefined
   ) => Promise<QueryObserverResult<any, Error>>;
+  data: any;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 };
-const AddReview = ({ productId, refetch }: Props) => {
+const EditReview = ({ refetch, data, open, setOpen }: Props) => {
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<AddReviewType>();
-  const { auth } = useContext(AppContext);
-  const { data: isAllow, } = useQueryHook({
-    url: `/review/allow/${productId}`,
-    query: `getAllownce-${productId}`,
-    options: {
-      enabled: auth._id ? true : false,
-      retry:false
-    }
-  }) as{
-    data:any
-  };
   const [snack, setSnack] = useState<SnackbarType>({
     open: false,
     message: "",
     severity: "success",
   });
-  const { data,mutate: addReview, isPending } = useMutationHook({
+  const { mutate: editReview, isPending } = useMutationHook({
     url: "/review",
-    method: "POST",
-    message: "Review Added",
+    method: "PUT",
+    message: "Review Edited Successfully.",
     setSnack,
     refetch,
+    setOpen,
   });
-  const onSubmit = (data: any) => {
-    addReview({ ...data, productId });
+  const onSubmit = (dataToSend: any) => {
+    const updatedData: any = {};
+    for (const key of Object.keys(dataToSend)) {
+      if (data[key] != dataToSend[key]) {
+        updatedData[key] = dataToSend[key];
+      }
+    }
+    updatedData.reviewId = data._id;
+    editReview({ ...updatedData });
   };
 
-  return isAllow?.isAllowToRev && data?.data.message != "Done" ? (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Typography
-          fontWeight="bold"
-          fontSize={{ md: "30px", xs: "22px" }}
-          my={2}
-        >
-          Write a Review for this product
+  useEffect(() => {
+    reset({
+      rating: data.rating,
+      reviewDisc: data.reviewDisc,
+    });
+  }, [data]);
+  return (
+    <Dialog open={open} onClose={() => setOpen(false)}>
+      <form onSubmit={handleSubmit(onSubmit)} style={{ padding: "15px" }}>
+        <Typography fontWeight="bold" fontSize={{ md: "30px", xs: "22px" }}>
+          Edity Your Review
         </Typography>
         <Typography fontWeight="bold" mb={1}>
           Your Rating:
@@ -84,21 +91,22 @@ const AddReview = ({ productId, refetch }: Props) => {
           error={!!errors.reviewDisc}
           helperText={errors.reviewDisc && errors.reviewDisc.message}
         />
-        <LoadingButton
-          loading={isPending}
-          type="submit"
-          variant="contained"
-          color="secondary"
-        >
-          Submit
-        </LoadingButton>
+        <Stack flexDirection="row" width="fit-content" mt={2} ml="auto" gap={1}>
+          <Button onClick={() => setOpen(false)}>cancel</Button>
+
+          <LoadingButton
+            loading={isPending}
+            type="submit"
+            variant="contained"
+            color="secondary"
+          >
+            Submit
+          </LoadingButton>
+        </Stack>
       </form>
       <SnackbarComponent snack={snack} setSnack={setSnack} />
-   
-    </>
-  ) : (
-    ""
+    </Dialog>
   );
 };
 
-export default AddReview;
+export default EditReview;

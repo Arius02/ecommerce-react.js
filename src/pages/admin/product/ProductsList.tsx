@@ -25,6 +25,7 @@ import { Link as RouterLink } from "react-router-dom";
 import useTableQueryHook from "../../../hooks/useTableQueryHook";
 import { DeleteModal, EditProductModel } from "../../../components/admin";
 import { formatPrice } from "../../../utils/priceFormat";
+import { Helmet } from "react-helmet";
 
 import useMutationHook from "../../../hooks/useMutationHook";
 const ProductsList = () => {
@@ -34,24 +35,19 @@ const ProductsList = () => {
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
   const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 1,
-    pageSize: 4,
+    pageIndex: 0,
+    pageSize: 20,
   });
 
-  const {
-    data: cateegories,
-    isError,
-    isRefetching,
-    isLoading,
-    refetch,
-  } = useTableQueryHook({
-    sorting,
-    globalFilter,
-    pagination,
-    url: "product",
-    selectionName: "products",
-    queryName: "getProducts",
-  });
+  const { data, isError, isRefetching, isLoading, refetch } = useTableQueryHook(
+    {
+      sorting,
+      globalFilter,
+      pagination,
+      url: "product",
+      queryName: "getProducts", 
+    }
+  );
   const { mutate: toggleVisibility } = useMutationHook({
     url: `/product/visibility`,
     method: "PATCH",
@@ -223,16 +219,25 @@ const ProductsList = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Products List</title>
+      </Helmet>
       <Typography fontWeight={"bold"} variant={"h5"} mb={4}>
         Products List
       </Typography>
       <MaterialReactTable
         columns={columns}
-        data={cateegories ?? []} //data is undefined on first render
-        enableFilters={false}
-        manualFiltering
+        data={data?.products ?? []} //data is undefined on first render
+        // enableFilters={false}
+        pageCount={5}
+        muiPaginationProps={{
+          showLastButton: true,
+        }}
         manualPagination
-        enablePagination
+        paginationDisplayMode="pages"
+        enablePinning
+        manualFiltering
+        onPaginationChange={setPagination}
         manualSorting
         enableRowActions
         renderRowActionMenuItems={({ closeMenu, row }) => [
@@ -274,7 +279,6 @@ const ProductsList = () => {
             : undefined
         }
         onGlobalFilterChange={setGlobalFilter}
-        onPaginationChange={setPagination}
         onSortingChange={setSorting}
         renderTopToolbarCustomActions={() => (
           <Tooltip arrow title="Refresh Data">

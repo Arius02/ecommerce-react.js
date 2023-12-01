@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState,useContext } from 'react'
+import React, { Dispatch, SetStateAction, useState, useContext } from "react";
 import {
   Drawer,
   Stack,
@@ -8,15 +8,15 @@ import {
   Tooltip,
   Button,
 } from "@mui/material";
-import CloseIcon  from "@mui/icons-material/Close"
+import CloseIcon from "@mui/icons-material/Close";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
-import { blueGrey } from '@mui/material/colors';
-import useCartQueryHook from '../../hooks/useCartQueryHook';
+import { blueGrey } from "@mui/material/colors";
+import useCartQueryHook from "../../hooks/useCartQueryHook";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import useCartMutationHook from '../../hooks/useCartMutationHook';
+import useCartMutationHook from "../../hooks/useCartMutationHook";
 import scrollBarStyles from "../../style/scrollBar";
-import { formatPrice } from '../../utils/priceFormat';
+import { formatPrice } from "../../utils/priceFormat";
 import { Link, useNavigate } from "react-router-dom";
 import bag from "../../assets/shopping-bag.svg";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -24,16 +24,12 @@ type Props = {
   setCartDrawerOpen: Dispatch<SetStateAction<boolean>>;
   cartDrawerOpen: boolean;
 };
-import {AppContext} from "../../context/AppContext"
-import AddressesSkeleton from '../skeleton/user/AddressesSkeleton';
-const CartDrawer = ({setCartDrawerOpen,
-cartDrawerOpen}: Props) => {
-    const [loadingIndecator, setLoadingIndecator] = useState("");
+import { AppContext } from "../../context/AppContext";
+import AddressesSkeleton from "../skeleton/user/AddressesSkeleton";
+const CartDrawer = ({ setCartDrawerOpen, cartDrawerOpen }: Props) => {
+  const [loadingIndecator, setLoadingIndecator] = useState("");
 
-  const {
-    data: cart,
-    isPending,
-  } = useCartQueryHook({
+  const { data: cart, isPending } = useCartQueryHook({
     query: "getCart",
     selectedProp: "cart",
   });
@@ -46,27 +42,31 @@ cartDrawerOpen}: Props) => {
     url: `remove`,
     method: "PATCH",
   });
-  const handleAddToCart=(data:any)=>{
+  const handleAddToCart = (data: any) => {
     AddToCart(data);
-  }
-  const handleDeleteFromCart=(data:any)=>{
+  };
+  const { mutate: reduceFromCart } = useCartMutationHook({
+    url: "/cart",
+    method: "PUT",
+    setLoadingIndecator
+  });
+  const handleDeleteFromCart = (data: any) => {
     RemovFromCart(data);
-  }
-  const navigate= useNavigate()
-  const {auth, setAuthDialog} = useContext(AppContext)
+  };
+  const navigate = useNavigate();
+  const { auth, setAuthDialog } = useContext(AppContext);
 
-  const handleCheckout= ()=>{
-    if(auth._id){
-      setCartDrawerOpen(false)
-      navigate("/checkout")
-    } else{
+  const handleCheckout = () => {
+    if (auth._id) {
+      setCartDrawerOpen(false);
+      navigate("/checkout");
+    } else {
       setAuthDialog({
         open: true,
         to: "/checkout",
-      })
-      
+      });
     }
-  }
+  };
   return (
     <React.Fragment key={"right"}>
       <Drawer
@@ -157,6 +157,13 @@ cartDrawerOpen}: Props) => {
                       color={product.quantity > 1 ? "secondary" : "info"}
                       sx={{ border: 1, p: 0 }}
                       disabled={product.quantity > 1 ? false : true}
+                      onClick={() => {
+                        setLoadingIndecator(product.productId._id);
+
+                        reduceFromCart({
+                          productId: product.productId._id,
+                        });
+                      }}
                     >
                       <RemoveIcon />
                     </IconButton>
@@ -200,7 +207,7 @@ cartDrawerOpen}: Props) => {
                 </Stack>
               ))}
             </Box>
-            <Box sx={{position:"absolute",bottom:0}} >
+            <Box sx={{ position: "absolute", bottom: 0 }}>
               <Button
                 variant={"contained"}
                 color="secondary"
@@ -222,7 +229,7 @@ cartDrawerOpen}: Props) => {
             </Box>
           </>
         )}
-        {!cart&&!isPending && (
+        {!cart && !isPending && (
           <Stack
             height={"100%"}
             gap={4}
@@ -235,11 +242,10 @@ cartDrawerOpen}: Props) => {
             </Typography>
           </Stack>
         )}
-        { isPending&&<AddressesSkeleton/>
-        }
+        {isPending && <AddressesSkeleton />}
       </Drawer>
     </React.Fragment>
   );
-}
+};
 
-export default CartDrawer
+export default CartDrawer;

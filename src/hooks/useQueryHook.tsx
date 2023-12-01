@@ -23,7 +23,6 @@ const useQueryHook = ({ query, selectedProp,url,options }: Props) => {
     },
     refetchOnWindowFocus: false,
     staleTime: 500000,
-    
     ...options
   });
 };

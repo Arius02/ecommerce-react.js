@@ -9,7 +9,7 @@ type Props = {
   globalFilter: string;
   pagination: MRT_PaginationState;
   url:string;
-  selectionName:string;
+  selectedProp?:string;
   queryName:string
 };
 
@@ -18,7 +18,7 @@ const useTableQueryHook = ({
   globalFilter,
   pagination,
   url,
-  selectionName,
+  selectedProp,
   queryName
 }: Props) => {
   return useQuery({
@@ -39,7 +39,7 @@ const useTableQueryHook = ({
         method: "GET",
         token: localStorage.getItem("token") || "",
       });
-      return res.data[selectionName];
+      return selectedProp&&res.data[selectedProp] || res.data;
     },
     refetchOnWindowFocus: false,
     refetchOnMount: false,

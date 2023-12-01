@@ -57,6 +57,11 @@ const ProductsWithFilter = ({
     method: "POST",
     setLoadingIndecator,
   });
+  const { mutate: reduceFromCart } = useCartMutationHook({
+    url: "/cart",
+    method: "PUT",
+    setLoadingIndecator,
+  });
 
   return (
     <Grid
@@ -125,6 +130,7 @@ const ProductsWithFilter = ({
                     refetch={refetchWishlist}
                     loadingIndecator={loadingIndecator}
                     setLoadingIndecator={setLoadingIndecator}
+                    reduceFromCart={reduceFromCart}
                   />
                 </Box>
               </Grid>

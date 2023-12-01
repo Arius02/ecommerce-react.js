@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import fetchData from "../utils/fetchData";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
+import systemRoles from "../utils/systemRoles";
 
 type Props = {
   query: string;
@@ -9,16 +12,23 @@ type Props = {
 const generateData = () => {
   const cartId = localStorage.getItem("cartId");
   const token = localStorage.getItem("token");
-  if (cartId &&!token) {
+  if (cartId && !token) {
     return { cartId };
   } else if (token) {
-    return { token  };
+    return { token };
   }
   return {};
 };
 
 const useCartQueryHook = ({ query, selectedProp }: Props) => {
-
+  const { auth } = useContext(AppContext);
+  console.log(
+    auth.role != systemRoles.SuperAdmin && auth.role != systemRoles.SuperAdmin
+      ? true
+      : localStorage.getItem("cartId")
+      ? true
+      : false
+  );
   return useQuery({
     queryKey: [query],
     queryFn: async () => {
@@ -27,8 +37,9 @@ const useCartQueryHook = ({ query, selectedProp }: Props) => {
         url: `/cart/${data.cartId ? "guset/" + data.cartId : ""}`,
         method: "GET",
         data,
-        token:localStorage.getItem("token")?localStorage.getItem("token")as string:""
-      
+        token: localStorage.getItem("token")
+          ? (localStorage.getItem("token") as string)
+          : "",
       });
 
       if (res.data.cart == null) {
@@ -39,6 +50,12 @@ const useCartQueryHook = ({ query, selectedProp }: Props) => {
     },
     refetchOnWindowFocus: false,
     staleTime: 500000,
+    enabled:
+      auth.role != systemRoles.SuperAdmin && auth.role != systemRoles.SuperAdmin
+        ? true
+        :localStorage.getItem("cartId")
+        ? true
+        : false,
   });
 };
 

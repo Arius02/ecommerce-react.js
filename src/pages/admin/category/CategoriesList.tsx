@@ -23,6 +23,7 @@ import {Link as RouterLink} from "react-router-dom"
 import Link from "@mui/material/Link";
 import { DeleteModal, EditItemModal } from "../../../components/admin";
 
+import { Helmet } from "react-helmet";
 
 const CategoriesList = () => {
     
@@ -33,7 +34,7 @@ const CategoriesList = () => {
      pageSize: 4,
    });
    const {
-     data: cateegories,
+     data: categories,
      isError,
      isRefetching,
      isLoading,
@@ -43,7 +44,7 @@ const CategoriesList = () => {
      globalFilter,
      pagination,
      url: "category",
-     selectionName: "categories",
+     selectedProp: "categories",
      queryName: "getCategories",
    });
 
@@ -99,12 +100,15 @@ const CategoriesList = () => {
  
   return (
     <>
+      <Helmet>
+        <title>Categories List</title>
+      </Helmet>
       <Typography fontWeight={"bold"} variant={"h5"} mb={4}>
         Categories List
       </Typography>
       <MaterialReactTable
         columns={columns}
-        data={cateegories ?? []} //data is undefined on first render
+        data={categories ?? []} //data is undefined on first render
         enableFilters={false}
         manualFiltering
         manualPagination

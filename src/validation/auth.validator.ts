@@ -30,10 +30,7 @@ export const loginSchema = yup.object({
     .required("Email is required"),
   password: yup
     .string()
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
-      "Password must contain at least one lowercase letter, one uppercase letter, one digit, and be at least 8 characters long"
-    )
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/, "Password Not Correct")
     .required("Password is required"),
 });
 export const forgetPasswordSchema = yup.object({
@@ -55,6 +52,26 @@ export const resetPasswordSchema = yup.object({
     .oneOf([yup.ref("newPassword"), undefined], "Passwords must match")
     .required("Please confirm your password"),
 });
+export const changePasswordSchema = yup.object({
+  oldPassword: yup
+    .string()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+      "Password must contain at least one lowercase letter, one uppercase letter, one digit, and be at least 8 characters long"
+    )
+    .required("Old Password is required"),
+  newPassword: yup
+    .string()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+      "Password must contain at least one lowercase letter, one uppercase letter, one digit, and be at least 8 characters long"
+    )
+    .required("New Password is required"),
+  rePassword: yup
+    .string()
+    .oneOf([yup.ref("newPassword"), undefined], "Passwords must match")
+    .required("Please confirm your password"),
+});
 
 export const editProfileSchema = yup.object({
   name: yup
@@ -70,7 +87,8 @@ export const editProfileSchema = yup.object({
   birth: yup
     .date()
     .test("is-before-today", "Date must be before today", (value) => {
-      console.log(dayjs(value,"DD/MM/YYYY").isBefore(dayjs(), "day"));
-return dayjs(value, { format: 'DD/MM/YYYY' }).isBefore(dayjs(), 'day');    })
+      console.log(dayjs(value, "DD/MM/YYYY").isBefore(dayjs(), "day"));
+      return dayjs(value, { format: "DD/MM/YYYY" }).isBefore(dayjs(), "day");
+    })
     .required("Date field is required"),
 });

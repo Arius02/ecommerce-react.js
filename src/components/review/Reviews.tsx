@@ -7,11 +7,16 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import useMultiQueryHook from "../../hooks/useMultiQueryHook";
 import ProductReviewsSkeleton from "../skeleton/product/ProductReviewsSkeleton";
 import AddReview from "./AddReview";
 import SortIcon from "@mui/icons-material/Sort";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { AppContext } from "../../context/AppContext";
+import { DeleteModal } from "../admin";
+import EditReview from "../dailogs/EditReview";
 type Props = {
   id: string;
 };
@@ -36,7 +41,19 @@ const Reviews = ({ id }: Props) => {
   const handleSort = () => {
     setSort(sort == "-rating" ? "rating" : "-rating");
   };
-  console.log(reviewsData);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [idToDelete, setIdToDelete] = useState("");
+  const [openEdit, setOpenEdit] = useState(false);
+  const [reviewToEdit, setReviewToEdit] = useState({});
+  const handleDelete = (id: string) => {
+    setIdToDelete(id);
+    setOpenDelete(true);
+  };
+  const handleEdit = (review: any) => {
+    setReviewToEdit(review);
+    setOpenEdit(true);
+  };
+  const { auth } = useContext(AppContext);
   return (
     <Box mt={5}>
       {reviewsData && (
@@ -64,7 +81,7 @@ const Reviews = ({ id }: Props) => {
             <>
               {reviewsData.reviews.map((review: any) => (
                 <Box mb={3}>
-                  <Stack flexDirection="row" gap={2}>
+                  <Stack flexDirection="row" gap={2} position={"relative"}>
                     <Stack
                       sx={{
                         width: "50px",
@@ -87,6 +104,21 @@ const Reviews = ({ id }: Props) => {
                       </Typography>
                       <Rating value={review.rating} readOnly />
                     </Box>
+                    {auth._id == review.userId?._id && (
+                      <Stack
+                        flexDirection="row"
+                        alignItems={"center"}
+                        position="absolute"
+                        right={0}
+                      >
+                        <IconButton>
+                          <EditIcon sx={{ fontSize: "20px" }} color="primary" onClick={()=>handleEdit(review)}/>
+                        </IconButton>
+                        <IconButton onClick={() => handleDelete(review._id)}>
+                          <DeleteIcon sx={{ fontSize: "20px" }} color="error" />
+                        </IconButton>
+                      </Stack>
+                    )}
                   </Stack>
                   <Typography variant="body2" mt={2} px={2}>
                     {review.reviewDisc}{" "}
@@ -111,6 +143,20 @@ const Reviews = ({ id }: Props) => {
       )}
       {!isPending && <AddReview productId={id} refetch={refetch} />}
       {isPending && <ProductReviewsSkeleton />}
+      <DeleteModal
+        name="Review"
+        open={openDelete}
+        setOpen={setOpenDelete}
+        refetch={refetch}
+        title="Delete Review"
+        url={`/review/${id}/${idToDelete}`}
+      />
+      <EditReview
+        data={reviewToEdit}
+        open={openEdit}
+        setOpen={setOpenEdit}
+        refetch={refetch}
+      />
     </Box>
   );
 };

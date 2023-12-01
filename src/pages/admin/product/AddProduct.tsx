@@ -21,6 +21,7 @@ import { addProductSchema } from "../../../validation/peoduct.validator.ts";
 import useMutationHook from "../../../hooks/useMutationHook.tsx";
 import { UploadImage, UploadMultipleImages } from "../../../components/admin/index.ts";
 import { LoadingButton } from "@mui/lab";
+import { Helmet } from "react-helmet";
 
 
 
@@ -87,214 +88,221 @@ for (const key of keys) {
 addProduct(formData)
      }
   return (
-    <Paper sx={{ p: 5 }}>
-      <Typography variant="h1" sx={{ fontSize: 25, fontWeight: "bold" }}>
-        Add Product
-      </Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid
-          container
-          rowSpacing={1}
-          columnSpacing={{ xs: 1, sm: 2 }}
-          sx={{ mt: 4 }}
-          // gap{1}
-        >
-          <Grid md={6} xs={12}>
-            <TextField
-              label={`Name`}
-              variant="outlined"
-              sx={{ width: "100%" }}
-              {...register("name")}
-              error={!!errors.name}
-              helperText={errors.name && errors.name.message}
-            />
-          </Grid>
-          <Grid md={6} xs={12}>
-            <TextField
-              label={`Stock`}
-              variant="outlined"
-              sx={{ width: "100%" }}
-              {...register("stock")}
-              error={!!errors.stock}
-              helperText={errors.stock && errors.stock.message}
-            />
-          </Grid>
-          <Grid md={6} xs={12}>
-            <TextField
-              label={`Price`}
-              variant="outlined"
-              sx={{ width: "100%" }}
-              {...register("price")}
-              error={!!errors.price}
-              helperText={errors.price && errors.price.message}
-            />
-          </Grid>
-          <Grid md={6} xs={12}>
-            <TextField
-              label={`Applied Discount`}
-              variant="outlined"
-              sx={{ width: "100%" }}
-              {...register("appliedDiscount")}
-              error={!!errors.appliedDiscount}
-              helperText={
-                errors.appliedDiscount && errors.appliedDiscount.message
-              }
-            />
-          </Grid>
-
-          <Grid md={6} xs={12}>
-            <UploadImage
-              imageUrl={imageUrl}
-              setImageUrl={setImageUrl}
-              errorName="coverImage"
-              errors={errors}
-              name="Product Image"
-              register={register}
-              setValue={setValue}
-              key={"dijd"}
-            />
-          </Grid>
-          <Grid md={6} xs={12}>
-            <UploadMultipleImages
-              errors={errors}
-              register={register}
-              setValue={setValue}
-              key={43866}
-              setSnack={setSnack}
-            />
-          </Grid>
-
-          <Grid xs={12}>
-            <TextField
-              label="Dscription"
-              multiline
-              rows={4}
-              sx={{ width: "100%" }}
-              {...register("desc")}
-            />
-          </Grid>
-
-          <Grid md={6} xs={12}>
-            {classifications && (
-              <FormControl fullWidth error={!!errors.categoryId}>
-                <InputLabel id="category-select-label">Category</InputLabel>
-                <Select
-                  labelId="category-select-label"
-                  id="category-select"
-                  label="Category"
-                  {...register("categoryId")}
-                >
-                  {classifications.data.classifications?.map((category: any) => (
-                    <MenuItem value={category.id} key={category.id}>
-                      {category.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {errors.categoryId && (
-                  <FormHelperText>{errors.categoryId.message}</FormHelperText>
-                )}
-              </FormControl>
-            )}
-            {isClassificationsLoading && (
-              <Skeleton
-                variant="rectangular"
-                width={"100%"}
-                height={"40px"}
-                style={{ borderRadius: "5px" }}
+    <>
+      <Helmet>
+        <title>Add Product</title>
+      </Helmet>{" "}
+      <Paper sx={{ p: 5 }}>
+        <Typography variant="h1" sx={{ fontSize: 25, fontWeight: "bold" }}>
+          Add Product
+        </Typography>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid
+            container
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2 }}
+            sx={{ mt: 4 }}
+            // gap{1}
+          >
+            <Grid md={6} xs={12}>
+              <TextField
+                label={`Name`}
+                variant="outlined"
+                sx={{ width: "100%" }}
+                {...register("name")}
+                error={!!errors.name}
+                helperText={errors.name && errors.name.message}
               />
-            )}
-          </Grid>
-          <Grid md={6} xs={12}>
-            {classifications && (
-              <FormControl fullWidth error={!!errors.subCategoryId}>
-                <InputLabel id="sub-category-select-label">
-                  Sub Category
-                </InputLabel>
-                <Select
-                  labelId="sub-category-select-label"
-                  id="sub-category-select"
-                  label="Sub Category"
-                  {...register("subCategoryId")}
-                >
-                  {allowedSubCategories &&
-                    allowedSubCategories.map((subCategory: any) => (
-                      <MenuItem value={subCategory.id} key={subCategory.id}>
-                        {subCategory.name}
+            </Grid>
+            <Grid md={6} xs={12}>
+              <TextField
+                label={`Stock`}
+                variant="outlined"
+                sx={{ width: "100%" }}
+                {...register("stock")}
+                error={!!errors.stock}
+                helperText={errors.stock && errors.stock.message}
+              />
+            </Grid>
+            <Grid md={6} xs={12}>
+              <TextField
+                label={`Price`}
+                variant="outlined"
+                sx={{ width: "100%" }}
+                {...register("price")}
+                error={!!errors.price}
+                helperText={errors.price && errors.price.message}
+              />
+            </Grid>
+            <Grid md={6} xs={12}>
+              <TextField
+                label={`Applied Discount`}
+                variant="outlined"
+                sx={{ width: "100%" }}
+                {...register("appliedDiscount")}
+                error={!!errors.appliedDiscount}
+                helperText={
+                  errors.appliedDiscount && errors.appliedDiscount.message
+                }
+              />
+            </Grid>
+
+            <Grid md={6} xs={12}>
+              <UploadImage
+                imageUrl={imageUrl}
+                setImageUrl={setImageUrl}
+                errorName="coverImage"
+                errors={errors}
+                name="Product Image"
+                register={register}
+                setValue={setValue}
+                key={"dijd"}
+              />
+            </Grid>
+            <Grid md={6} xs={12}>
+              <UploadMultipleImages
+                errors={errors}
+                register={register}
+                setValue={setValue}
+                key={43866}
+                setSnack={setSnack}
+              />
+            </Grid>
+
+            <Grid xs={12}>
+              <TextField
+                label="Dscription"
+                multiline
+                rows={4}
+                sx={{ width: "100%" }}
+                {...register("desc")}
+              />
+            </Grid>
+
+            <Grid md={6} xs={12}>
+              {classifications && (
+                <FormControl fullWidth error={!!errors.categoryId}>
+                  <InputLabel id="category-select-label">Category</InputLabel>
+                  <Select
+                    labelId="category-select-label"
+                    id="category-select"
+                    label="Category"
+                    {...register("categoryId")}
+                  >
+                    {classifications.data.classifications?.map(
+                      (category: any) => (
+                        <MenuItem value={category.id} key={category.id}>
+                          {category.name}
+                        </MenuItem>
+                      )
+                    )}
+                  </Select>
+                  {errors.categoryId && (
+                    <FormHelperText>{errors.categoryId.message}</FormHelperText>
+                  )}
+                </FormControl>
+              )}
+              {isClassificationsLoading && (
+                <Skeleton
+                  variant="rectangular"
+                  width={"100%"}
+                  height={"40px"}
+                  style={{ borderRadius: "5px" }}
+                />
+              )}
+            </Grid>
+            <Grid md={6} xs={12}>
+              {classifications && (
+                <FormControl fullWidth error={!!errors.subCategoryId}>
+                  <InputLabel id="sub-category-select-label">
+                    Sub Category
+                  </InputLabel>
+                  <Select
+                    labelId="sub-category-select-label"
+                    id="sub-category-select"
+                    label="Sub Category"
+                    {...register("subCategoryId")}
+                  >
+                    {allowedSubCategories &&
+                      allowedSubCategories.map((subCategory: any) => (
+                        <MenuItem value={subCategory.id} key={subCategory.id}>
+                          {subCategory.name}
+                        </MenuItem>
+                      ))}
+                    {allowedSubCategories &&
+                      allowedSubCategories.length == 0 &&
+                      category == "" && (
+                        <MenuItem value={""} key={"no-category"}>
+                          Choose Category First
+                        </MenuItem>
+                      )}
+                    {allowedSubCategories &&
+                      allowedSubCategories.length == 0 &&
+                      category != "" && (
+                        <MenuItem value={""} key={"no-sub-category"}>
+                          No Sub Category Available
+                        </MenuItem>
+                      )}
+                  </Select>
+                  {errors.subCategoryId && (
+                    <FormHelperText>
+                      {errors.subCategoryId.message}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              )}
+              {isClassificationsLoading && (
+                <Skeleton
+                  variant="rectangular"
+                  width={"100%"}
+                  height={"40px"}
+                  style={{ borderRadius: "5px" }}
+                />
+              )}
+            </Grid>
+            <Grid md={6} xs={12}>
+              {classifications && (
+                <FormControl fullWidth error={!!errors.brandId}>
+                  <InputLabel id="brand-select-label">brand</InputLabel>
+                  <Select
+                    labelId="brand-select-label"
+                    id="brand-select"
+                    label="brand"
+                    {...register("brandId")}
+                  >
+                    {classifications.data?.brands?.map((brand: any) => (
+                      <MenuItem value={brand.id} key={brand.id}>
+                        {brand.name}
                       </MenuItem>
                     ))}
-                  {allowedSubCategories &&
-                    allowedSubCategories.length == 0 &&
-                    category == "" && (
-                      <MenuItem value={""} key={"no-category"}>
-                        Choose Category First
-                      </MenuItem>
-                    )}
-                  {allowedSubCategories &&
-                    allowedSubCategories.length == 0 &&
-                    category != "" && (
-                      <MenuItem value={""} key={"no-sub-category"}>
-                        No Sub Category Available
-                      </MenuItem>
-                    )}
-                </Select>
-                {errors.subCategoryId && (
-                  <FormHelperText>
-                    {errors.subCategoryId.message}
-                  </FormHelperText>
-                )}
-              </FormControl>
-            )}
-            {isClassificationsLoading && (
-              <Skeleton
-                variant="rectangular"
-                width={"100%"}
-                height={"40px"}
-                style={{ borderRadius: "5px" }}
-              />
-            )}
+                  </Select>
+                  {errors.brandId && (
+                    <FormHelperText>{errors.brandId.message}</FormHelperText>
+                  )}
+                </FormControl>
+              )}
+              {isClassificationsLoading && (
+                <Skeleton
+                  variant="rectangular"
+                  width={"100%"}
+                  height={"40px"}
+                  style={{ borderRadius: "5px" }}
+                />
+              )}
+            </Grid>
           </Grid>
-          <Grid md={6} xs={12}>
-            {classifications && (
-              <FormControl fullWidth error={!!errors.brandId}>
-                <InputLabel id="brand-select-label">brand</InputLabel>
-                <Select
-                  labelId="brand-select-label"
-                  id="brand-select"
-                  label="brand"
-                  {...register("brandId")}
-                >
-                  {classifications.data?.brands?.map((brand: any) => (
-                    <MenuItem value={brand.id} key={brand.id}>
-                      {brand.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {errors.brandId && (
-                  <FormHelperText>{errors.brandId.message}</FormHelperText>
-                )}
-              </FormControl>
-            )}
-            {isClassificationsLoading && (
-              <Skeleton
-                variant="rectangular"
-                width={"100%"}
-                height={"40px"}
-                style={{ borderRadius: "5px" }}
-              />
-            )}
-          </Grid>
-        </Grid>
-        <LoadingButton
-          type={"submit"}
-          variant="contained"
-          sx={{ mt: 4 }}
-          loading={isPending}
-        >
-          Add Product
-        </LoadingButton>
-      </form>
-      <SnackbarComponent snack={snack} setSnack={setSnack} />
-    </Paper>
+          <LoadingButton
+            type={"submit"}
+            variant="contained"
+            sx={{ mt: 4 }}
+            loading={isPending}
+          >
+            Add Product
+          </LoadingButton>
+        </form>
+        <SnackbarComponent snack={snack} setSnack={setSnack} />
+      </Paper>
+    </>
   );
 };
 

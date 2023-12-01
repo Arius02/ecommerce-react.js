@@ -9,6 +9,7 @@ import {
 } from "../../../components/admin";
 
 import useMultiQueryHook from "../../../hooks/useMultiQueryHook";
+import { Helmet } from "react-helmet";
 
 const SubbCategoryDetails = () => {
   const { id } = useParams();
@@ -27,6 +28,9 @@ const SubbCategoryDetails = () => {
   }, [data]);
   return (
     <>
+      <Helmet>
+        <title>{subCategory?.neme || "Sub Category Details"}</title>
+      </Helmet>
       {subCategory && (
         <Box>
           <ItemDetailsHeader item={subCategory} key={"duhdssjn"} />

@@ -9,10 +9,16 @@ import { AppContext } from "../../context/AppContext";
 type Props = {
   subCategoryId: string;
   AddToCart: UseMutateFunction<any, any, any, unknown>;
+  reduceFromCart: UseMutateFunction<any, any, any, unknown>;
   cart: any;
 };
 
-const RelatedProducts = ({ subCategoryId, AddToCart, cart }: Props) => {
+const RelatedProducts = ({
+  subCategoryId,
+  AddToCart,
+  cart,
+  reduceFromCart,
+}: Props) => {
   const { data: relatedProducts } = useMultiQueryHook({
     queries: [`getRelatedProducts-${subCategoryId}`],
     url: `/product?subCategory.subCategoryId[eq]=${subCategoryId}&size=4`,
@@ -47,6 +53,7 @@ const RelatedProducts = ({ subCategoryId, AddToCart, cart }: Props) => {
                   setLoadingIndecator={setLoadingIndecator}
                   refetch={refetch}
                   wishlist={user?.wishlist}
+                  reduceFromCart={reduceFromCart}
                 />
               </Box>
             </Grid>

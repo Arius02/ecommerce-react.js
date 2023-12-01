@@ -16,6 +16,7 @@ import ProductCardSkeleton from "../../components/skeleton/product/ProductCardSk
 import useMultiQueryHook from "../../hooks/useMultiQueryHook";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppContext } from "../../context/AppContext";
+import { Helmet } from "react-helmet";
 
 const Wishlist = () => {
   const [page, setPage] = useState(1);
@@ -27,9 +28,6 @@ const Wishlist = () => {
     url: `/wishlist?size=4&page=${page}`,
     queries: ["getWishlist", page],
     selectedProp: "wishlist",
-    // options: {
-    //   enabled: localStorage.getItem("token") ? true : false,
-    // },
   });
   const { data: cart } = useCartQueryHook({
     query: "getCart",
@@ -41,6 +39,11 @@ const Wishlist = () => {
     method: "POST",
     setLoadingIndecator,
   });
+  const { mutate: reduceFromCart } = useCartMutationHook({
+    url: "/cart",
+    method: "PUT",
+    setLoadingIndecator,
+  });
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     console.log(event); // to be clear
     setPage(value);
@@ -48,6 +51,9 @@ const Wishlist = () => {
   const { setOpenUserDashboard, show } = useContext(AppContext);
   return (
     <>
+      <Helmet>
+        <title>My Wishlist</title>
+      </Helmet>
       <Stack
         flexDirection={"row"}
         alignItems={"center"}
@@ -69,37 +75,47 @@ const Wishlist = () => {
           </IconButton>
         )}
       </Stack>
-      <Grid container xs={12} rowGap={2}>
-        {wishlist &&
-          wishlist.map((product: any) => (
-            <Grid item md={4} sm={6} xs={12}>
-              <Box p={2}>
-                <ProductCard
-                  product={product}
-                  cart={cart}
-                  wishlist={[...wishlist.map((product: any) => product._id)]}
-                  refetch={refetchWishlist}
-                  AddToCart={AddToCart}
-                  loadingIndecator={loadingIndecator}
-                  setLoadingIndecator={setLoadingIndecator}
-                />
-              </Box>
-            </Grid>
-          ))}
-        {isPending && (
-          <ProductCardSkeleton columns={{ lg: 4, md: 6, xs: 12 }} />
-        )}
-      </Grid>
-      {wishlist && (
-        <Pagination
-          count={3}
-          page={page}
-          variant="outlined"
-          color="primary"
-          onChange={handleChange}
-          sx={{ width: "fit-content", m: "auto", mt: 2 }}
-        />
+      {wishlist?.length > 0 && (
+        <>
+          <Grid container xs={12} rowGap={2}>
+            {wishlist.map((product: any) => (
+              <Grid item md={4} sm={6} xs={12}>
+                <Box p={2}>
+                  <ProductCard
+                    product={product}
+                    cart={cart}
+                    wishlist={[...wishlist.map((product: any) => product._id)]}
+                    refetch={refetchWishlist}
+                    AddToCart={AddToCart}
+                    loadingIndecator={loadingIndecator}
+                    setLoadingIndecator={setLoadingIndecator}
+                    reduceFromCart={reduceFromCart}
+                  />
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+          <Pagination
+            count={3}
+            page={page}
+            variant="outlined"
+            color="primary"
+            onChange={handleChange}
+            sx={{ width: "fit-content", m: "auto", mt: 2 }}
+          />
+        </>
       )}
+      {wishlist?.length == 0 && (
+        <Typography
+          fontWeight={"bold"}
+          color={"grey"}
+          textAlign={"center"}
+          mt={10}
+        >
+          There are no product in wishlist
+        </Typography>
+      )}
+      {isPending && <ProductCardSkeleton columns={{ md: 4, sm: 6, xs: 12 }} />}
     </>
   );
 };

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Box } from "@mui/material";
 import useMultiQueryHook from "../../../hooks/useMultiQueryHook";
 import { ItemDetailsHeader, ItemDetailsHederSkeleton, RelatedItemsList, RelatedItemsListSkeleton } from "../../../components/admin";
+import { Helmet } from "react-helmet";
 
 const BrandDetails = () => {
   const { id } = useParams();
@@ -21,6 +22,9 @@ const BrandDetails = () => {
   }, [data]);
   return (
     <>
+      <Helmet>
+        <title>{brand?.neme||"Brand Details"}</title>
+      </Helmet>
       {brand && (
         <Box>
           <ItemDetailsHeader item={brand} key={"duhdssjn"} />

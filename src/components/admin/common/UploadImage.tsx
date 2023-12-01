@@ -87,6 +87,7 @@ const UploadImage = ({ imageUrl,
           <Button
             variant="outlined"
             sx={{ fontSize: { md: "14px", xs: "12px" } }}
+            // onClick={()=>}
           >
             Select Image
           </Button>

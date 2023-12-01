@@ -52,20 +52,18 @@ const UserInfo = () => {
               justifyContent="center"
               alignItems="center"
               sx={{
-                width: {md:"40px",xs:"25px"},
-                height: {md:"40px",xs:"25px"},
+                width: { md: "40px", xs: "25px" },
+                height: { md: "40px", xs: "25px" },
                 borderRadius: "50%",
                 color: "white",
                 fontWeight: "bold",
-                fontSize: {md:"20px",xs:"14px"},
+                fontSize: { md: "20px", xs: "14px" },
               }}
               bgcolor={pink[600]}
             >
               1
             </Stack>
-            <Typography variant="h6">
-              Delivery Details
-            </Typography>
+            <Typography variant="h6">Delivery Details</Typography>
           </Stack>
           {user?.deliveryDetails.length != 3 && (
             <Button
@@ -73,7 +71,7 @@ const UserInfo = () => {
               variant="outlined"
               onClick={() => setAddAddresOpen(true)}
               sx={{
-                fontSize: {md:"14px",xs:"10px"},
+                fontSize: { md: "14px", xs: "10px" },
               }}
             >
               Add new Address
@@ -81,7 +79,7 @@ const UserInfo = () => {
           )}
         </Stack>
         <Grid container mt={2}>
-          {user &&
+          {user?.deliveryDetails &&
             user.deliveryDetails.map((info: any, index: number) => (
               <Grid item md={4} xs={12} key={info._id} p={2}>
                 <Box
@@ -91,10 +89,10 @@ const UserInfo = () => {
                     backgroundColor: grey[100],
                     borderRadius: "8px",
                     height: "180px",
-                    
+
                     border: info.isSelected ? 1 : 0,
                     borderColor: pink[500],
-                    cursor:"pointer"
+                    cursor: "pointer",
                   }}
                   onClick={() => selectedAddres({ id: info._id })}
                 >
@@ -156,6 +154,16 @@ const UserInfo = () => {
               </Grid>
             ))}
         </Grid>
+          {user?.deliveryDetails?.length == 0 && (
+            <Typography
+              fontWeight={"bold"}
+              color={"grey"}
+              textAlign={"center"}
+              my={5}
+            >
+              There are no addresses have been added yet
+            </Typography>
+          )}
       </Paper>
       <AddAddressDialog
         open={addAddresOpen}

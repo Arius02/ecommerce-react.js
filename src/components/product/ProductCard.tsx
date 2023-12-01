@@ -26,11 +26,14 @@ import {
   UseMutateFunction,
 } from "@tanstack/react-query";
 import useMutationHook from "../../hooks/useMutationHook";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
+import { AppContext } from "../../context/AppContext";
+import systemRoles from "../../utils/systemRoles";
 type Props = {
   product: any;
   AddToCart: UseMutateFunction<any, any, any, unknown>;
+  reduceFromCart: UseMutateFunction<any, any, any, unknown>;
   cart: any;
   refetch: (
     options?: RefetchOptions | undefined
@@ -48,6 +51,7 @@ const ProductCard = ({
   refetch,
   loadingIndecator,
   setLoadingIndecator,
+  reduceFromCart,
 }: Props) => {
   const handleClick = (data: any) => {
     AddToCart(data);
@@ -58,7 +62,7 @@ const ProductCard = ({
     method: "PATCH",
     refetch,
   });
-
+  const { auth } = useContext(AppContext);
   return (
     <>
       <Card
@@ -132,53 +136,62 @@ const ProductCard = ({
             </Stack>
           </Box>
           {product.stock > 0 ? (
-            <Stack
-              gap={2}
-              justifyContent={"center"}
-              alignItems="center"
-              sx={{ position: "absolute", bottom: 24, right: 10 }}
-            >
-              {cart &&
-                cart.products
-                  .filter((item: any) => item.productId._id === product._id)
-                  .map((item: any) => (
-                    <>
-                      <IconButton
-                        aria-label="reduce quantity"
-                        color="secondary"
-                        sx={{ border: 1, borderRadius: 1, p: 0 }}
-                      >
-                        <RemoveIcon />
-                      </IconButton>
-                      {loadingIndecator !== item.productId._id && (
-                        <Typography color="secondary" fontWeight="bold">
-                          {item.quantity}
-                        </Typography>
-                      )}
-                      {loadingIndecator == item.productId._id && (
-                        <CircularProgress
-                          color="secondary"
-                          sx={{
-                            width: "20px !important",
-                            height: "20px !important",
-                          }}
-                        />
-                      )}
-                    </>
-                  ))}
-
-              <IconButton
-                aria-label="icrease quantity"
-                color="secondary"
-                sx={{ border: 1, borderRadius: 1, p: 0 }}
-                onClick={() => {
-                  setLoadingIndecator(product._id);
-                  handleClick({ productId: product._id, quantity: 1 });
-                }}
+            auth.role != systemRoles.SuperAdmin &&
+            auth.role != systemRoles.Admin && (
+              <Stack
+                gap={2}
+                justifyContent={"center"}
+                alignItems="center"
+                sx={{ position: "absolute", bottom: 24, right: 10 }}
               >
-                <AddIcon />
-              </IconButton>
-            </Stack>
+                {cart &&
+                  cart.products
+                    .filter((item: any) => item.productId._id === product._id)
+                    .map((item: any) => (
+                      <>
+                        <IconButton
+                          aria-label="reduce quantity"
+                          color="secondary"
+                          sx={{ border: 1, borderRadius: 1, p: 0 }}
+                          onClick={() => {
+                            setLoadingIndecator(product._id);
+                            reduceFromCart({
+                              productId: item.productId._id,
+                            });
+                          }}
+                        >
+                          <RemoveIcon />
+                        </IconButton>
+                        {loadingIndecator !== item.productId._id && (
+                          <Typography color="secondary" fontWeight="bold">
+                            {item.quantity}
+                          </Typography>
+                        )}
+                        {loadingIndecator == item.productId._id && (
+                          <CircularProgress
+                            color="secondary"
+                            sx={{
+                              width: "20px !important",
+                              height: "20px !important",
+                            }}
+                          />
+                        )}
+                      </>
+                    ))}
+
+                <IconButton
+                  aria-label="icrease quantity"
+                  color="secondary"
+                  sx={{ border: 1, borderRadius: 1, p: 0 }}
+                  onClick={() => {
+                    setLoadingIndecator(product._id);
+                    handleClick({ productId: product._id, quantity: 1 });
+                  }}
+                >
+                  <AddIcon />
+                </IconButton>
+              </Stack>
+            )
           ) : (
             <Typography
               color="red"
@@ -188,7 +201,9 @@ const ProductCard = ({
             </Typography>
           )}
         </CardContent>
-        {wishlist ? (
+        {auth.role != systemRoles.SuperAdmin &&
+        auth.role != systemRoles.Admin &&
+        wishlist ? (
           <CardActions
             disableSpacing
             sx={{

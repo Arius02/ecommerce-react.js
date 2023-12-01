@@ -5,6 +5,7 @@ import { grey} from "@mui/material/colors";
 import { Link as RouterLink } from "react-router-dom";
 import dayjs from "dayjs";
 import { ProductReviews } from "../../../components/admin";
+import {Helmet} from "react-helmet"
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -32,6 +33,9 @@ const ProductDetails = () => {
   );
   return (
     <>
+      <Helmet>
+        <title>{product?.neme || "Product Details"}</title>
+      </Helmet>
       {product && (
         <Box>
           <Stack
@@ -190,7 +194,11 @@ const ProductDetails = () => {
                   <img
                     src={image.secure_url}
                     loading="lazy"
-                    style={{ width: "150px", height: "150px",marginTop:"10px" }}
+                    style={{
+                      width: "150px",
+                      height: "150px",
+                      marginTop: "10px",
+                    }}
                   />
                 </Stack>
               ))}
@@ -221,7 +229,7 @@ const ProductDetails = () => {
             Product Reviews:
           </Typography>
           <Box pl={2}>
-<ProductReviews id={product._id}/>
+            <ProductReviews id={product._id} />
           </Box>
         </Box>
       )}

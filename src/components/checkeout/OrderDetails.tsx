@@ -85,8 +85,8 @@ const OrderDetails = ({
           </Stack>
         )}
       </Box>
-      {couponCode && setCouponCode && (
-        <AddCoupon couponCode={couponCode} setCouponCode={setCouponCode} />
+      { setCouponCode && (
+        <AddCoupon couponCode={couponCode||""} setCouponCode={setCouponCode} />
       )}
     </Box>
   );

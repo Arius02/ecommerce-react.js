@@ -15,3 +15,4 @@ export {default as AddItem} from './common/AddItem';
 export {default as ItemDetailsHeader} from './common/ItemDetailsHeader';
 export {default as RelatedItemsList} from './common/RelatedItemsList';
 export {default as UploadImage} from './common/UploadImage';
+export {default as DashboardStatistics} from './Statistics/DashboardStatistics';

@@ -23,6 +23,7 @@ import { editBrandSchema } from "../../../validation/brand.validator";
 import Link from "@mui/material/Link";
 import { Link as RouterLink } from "react-router-dom";
 import { EditItemModal } from "../../../components/admin";
+import { Helmet } from "react-helmet";
 
 const BrandsList = () => {
   
@@ -33,7 +34,7 @@ const BrandsList = () => {
     pageSize: 4,
   });
   const {
-    data: cateegories,
+    data: brands,
     isError,
     isRefetching,
     isLoading,
@@ -43,7 +44,7 @@ const BrandsList = () => {
     globalFilter,
     pagination,
     url:"brand",
-    selectionName:"brands",
+    selectedProp:"brands",
     queryName:"getBrands",
   });
   const columns = useMemo<MRT_ColumnDef<BrandsListType>[]>(
@@ -97,13 +98,16 @@ const BrandsList = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Brands List</title>
+      </Helmet>
       <Typography fontWeight={"bold"} variant={"h5"} mb={4}>
         Brand List
       </Typography>
       <MaterialReactTable
         columns={columns}
-        data={cateegories ?? []} //data is undefined on first render
-        enableFilters={false}
+        data={brands ?? []} //data is undefined on first render
+        // enableFilters={false}
         manualFiltering
         manualPagination
         enablePagination
@@ -159,7 +163,6 @@ const BrandsList = () => {
           </Tooltip>
         )}
         state={{
-          
           globalFilter,
           isLoading,
           pagination,

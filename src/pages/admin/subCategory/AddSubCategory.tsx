@@ -2,6 +2,7 @@ import { addSubCategorySchema } from "../../../validation/subCategory.validator.
 import * as React from "react";
 import useMutationHook from "../../../hooks/useMutationHook.tsx";
 import { AddItem } from "../../../components/admin/index.ts";
+
 const AddSubCategory = () => {
 
   const [snack, setSnack] = React.useState<SnackbarType>({

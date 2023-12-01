@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo, useState } from "react";
 import {
   MaterialReactTable,
@@ -22,6 +21,7 @@ import { editSubCategorySchema } from "../../../validation/subCategory.validator
 import Link from "@mui/material/Link";
 import {  Link as RouterLink } from "react-router-dom";
 import { DeleteModal, EditItemModal } from "../../../components/admin";
+import { Helmet } from "react-helmet";
 
 
 const SubCategoriesList = () => {
@@ -38,13 +38,13 @@ const SubCategoriesList = () => {
     isRefetching,
     isLoading,
     refetch,
-  } =useTableQueryHook({
+  } = useTableQueryHook({
     sorting,
     globalFilter,
     pagination,
-    url:"subCategory",
-    selectionName:"subCategories",
-    queryName:"getSubCategories",
+    url: "subCategory",
+    selectedProp: "subCategories",
+    queryName: "getSubCategories",
   });
 
   const columns = useMemo<MRT_ColumnDef<SubCategoriesListType>[]>(
@@ -110,13 +110,16 @@ const SubCategoriesList = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Sub Categories List</title>
+      </Helmet>
       <Typography fontWeight={"bold"} variant={"h5"} mb={4}>
         Sub Categories List
       </Typography>
       <MaterialReactTable
         columns={columns}
         data={cateegories ?? []} //data is undefined on first render
-        enableFilters={false}
+        // enableFilters={false}
         manualFiltering
         manualPagination
         enablePagination

@@ -36,6 +36,8 @@ import {
   OrdersList,
   OrderDetails,
   UsersList,
+  Notfound,
+  ChangePassword,
 } from "./pages";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import "slick-carousel/slick/slick.css";
@@ -48,6 +50,7 @@ import { pink } from "@mui/material/colors";
 import { AppContext } from "./context/AppContext";
 import systemRoles from "./utils/systemRoles";
 import { AuthRouter, NotAuthRouter } from "./components";
+import { DashboardStatistics } from "./components/admin";
 const App = () => {
   const queryClient = new QueryClient();
   const router = createHashRouter([
@@ -167,9 +170,24 @@ const App = () => {
       path: "/auth/unauthorized",
       element: <Unauthorized />,
     },
+    {
+      path: "/auth/changePassword",
+      element: (
+        <AuthRouter
+          allowedRoles={[
+            systemRoles.Admin,
+            systemRoles.SuperAdmin,
+            systemRoles.FakeAdmin,
+            systemRoles.User,
+          ]}
+        >
+          <ChangePassword />
+        </AuthRouter>
+      ),
+    },
 
     {
-      path: "dashboard",
+      path: "/dashboard",
       element: (
         <AuthRouter
           allowedRoles={[
@@ -182,6 +200,11 @@ const App = () => {
         </AuthRouter>
       ),
       children: [
+        //stat
+        {
+          path: "/dashboard/",
+          element: <DashboardStatistics />,
+        },
         //coupon
         {
           path: "/dashboard/coupon",
@@ -273,8 +296,11 @@ const App = () => {
           path: "/dashboard/user",
           element: <UsersList />,
         },
-        
       ],
+    },
+    {
+      path: "*",
+      element: <Notfound />,
     },
   ]);
   const { show, setShow } = useContext(AppContext);

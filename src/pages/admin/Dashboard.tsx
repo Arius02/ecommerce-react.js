@@ -6,13 +6,12 @@ import { AppContext } from '../../context/AppContext';
 
 const Dashboard = () => {
   const { show } = useContext(AppContext);
-  const [open, setOpen] = useState(show ? false : true);
-  
+  const [open, setOpen] = useState(show ? true : false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
-const drawerWidth = show?"100%":"280px";
+const drawerWidth = show&&window.innerWidth<400?"100%":"250px";
 
   return (
     <Box sx={{ display: "flex" ,overflowX:"hidden"}}>

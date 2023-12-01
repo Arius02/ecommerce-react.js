@@ -18,6 +18,8 @@ import AddAddressDialog from "../../components/dailogs/AddAddressDialog";
 import AddressesSkeleton from "../../components/skeleton/user/AddressesSkeleton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppContext } from "../../context/AppContext";
+import { Helmet } from "react-helmet";
+
 const Address = () => {
   const [addAddresOpen, setAddAddresOpen] = useState(false);
   const [idToDelete, setIdToDelete] = useState("");
@@ -38,6 +40,9 @@ const Address = () => {
 const {show,setOpenUserDashboard}=useContext(AppContext)
   return (
     <>
+      <Helmet>
+        <title>Adresses</title>
+      </Helmet>
       {user && (
         <>
           <Stack flexDirection={"row"} justifyContent={"space-between"}>
@@ -67,9 +72,11 @@ const {show,setOpenUserDashboard}=useContext(AppContext)
                 </Button>
               )}
             </Stack>
-           { show&&<IconButton>
-              <MenuIcon onClick={()=>setOpenUserDashboard(true)}/>
-            </IconButton>}
+            {show && (
+              <IconButton>
+                <MenuIcon onClick={() => setOpenUserDashboard(true)} />
+              </IconButton>
+            )}
           </Stack>
           <Box mt={2}>
             {user.deliveryDetails &&

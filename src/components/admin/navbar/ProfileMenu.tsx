@@ -1,16 +1,15 @@
-import { Typography } from "@mui/material";
-import { blueGrey, grey } from "@mui/material/colors";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
+import { Typography,Link,Menu,
+ MenuItem,
+ Divider,
+ IconButton,
+ Tooltip, } from "@mui/material";
+import { blueGrey } from "@mui/material/colors";
 import person from "../../../assets/001-man.svg";
 import { useState, MouseEvent, } from "react";
-type Props = {
-  isMobile:boolean
-};
-const ProfileMenu = ({ isMobile }:Props) => {
+import useAuthMutationHook from "../../../hooks/useAuthMutationHook";
+import {Link as RouterLink} from "react-router-dom"
+
+const ProfileMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -19,7 +18,13 @@ const ProfileMenu = ({ isMobile }:Props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+const {mutate:logOut}=useAuthMutationHook(
+{
+  url:"/auth/logout",
+  method:"PATCH",
 
+}
+)
   return (
     <>
       <Tooltip title="Account settings">
@@ -30,7 +35,6 @@ const ProfileMenu = ({ isMobile }:Props) => {
             color: blueGrey[900],
             display: "flex",
             "&:hover": {
-              backgroundColor: isMobile ? "transparent" : grey[200],
             },
           }}
           aria-controls={open ? "account-menu" : undefined}
@@ -39,10 +43,13 @@ const ProfileMenu = ({ isMobile }:Props) => {
         >
           <img
             src={person}
-            style={{ width: "30px", marginRight: `${isMobile ? "10px" : 0}` }}
             loading="lazy"
+            style={{
+              width: "30px",
+              height: "30px",
+              borderRadius: "50%",
+            }}
           />
-          {isMobile && <p style={{ fontSize: "16px" }}>Profile</p>}
         </IconButton>
       </Tooltip>
       <Menu
@@ -98,17 +105,35 @@ const ProfileMenu = ({ isMobile }:Props) => {
 
         <Divider />
         <MenuItem onClick={handleClose}>
-          <Typography sx={{ paddingRight: 15 }} color={blueGrey[900]}>
-            Profile
-          </Typography>
+          <Link
+            component={RouterLink}
+            to="/"
+            sx={{ paddingRight: 15 }}
+            color={blueGrey[900]}
+            underline="none"
+          >
+            Store
+          </Link>
         </MenuItem>
+        <Divider />
         <MenuItem onClick={handleClose}>
-          <Typography color={blueGrey[900]}>Settings</Typography>
+          <Link
+            component={RouterLink}
+            to="/dashboard"
+            sx={{ paddingRight: 15 }}
+            color={blueGrey[900]}
+            underline="none"
+          >
+            Profile
+          </Link>
         </MenuItem>
+
         <Divider />
 
         <MenuItem onClick={handleClose}>
-          <Typography color={blueGrey[900]}>Logout</Typography>
+          <Typography sx={{ color: blueGrey[900] }} onClick={()=>logOut({})}>
+            Logout
+          </Typography>
         </MenuItem>
       </Menu>
     </>

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
-import { Box, Container,List } from "@mui/material";
+import { Box, Container, List } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -20,8 +20,8 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
-import {Link} from "react-router-dom"
-import scrollBarStyles from "../../style/scrollBar"
+import { Link } from "react-router-dom";
+import scrollBarStyles from "../../style/scrollBar";
 type Props = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -80,8 +80,7 @@ const Sidebar = ({ open, setOpen, Content, drawerWidth, show }: Props) => {
   const [active, setActive] = useState(window.location.pathname);
 
   const handleChange =
-    (panel: string) =>
-    (event: React.SyntheticEvent /*@ts-igonre*/, isExpanded: boolean) => {
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       console.log(event); //to be cleared
       setExpanded(isExpanded ? panel : false);
     };
@@ -100,8 +99,8 @@ const Sidebar = ({ open, setOpen, Content, drawerWidth, show }: Props) => {
           sx: {
             backgroundColor: blueGrey[900],
             color: "white",
-            ...scrollBarStyles,
             display: !open && show ? "none" : "block",
+            ...scrollBarStyles,
           },
         }}
       >
@@ -169,7 +168,7 @@ const Sidebar = ({ open, setOpen, Content, drawerWidth, show }: Props) => {
               onChange={handleChange(elm.key)}
               sx={{ backgroundColor: blueGrey[900], boxShadow: 0 }}
               key={elm.key}
-              onClick={() => setOpen(true)}
+              onClick={() => !show && setOpen(true)}
             >
               <AccordionSummary
                 expandIcon={open && <ExpandMoreIcon sx={{ color: "white" }} />}

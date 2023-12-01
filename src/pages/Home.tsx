@@ -8,7 +8,8 @@ import useQueryHook from "../hooks/useQueryHook";
 import useCartQueryHook from "../hooks/useCartQueryHook";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
-
+import systemRoles from "../utils/systemRoles";
+import {Helmet} from "react-helmet"
 const Home = () => {
   const { auth } = useContext(AppContext);
   const { data: user, refetch: refetchWishlist } = useQueryHook({
@@ -16,7 +17,12 @@ const Home = () => {
     query: "getUser",
     selectedProp: "user",
     options: {
-      enabled: auth._id ? true : false,
+      enabled:
+        auth._id &&
+        auth.role != systemRoles.SuperAdmin &&
+        auth.role != systemRoles.Admin
+          ? true
+          : false,
     },
   }) as { data: any; refetch: any };
   const { data: cart,  } = useCartQueryHook({
@@ -25,6 +31,9 @@ const Home = () => {
   });
   return (
     <>
+      <Helmet>
+        <title>Bazar</title>
+      </Helmet>
       <BigOffersCarousels />
       <Container maxWidth="xl">
         <Box my={4} px={{ md: 5, xs: 1 }}>

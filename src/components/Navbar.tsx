@@ -23,6 +23,7 @@ import useCartQueryHook from "../hooks/useCartQueryHook";
 import useAuthMutationHook from "../hooks/useAuthMutationHook";
 import LogoutIcon from "@mui/icons-material/Logout";
 import systemRoles from "../utils/systemRoles";
+import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 type Props = {
   setCartDrawerOpen: Dispatch<SetStateAction<boolean>>;
 };
@@ -32,9 +33,12 @@ const Navbar = ({ setCartDrawerOpen }: Props) => {
   const navigate = useNavigate();
   const { show, setAuthDialog, auth } = useContext(AppContext);
   const handleUserIconClick = () => {
-    if (auth._id) {
+    const isUser =
+      auth.role != systemRoles.SuperAdmin &&
+      auth.role != systemRoles.SuperAdmin;
+    if (auth._id && isUser) {
       navigate("/user");
-    } else {
+    } else if (isUser) {
       setAuthDialog({
         open: true,
         to: "/user",
@@ -77,7 +81,6 @@ const Navbar = ({ setCartDrawerOpen }: Props) => {
                 keepMounted: true,
               }}
               sx={{
-                display: { xs: "block", sm: "none" },
                 "& .MuiDrawer-paper": {
                   boxSizing: "border-box",
                   width: "100%",
@@ -117,26 +120,44 @@ const Navbar = ({ setCartDrawerOpen }: Props) => {
                 <SearchIcon />
               </IconButton>
             )}
-            <IconButton
-              onClick={handleUserIconClick}
-              type="button"
-              sx={{ p: "14px" }}
-              aria-label="user"
-            >
-              <PersonOutlineIcon />
-            </IconButton>
-
-            <Badge badgeContent={cart?.products.length} color="secondary">
+            {auth.role != systemRoles.SuperAdmin &&
+              auth.role != systemRoles.Admin && (
+                <IconButton
+                  onClick={handleUserIconClick}
+                  type="button"
+                  sx={{ p: "14px" }}
+                  aria-label="user"
+                >
+                  <PersonOutlineIcon />
+                </IconButton>
+              )}
+            {auth._id&&auth.role != systemRoles.User && (
               <IconButton
+                component={LinkRouter}
+                to="/dashboard"
+                onClick={handleUserIconClick}
                 type="button"
                 sx={{ p: "14px" }}
-                aria-label="cart"
-                onClick={() => setCartDrawerOpen(true)}
+                aria-label="user"
               >
-                <ShoppingBagIcon sx={{ color: blueGrey[400] }} />
+                <DashboardCustomizeIcon />
               </IconButton>
-            </Badge>
-            {auth._id &&auth.role==systemRoles.User && (
+            )}
+
+            {auth.role != systemRoles.SuperAdmin &&
+              auth.role != systemRoles.Admin && (
+                <Badge badgeContent={cart?.products.length} color="secondary">
+                  <IconButton
+                    type="button"
+                    sx={{ p: "14px" }}
+                    aria-label="cart"
+                    onClick={() => setCartDrawerOpen(true)}
+                  >
+                    <ShoppingBagIcon sx={{ color: blueGrey[400] }} />
+                  </IconButton>
+                </Badge>
+              )}
+            {auth._id && (
               <IconButton
                 type="button"
                 sx={{ p: "14px" }}

@@ -18,6 +18,8 @@ import SnackbarComponent from "../../../components/common/SnackBar";
 import MoreOrderDetails from "../../../components/order/MoreOrderDetails";
 import CancelScheduleSendIcon from "@mui/icons-material/CancelScheduleSend";
 import UserOrderDetailsSkeleton from "../../../components/skeleton/user/UserOrderDetailsSkeleton";
+import { Helmet } from "react-helmet";
+
 const OrderDetails = () => {
   const { id } = useParams();
   const {
@@ -53,6 +55,9 @@ const OrderDetails = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Order Details</title>
+      </Helmet>
       {order && (
         <Box>
           <Typography fontWeight="bold" variant="h5" mb={4}>

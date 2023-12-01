@@ -48,7 +48,7 @@ const ProductReviews = ({id}: Props) => {
      globalFilter,
      pagination,
      url: `review/${id}`,
-     selectionName: "reviews",
+     selectedProp: "reviews",
      queryName: "getReviews",
    });
 
@@ -113,7 +113,7 @@ const ProductReviews = ({id}: Props) => {
       data={cateegories ?? []} //data is undefined on first render
       // initialState={{ showColumnFilters: true }}
       // manualFiltering
-      enableFilters={false}
+      // enableFilters={false}
       manualPagination
       enablePagination
       manualSorting

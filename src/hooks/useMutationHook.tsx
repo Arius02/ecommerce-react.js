@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {  QueryObserverResult, RefetchOptions, useMutation } from "@tanstack/react-query";
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  useMutation,
+} from "@tanstack/react-query";
 import fetchData from "../utils/fetchData";
 import { Dispatch, SetStateAction } from "react";
 type Props = {
@@ -11,7 +15,7 @@ type Props = {
     options?: RefetchOptions | undefined
   ) => Promise<QueryObserverResult<any, Error>>;
   setOpen?: Dispatch<SetStateAction<boolean>>;
-  handleNavigate?:()=>void;
+  handleNavigate?: () => void;
 };
 const useMutationHook = ({
   url,
@@ -28,8 +32,7 @@ const useMutationHook = ({
         url,
         method,
         data,
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTUyZDMwNTUyOTY4M2Q5Mzk0YTVmODYiLCJpYXQiOjE3MDA0Mzc5MTEsImV4cCI6MTcwMTMwMTkxMX0.4RLiN_IJ251sla5iA2ESYWnSm9bAkKaNvomAFe1GgBw",
+        token: localStorage.getItem("token") || "",
       }),
     onSuccess: () => {
       setSnack &&

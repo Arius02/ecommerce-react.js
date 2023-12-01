@@ -19,7 +19,7 @@ const useMultiQueryHook = ({queries,url,selectedProp}: Props) => {
       return selectedProp?res.data[selectedProp]:res.data;
     },
     refetchOnWindowFocus: false,
-    // staleTime: 3000000,
+    staleTime: 3000000,
   });
 }
 

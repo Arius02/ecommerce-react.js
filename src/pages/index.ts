@@ -40,6 +40,7 @@ export { default as DirectOrder } from "./checkout/DirectOrder";
 export { default as Login } from "./auth/Login";
 export { default as Register } from "./auth/Register";
 export { default as ForgetPassword } from "./auth/ForgetPassword";
+export { default as ChangePassword } from "./auth/ChangePassword";
 export { default as ResetPassword } from "./auth/ResetPassword";
 export { default as Unauthorized } from "./auth/Unauthorized";
 
@@ -51,3 +52,8 @@ export { default as UserOrders } from "./user/UserOrders";
 export { default as UserOrderDetails } from "./user/UserOrderDetails";
 export { default as Wishlist } from "./user/Wishlist";
 export { default as Address } from "./user/Address";
+
+
+// ====================== NOTFOUND===============================
+
+export { default as Notfound } from "./Notfound";
