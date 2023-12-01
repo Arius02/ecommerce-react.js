@@ -21,6 +21,9 @@ type Props = {
   ) => Promise<QueryObserverResult<unknown, Error>>;
   wishlist: any;
   cart: any;
+  refetchCart: (
+    options?: RefetchOptions | undefined
+  ) => Promise<QueryObserverResult<unknown, Error>>;
 };
 
 const ProductsWithFilter = ({
@@ -31,8 +34,9 @@ const ProductsWithFilter = ({
   wishlist,
   refetchWishlist,
   cart,
+  refetchCart,
 }: Props) => {
-  const {show} = useContext(AppContext);
+  const { show } = useContext(AppContext);
   const [filterWord, setFilterWord] = useState("");
   const [page, setPage] = useState(1);
   const { data, isPending } = useMultiQueryHook({
@@ -50,17 +54,19 @@ const ProductsWithFilter = ({
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-    const [loadingIndecator, setLoadingIndecator] = useState("");
+  const [loadingIndecator, setLoadingIndecator] = useState("");
 
   const { mutate: AddToCart } = useCartMutationHook({
     url: "add",
     method: "POST",
     setLoadingIndecator,
+    refetch: refetchCart,
   });
   const { mutate: reduceFromCart } = useCartMutationHook({
     url: "/cart",
     method: "PUT",
     setLoadingIndecator,
+    refetch: refetchCart,
   });
 
   return (
@@ -81,7 +87,7 @@ const ProductsWithFilter = ({
           />
         </Grid>
       )}
-      <Grid md={9} xs={12} pl={2}>
+      <Grid md={9} xs={12} pl={{ md: 2, xs: 0 }}>
         <Stack
           flexDirection={"row"}
           alignItems={"center"}

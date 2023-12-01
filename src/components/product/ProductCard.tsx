@@ -52,6 +52,7 @@ const ProductCard = ({
   loadingIndecator,
   setLoadingIndecator,
   reduceFromCart,
+  
 }: Props) => {
   const handleClick = (data: any) => {
     AddToCart(data);

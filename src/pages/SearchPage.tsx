@@ -76,7 +76,7 @@ const SearchPage = () => {
       enabled: localStorage.getItem("token") ? true : false,
     },
   }) as { data: any; refetch: any };
-  const { data: cart } = useCartQueryHook({
+  const { data: cart, refetch } = useCartQueryHook({
     query: "getCart",
     selectedProp: "cart",
   });
@@ -84,11 +84,13 @@ const SearchPage = () => {
     url: "add",
     method: "POST",
     setLoadingIndecator,
+    refetch,
   });
   const { mutate: reduceFromCart } = useCartMutationHook({
     url: "/cart",
     method: "PUT",
     setLoadingIndecator,
+    refetch,
   });
   useEffect(() => {
     updatedSearchParams.set("sort", sort);
@@ -110,7 +112,7 @@ const SearchPage = () => {
       <Helmet>
         <title>search for {searchTerm}</title>
       </Helmet>
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ height: "100vh" }}>
         <Box p={2}>
           <SearchInfo
             sort={sort}
@@ -184,7 +186,7 @@ const SearchPage = () => {
               {isPending && (
                 <ProductCardSkeleton columns={{ md: 4, sm: 6, xs: 12 }} />
               )}
-              {data &&
+              {data?.products.length > 0 &&
                 data.products.map((product: any) => (
                   <Grid lg={4} md={6} xs={12}>
                     <Box px={1}>
@@ -202,7 +204,17 @@ const SearchPage = () => {
                   </Grid>
                 ))}
             </Grid>
-            {data && (
+            {data?.products.length == 0 && (
+              <Typography
+                color="grey"
+                fontWeight="bold"
+                textAlign="center"
+                width="100%"
+              >
+                No search result
+              </Typography>
+            )}
+            {data?.products.length > 0 && (
               <Pagination
                 count={data.totalPages}
                 page={page}

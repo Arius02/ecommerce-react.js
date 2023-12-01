@@ -29,7 +29,11 @@ import AddressesSkeleton from "../skeleton/user/AddressesSkeleton";
 const CartDrawer = ({ setCartDrawerOpen, cartDrawerOpen }: Props) => {
   const [loadingIndecator, setLoadingIndecator] = useState("");
 
-  const { data: cart, isPending } = useCartQueryHook({
+  const {
+    data: cart,
+    isPending,
+    refetch,
+  } = useCartQueryHook({
     query: "getCart",
     selectedProp: "cart",
   });
@@ -37,10 +41,12 @@ const CartDrawer = ({ setCartDrawerOpen, cartDrawerOpen }: Props) => {
     url: "add",
     method: "POST",
     setLoadingIndecator,
+    refetch,
   });
   const { mutate: RemovFromCart } = useCartMutationHook({
     url: `remove`,
     method: "PATCH",
+    refetch,
   });
   const handleAddToCart = (data: any) => {
     AddToCart(data);
@@ -48,7 +54,8 @@ const CartDrawer = ({ setCartDrawerOpen, cartDrawerOpen }: Props) => {
   const { mutate: reduceFromCart } = useCartMutationHook({
     url: "/cart",
     method: "PUT",
-    setLoadingIndecator
+    setLoadingIndecator,
+    refetch,
   });
   const handleDeleteFromCart = (data: any) => {
     RemovFromCart(data);
@@ -158,8 +165,6 @@ const CartDrawer = ({ setCartDrawerOpen, cartDrawerOpen }: Props) => {
                       sx={{ border: 1, p: 0 }}
                       disabled={product.quantity > 1 ? false : true}
                       onClick={() => {
-                        setLoadingIndecator(product.productId._id);
-
                         reduceFromCart({
                           productId: product.productId._id,
                         });

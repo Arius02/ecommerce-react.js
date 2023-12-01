@@ -5,6 +5,7 @@ import SectionHeader from "../common/SectionHeader";
 import { formatPrice } from "../../utils/priceFormat";
 import Slider from "react-slick";
 import ProductBoxSkeleton from "../skeleton/product/ProductBoxSkeleton";
+import { Link } from "react-router-dom";
 const settings = {
   dots: true,
   infinite: true,
@@ -98,6 +99,8 @@ const BigDiscountCarousels = () => {
                     },
                   },
                 }}
+                component={Link}
+                to={`/product/details/${product._id}`}
               >
                 <img
                   src={product.coverImage.secure_url}

@@ -1,4 +1,4 @@
-import { createHashRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import {
   Dashboard,
   Main,
@@ -53,7 +53,7 @@ import { AuthRouter, NotAuthRouter } from "./components";
 import { DashboardStatistics } from "./components/admin";
 const App = () => {
   const queryClient = new QueryClient();
-  const router = createHashRouter([
+  const router = createBrowserRouter([
     {
       path: "/",
       element: <Main />,

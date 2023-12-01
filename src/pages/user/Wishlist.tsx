@@ -29,7 +29,7 @@ const Wishlist = () => {
     queries: ["getWishlist", page],
     selectedProp: "wishlist",
   });
-  const { data: cart } = useCartQueryHook({
+  const { data: cart,refetch } = useCartQueryHook({
     query: "getCart",
     selectedProp: "cart",
   });
@@ -38,11 +38,13 @@ const Wishlist = () => {
     url: "add",
     method: "POST",
     setLoadingIndecator,
+    refetch
   });
   const { mutate: reduceFromCart } = useCartMutationHook({
     url: "/cart",
     method: "PUT",
     setLoadingIndecator,
+    refetch
   });
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     console.log(event); // to be clear

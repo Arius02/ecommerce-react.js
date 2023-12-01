@@ -22,13 +22,7 @@ const generateData = () => {
 
 const useCartQueryHook = ({ query, selectedProp }: Props) => {
   const { auth } = useContext(AppContext);
-  console.log(
-    auth.role != systemRoles.SuperAdmin && auth.role != systemRoles.SuperAdmin
-      ? true
-      : localStorage.getItem("cartId")
-      ? true
-      : false
-  );
+ 
   return useQuery({
     queryKey: [query],
     queryFn: async () => {

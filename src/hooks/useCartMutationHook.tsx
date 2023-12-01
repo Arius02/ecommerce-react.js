@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   QueryObserverResult,
   RefetchOptions,
   useMutation,
-  useQueryClient,
 } from "@tanstack/react-query";
 import fetchData from "../utils/fetchData";
 import { Dispatch, SetStateAction } from "react";
@@ -11,17 +9,13 @@ import { Dispatch, SetStateAction } from "react";
 type Props = {
   url: string;
   method: string;
-  refetch?: (
+  refetch: (
     options?: RefetchOptions | undefined
   ) => Promise<QueryObserverResult<any, Error>>;
   setLoadingIndecator?: Dispatch<SetStateAction<string>>;
 };
 
-const useCartMutationHook = ({
-  url,
-  method,
-  setLoadingIndecator,
-}: Props) => {
+const useCartMutationHook = ({ url, method, setLoadingIndecator,refetch }: Props) => {
   const isTokenPresent = Boolean(localStorage.getItem("token"));
   const isCartIdPresent = Boolean(localStorage.getItem("cartId"));
 
@@ -32,7 +26,6 @@ const useCartMutationHook = ({
   } else {
     customUrl = "/cart/guest";
   }
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: any) => {
       let options = {
@@ -51,6 +44,7 @@ const useCartMutationHook = ({
       return fetchData(options);
     },
     onSuccess: (data: any) => {
+      
       if (customUrl == "/cart/guest" && method == "POST") {
         localStorage.setItem("cartId", data.data.cart._id);
       }
@@ -58,9 +52,7 @@ const useCartMutationHook = ({
         localStorage.removeItem("cartId");
       }
       setLoadingIndecator && setLoadingIndecator("");
-      queryClient.refetchQueries({
-        queryKey: ["getCart"],
-      });
+       refetch()
     },
     onError: () => {
       setLoadingIndecator && setLoadingIndecator("");

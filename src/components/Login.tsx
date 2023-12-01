@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, {  useEffect } from "react";
 import {
   Stack,
   Typography,
@@ -26,8 +26,6 @@ import useAuthMutationHook from "../hooks/useAuthMutationHook";
 import decode from "../utils/decode";
 import useCartQueryHook from "../hooks/useCartQueryHook";
 import useCartMutationHook from "../hooks/useCartMutationHook";
-import systemRoles from "../utils/systemRoles";
-import { AppContext } from "../context/AppContext";
 
 type Props = {
   to?: string;
@@ -55,21 +53,13 @@ const Login = ({ to }: Props) => {
     severity: "success",
   });
   const location = useLocation();
-  const { auth, }=useContext(AppContext)
   const handleNavigate = () => {
     const from = location.state?.from?.pathname || "/";
     if (to) {
-      if (auth.role == systemRoles.User || auth.role == systemRoles.FakeAdmin) {
         navigate(to);
-      } else {
-        navigate("/dashboard")
-      }
+     
     } else {
-      if (auth.role == systemRoles.User || auth.role == systemRoles.FakeAdmin) {
         navigate(from, { replace: true });
-      } else {
-        navigate("/dashboard")
-      }
     }
   };
   const {
@@ -99,8 +89,8 @@ const Login = ({ to }: Props) => {
   });
   useEffect(() => {
     if (data?.data.token) {
-      const { _id: userId, role } = decode(data.data.token);
-      if (cart && localStorage.getItem("cartId") && role == "User") {
+      const { _id: userId } = decode(data.data.token);
+      if (cart && localStorage.getItem("cartId") ) {
         mergeCart({
           userId,
           cartId: cart._id,

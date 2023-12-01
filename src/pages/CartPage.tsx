@@ -25,6 +25,7 @@ const CartPage = () => {
   const {
     data: cart,
     isPending,
+    refetch
   } = useCartQueryHook({
     query: "getCart",
     selectedProp: "cart",
@@ -32,14 +33,17 @@ const CartPage = () => {
   const { mutate: addToCart } = useCartMutationHook({
     url: "/cart",
     method: "POST",
+    refetch
   });
   const { mutate: removeFromCart } = useCartMutationHook({
     url: "/cart",
     method: "PATCH",
+    refetch
   });
   const { mutate: reduceFromCart } = useCartMutationHook({
     url: "/cart",
     method: "PUT",
+    refetch
   });
 
   return (

@@ -9,7 +9,7 @@ import useCartQueryHook from "../hooks/useCartQueryHook";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import systemRoles from "../utils/systemRoles";
-import {Helmet} from "react-helmet"
+import { Helmet } from "react-helmet";
 const Home = () => {
   const { auth } = useContext(AppContext);
   const { data: user, refetch: refetchWishlist } = useQueryHook({
@@ -25,7 +25,7 @@ const Home = () => {
           : false,
     },
   }) as { data: any; refetch: any };
-  const { data: cart,  } = useCartQueryHook({
+  const { data: cart, refetch: refetchCart } = useCartQueryHook({
     query: "getCart",
     selectedProp: "cart",
   });
@@ -47,6 +47,7 @@ const Home = () => {
             brandQueryName="getHomeBrands"
             wishlist={user && user.wishlist}
             refetchWishlist={refetchWishlist}
+            refetchCart={refetchCart}
             cart={cart}
           />
           <ProductsWithFilter
@@ -56,6 +57,7 @@ const Home = () => {
             brandQueryName="getMobileBrands"
             wishlist={user && user.wishlist}
             refetchWishlist={refetchWishlist}
+            refetchCart={refetchCart}
             cart={cart}
           />
         </Box>

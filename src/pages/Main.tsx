@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom"
-import { Footer, Navbar } from "../components"
+import { Navbar } from "../components"
 import {Box} from "@mui/material"
 import {grey} from "@mui/material/colors"
 import React from "react"
@@ -20,7 +20,7 @@ const [cartDrawerOpen, setCartDrawerOpen] = React.useState(false);
           />
 
           <Outlet />
-          <Footer />
+          {/* <Footer /> */}
      <LoginDialog />
         </Box>
   );
