@@ -17,13 +17,19 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { AppContext } from "../../context/AppContext";
 import { DeleteModal } from "../admin";
 import EditReview from "../dailogs/EditReview";
+
 type Props = {
   id: string;
 };
 
 const Reviews = ({ id }: Props) => {
-  const [reviewPage, setReviewPage] = React.useState(1);
-  const [sort, setSort] = useState("");
+  const [reviewPage, setReviewPage] = useState(1);
+  const [sort, setSort] = useState<string>("");
+  const [openDelete, setOpenDelete] = useState(false);
+  const [idToDelete, setIdToDelete] = useState<string>("");
+  const [openEdit, setOpenEdit] = useState(false);
+  const [reviewToEdit, setReviewToEdit] = useState<any | null>(null);
+
   const {
     data: reviewsData,
     isPending,
@@ -31,99 +37,61 @@ const Reviews = ({ id }: Props) => {
   } = useMultiQueryHook({
     queries: [`getProductReviews-${id}`, reviewPage, sort],
     url: `/review/${id}?size=5&page=${reviewPage}${
-      sort != "" ? "&sort=" + sort : ""
+      sort ? `&sort=${sort}` : ""
     }`,
   });
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    console.log(event); // to be clear
     setReviewPage(value);
   };
+
   const handleSort = () => {
-    setSort(sort == "-rating" ? "rating" : "-rating");
+    setSort((prevSort) => (prevSort === "-rating" ? "rating" : "-rating"));
   };
-  const [openDelete, setOpenDelete] = useState(false);
-  const [idToDelete, setIdToDelete] = useState("");
-  const [openEdit, setOpenEdit] = useState(false);
-  const [reviewToEdit, setReviewToEdit] = useState({});
-  const handleDelete = (id: string) => {
-    setIdToDelete(id);
+
+  const handleDelete = (reviewId: string) => {
+    setIdToDelete(reviewId);
     setOpenDelete(true);
   };
+
   const handleEdit = (review: any) => {
     setReviewToEdit(review);
     setOpenEdit(true);
   };
+
   const { auth } = useContext(AppContext);
+
   return (
     <Box mt={5}>
-      {reviewsData && (
+      <Stack
+        flexDirection="row"
+        alignItems="center"
+        gap={1}
+        justifyContent="space-between"
+        mb={3}
+      >
+        <Typography fontWeight="bold" fontSize={{ md: "30px", xs: "22px" }}>
+          Product Reviews
+        </Typography>
+        <Tooltip title="Sort">
+          <IconButton onClick={handleSort}>
+            <SortIcon />
+          </IconButton>
+        </Tooltip>
+      </Stack>
+
+      {reviewsData ? (
         <>
-          <Stack
-            flexDirection={"row"}
-            alignItems={"center"}
-            gap={1}
-            justifyContent={"space-between"}
-          >
-            <Typography
-              fontWeight="bold"
-              fontSize={{ md: "30px", xs: "22px" }}
-              mb={3}
-            >
-              Product Reviews
-            </Typography>
-            <Tooltip title="Sort">
-              <IconButton onClick={handleSort}>
-                <SortIcon />
-              </IconButton>
-            </Tooltip>
-          </Stack>
           {reviewsData.reviews.length ? (
             <>
               {reviewsData.reviews.map((review: any) => (
-                <Box mb={3}>
-                  <Stack flexDirection="row" gap={2} position={"relative"}>
-                    <Stack
-                      sx={{
-                        width: "50px",
-                        height: "50px",
-                        borderRadius: "50%",
-                        backgroundColor: "grey",
-                        color: "white",
-                        textTransform: "capitalize",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        fontWeight: "bold",
-                        fontSize: "20px",
-                      }}
-                    >
-                      {review.userId?.name?.slice(0, 1)}
-                    </Stack>
-                    <Box>
-                      <Typography fontWeight="bold">
-                        {review.userId?.name}
-                      </Typography>
-                      <Rating value={review.rating} readOnly />
-                    </Box>
-                    {auth._id == review.userId?._id && (
-                      <Stack
-                        flexDirection="row"
-                        alignItems={"center"}
-                        position="absolute"
-                        right={0}
-                      >
-                        <IconButton>
-                          <EditIcon sx={{ fontSize: "20px" }} color="primary" onClick={()=>handleEdit(review)}/>
-                        </IconButton>
-                        <IconButton onClick={() => handleDelete(review._id)}>
-                          <DeleteIcon sx={{ fontSize: "20px" }} color="error" />
-                        </IconButton>
-                      </Stack>
-                    )}
-                  </Stack>
-                  <Typography variant="body2" mt={2} px={2}>
-                    {review.reviewDisc}{" "}
-                  </Typography>
-                </Box>
+                <ReviewCard
+                  key={review._id}
+                  review={review}
+                  auth={auth}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
               ))}
               <Pagination
                 count={reviewsData.totalPages}
@@ -140,9 +108,11 @@ const Reviews = ({ id }: Props) => {
             </Typography>
           )}
         </>
+      ) : (
+        <ProductReviewsSkeleton />
       )}
+
       {!isPending && <AddReview productId={id} refetch={refetch} />}
-      {isPending && <ProductReviewsSkeleton />}
       <DeleteModal
         name="Review"
         open={openDelete}
@@ -151,14 +121,68 @@ const Reviews = ({ id }: Props) => {
         title="Delete Review"
         url={`/review/${id}/${idToDelete}`}
       />
-      <EditReview
-        data={reviewToEdit}
-        open={openEdit}
-        setOpen={setOpenEdit}
-        refetch={refetch}
-      />
+      {reviewToEdit && (
+        <EditReview
+          data={reviewToEdit}
+          open={openEdit}
+          setOpen={setOpenEdit}
+          refetch={refetch}
+        />
+      )}
     </Box>
   );
 };
+
+type ReviewCardProps = {
+  review: any;
+  auth: any; // Define proper type for auth
+  onEdit: (review: any) => void;
+  onDelete: (reviewId: string) => void;
+};
+
+const ReviewCard = ({ review, auth, onEdit, onDelete }: ReviewCardProps) => (
+  <Box mb={3}>
+    <Stack flexDirection="row" gap={2} position="relative">
+      <Stack
+        sx={{
+          width: "50px",
+          height: "50px",
+          borderRadius: "50%",
+          backgroundColor: "grey",
+          color: "white",
+          textTransform: "capitalize",
+          justifyContent: "center",
+          alignItems: "center",
+          fontWeight: "bold",
+          fontSize: "20px",
+        }}
+      >
+        {review.userId?.name?.charAt(0)}
+      </Stack>
+      <Box>
+        <Typography fontWeight="bold">{review.userId?.name}</Typography>
+        <Rating value={review.rating} readOnly />
+      </Box>
+      {auth._id === review.userId?._id && (
+        <Stack
+          flexDirection="row"
+          alignItems="center"
+          position="absolute"
+          right={0}
+        >
+          <IconButton onClick={() => onEdit(review)}>
+            <EditIcon sx={{ fontSize: "20px" }} color="primary" />
+          </IconButton>
+          <IconButton onClick={() => onDelete(review._id)}>
+            <DeleteIcon sx={{ fontSize: "20px" }} color="error" />
+          </IconButton>
+        </Stack>
+      )}
+    </Stack>
+    <Typography variant="body2" mt={2} px={2}>
+      {review.reviewDisc}
+    </Typography>
+  </Box>
+);
 
 export default Reviews;

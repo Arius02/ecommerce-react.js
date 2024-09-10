@@ -176,7 +176,7 @@ const CouponsList = () => {
       </Typography>
       <MaterialReactTable
         columns={columns}
-        data={coupons ?? []} //data is undefined on first render
+        data={coupons ?? []} 
         manualFiltering
         manualPagination
         enablePagination

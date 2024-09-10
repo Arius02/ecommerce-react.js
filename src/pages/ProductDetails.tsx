@@ -169,6 +169,7 @@ const ProductDetails = () => {
                                     }}
                                     alignItems={"center"}
                                     justifyContent={"center"}
+                                    key={product.productId._id}
                                   >
                                     {product.quantity}
                                   </Stack>

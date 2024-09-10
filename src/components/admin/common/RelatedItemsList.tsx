@@ -52,6 +52,7 @@ const RelatedItemsList = ({
       <Stack flexDirection="row" justifyContent="space-around" flexWrap="wrap">
         {items.map((item: any) => (
           <Link
+            key={item._id}
             component={RouterLink}
             to={`/dashboard/${url}/details/${item._id}`}
             underline="none"

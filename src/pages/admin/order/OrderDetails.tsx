@@ -19,6 +19,8 @@ import MoreOrderDetails from "../../../components/order/MoreOrderDetails";
 import CancelScheduleSendIcon from "@mui/icons-material/CancelScheduleSend";
 import UserOrderDetailsSkeleton from "../../../components/skeleton/user/UserOrderDetailsSkeleton";
 import { Helmet } from "react-helmet";
+import { MutateOptions } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
 
 const OrderDetails = () => {
   const { id } = useParams();
@@ -92,7 +94,7 @@ const OrderDetails = () => {
                       }
                     >
                       {["delivered", "processing", "shipped"].map((status) => (
-                        <MenuItem value={status}>{status}</MenuItem>
+                        <MenuItem value={status} key={status}>{status}</MenuItem>
                       ))}
                     </Select>
                   )}
@@ -131,7 +133,19 @@ const OrderDetails = () => {
                 <OrderDetailsComp products={order.products} admin={true} />
               </Paper>
               <MoreOrderDetails
-                cancelOrder={cancelOrder}
+                cancelOrder={
+                  cancelOrder as (
+                    variables: any,
+                    options?:
+                      | MutateOptions<
+                          AxiosResponse<any, any>,
+                          any,
+                          any,
+                          unknown
+                        >
+                      | undefined
+                  ) => void
+                }
                 order={order}
                 isPendingCancel={isPendingCancel}
                 open={open}

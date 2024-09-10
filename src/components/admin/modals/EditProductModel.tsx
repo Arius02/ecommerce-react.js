@@ -9,15 +9,16 @@ import {
   MenuItem,
   Skeleton,
   FormHelperText,
-  Stack,
-  Button
 } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as React from "react";
-import { QueryObserverResult, RefetchOptions, useQuery } from "@tanstack/react-query";
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  useQuery,
+} from "@tanstack/react-query";
 import fetchData from "../../../utils/fetchData.ts";
 import { editProductSchema } from "../../../validation/peoduct.validator.ts";
 import useMutationHook from "../../../hooks/useMutationHook.tsx";
@@ -25,17 +26,18 @@ import style from "../../../utils/modalStyle.ts";
 import UpdateMultipleImages from "../product/UpdateMultipleImages.tsx";
 import UploadImage from "../common/UploadImage.tsx";
 import SnackbarComponent from "../../common/SnackBar.tsx";
+import Footer from "./Footer.tsx";
 type Props = {
-    open:boolean;
-    setOpen:React.Dispatch<React.SetStateAction<boolean>>
-    product:any;
-    refetch: (
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  product: any;
+  refetch: (
     options?: RefetchOptions | undefined
   ) => Promise<QueryObserverResult<any, Error>>;
-}
+};
 
 // TODO refactor
-const EditProductModal = ({open,setOpen, product,refetch}:Props) => {
+const EditProductModal = ({ open, setOpen, product, refetch }: Props) => {
   const [snack, setSnack] = React.useState<SnackbarType>({
     open: false,
     message: "",
@@ -54,13 +56,15 @@ const EditProductModal = ({open,setOpen, product,refetch}:Props) => {
       brandId: product.brand?._id,
       categoryId: product.category?.categoryId._id,
       subCategoryId: product.subCategory?.subCategoryId._id,
-      desc:product.desc,
-      name:product.name,
-      price:product.price,
-      stock:product.stock
+      desc: product.desc,
+      name: product.name,
+      price: product.price,
+      stock: product.stock,
     },
   });
-  const [imageUrl, setImageUrl] = React.useState(product.coverImage?.secure_url);
+  const [imageUrl, setImageUrl] = React.useState(
+    product.coverImage?.secure_url
+  );
   const coverImage = watch("coverImage");
   React.useEffect(() => {
     if (coverImage?.length > 0) {
@@ -69,12 +73,12 @@ const EditProductModal = ({open,setOpen, product,refetch}:Props) => {
   }, [coverImage]);
 
   const { mutate: editProduct, isPending } = useMutationHook({
-    url:   `/product/${product._id}`,
+    url: `/product/${product._id}`,
     method: "PUT",
     message: "Product Updated Successfully.",
     setSnack,
     refetch,
-    setOpen
+    setOpen,
   });
   const { data: classifications, isPending: isClassificationsLoading } =
     useQuery({
@@ -102,17 +106,16 @@ const EditProductModal = ({open,setOpen, product,refetch}:Props) => {
   const [imagesToDelete, setImagesToDelete] = React.useState<string[]>([]);
   const onSubmit = (data: AddProductType) => {
     const formData = new FormData();
-    const updatedKeys:any={}
-  if (data.hasOwnProperty("images")) {
-    updatedKeys.images = data.images;
-    for (const image of updatedKeys.images) {
-      formData.append("images", image);
+    const updatedKeys: any = {};
+    if (data.hasOwnProperty("images")) {
+      updatedKeys.images = data.images;
+      for (const image of updatedKeys.images) {
+        formData.append("images", image);
+      }
+      formData.append("imagesToDelete", `${imagesToDelete}`);
     }
-            formData.append("imagesToDelete",`${imagesToDelete}`)
-
-  }
     if (data.hasOwnProperty("coverImage")) {
-            updatedKeys.coverImage = data.coverImage;
+      updatedKeys.coverImage = data.coverImage;
       formData.append("coverImage", updatedKeys.coverImage[0]);
     }
     const keys = [
@@ -126,33 +129,29 @@ const EditProductModal = ({open,setOpen, product,refetch}:Props) => {
       "appliedDiscount",
     ];
     for (const key of keys) {
-        if(data[key]!==product[key]){
-            if(key=="categoryId"){
-                if (data.categoryId != product.category?.categoryId._id) {
-                  updatedKeys.categoryId = data.categoryId;
-                  formData.append(key, updatedKeys.categoryId);
-                }    
-            }
-             else if (key == "subCategoryId") {
-            
-               if (data.subCategoryId != product.subCategory?.subCategoryId.id) {
-                 updatedKeys.subCategoryId = data.subCategoryId;
-                 formData.append(key, updatedKeys.subCategoryId);
-               }
-             }
-              else if (key == "brandId") {
-                if (data.brandId != product.brand?._id) {
-                       updatedKeys.brandId = data.brandId;
-                       formData.append(key, updatedKeys.brandId);
-                }
-              }else{
-                  updatedKeys[key]=data[key]
-                  formData.append(key, updatedKeys[key]);
-              }
+      if (data[key] !== product[key]) {
+        if (key == "categoryId") {
+          if (data.categoryId != product.category?.categoryId._id) {
+            updatedKeys.categoryId = data.categoryId;
+            formData.append(key, updatedKeys.categoryId);
+          }
+        } else if (key == "subCategoryId") {
+          if (data.subCategoryId != product.subCategory?.subCategoryId.id) {
+            updatedKeys.subCategoryId = data.subCategoryId;
+            formData.append(key, updatedKeys.subCategoryId);
+          }
+        } else if (key == "brandId") {
+          if (data.brandId != product.brand?._id) {
+            updatedKeys.brandId = data.brandId;
+            formData.append(key, updatedKeys.brandId);
+          }
+        } else {
+          updatedKeys[key] = data[key];
+          formData.append(key, updatedKeys[key]);
         }
+      }
     }
-    if(Object.keys(updatedKeys).length)
-    editProduct(formData);
+    if (Object.keys(updatedKeys).length) editProduct(formData);
   };
   return (
     <>
@@ -162,7 +161,18 @@ const EditProductModal = ({open,setOpen, product,refetch}:Props) => {
         aria-labelledby="edit-modal-title"
         aria-describedby="edit-modal-description"
       >
-        <Box sx={{...style,width:{md:"60%",sm:"75%",xs:"98%",overflowY:"scroll",height:"100%"}}}>
+        <Box
+          sx={{
+            ...style,
+            width: {
+              md: "60%",
+              sm: "75%",
+              xs: "98%",
+              overflowY: "scroll",
+              height: "100%",
+            },
+          }}
+        >
           <Typography id="edit-modal-title" variant="h6" component="h2">
             Edit Product
           </Typography>
@@ -172,7 +182,6 @@ const EditProductModal = ({open,setOpen, product,refetch}:Props) => {
               rowSpacing={1}
               columnSpacing={{ xs: 1, sm: 2 }}
               sx={{ mt: 4 }}
-              // gap{1}
             >
               <Grid xs={12}>
                 <TextField
@@ -367,24 +376,7 @@ const EditProductModal = ({open,setOpen, product,refetch}:Props) => {
                 )}
               </Grid>
             </Grid>
-            <Stack flexDirection="row" justifyContent="flex-end" mt={2}>
-              <Button
-                variant="text"
-                onClick={() => setOpen(false)}
-                color={"error"}
-              >
-                Cancel
-              </Button>
-              <LoadingButton
-                type="submit"
-                loading={isPending}
-                variant="contained"
-                color="primary"
-                sx={{ ml: 1 }}
-              >
-                Update
-              </LoadingButton>
-            </Stack>
+            <Footer onClickFn={() => setOpen(false)} isPending={isPending} />
           </form>
         </Box>
       </Modal>

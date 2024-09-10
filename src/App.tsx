@@ -44,13 +44,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "./app.css";
-import { useContext, useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { pink } from "@mui/material/colors";
-import { AppContext } from "./context/AppContext";
 import systemRoles from "./utils/systemRoles";
 import { AuthRouter, NotAuthRouter } from "./components";
 import { DashboardStatistics } from "./components/admin";
+import ShowNav from "./components/ShowNav";
 const App = () => {
   const queryClient = new QueryClient();
   const router = createHashRouter([
@@ -303,19 +302,7 @@ const App = () => {
       element: <Notfound />,
     },
   ]);
-  const { show, setShow } = useContext(AppContext);
-  setShow(window.innerWidth <= 900 ? true : false);
-  const handleShow = () => {
-    if (window.innerWidth <= 900) {
-      setShow(true);
-    } else {
-      setShow(false);
-    }
-  };
-  useEffect(() => {
-    window.addEventListener("resize", handleShow);
-    return () => window.removeEventListener("resize", handleShow);
-  }, [show]);
+
 
   const theme = createTheme({
     palette: {
@@ -330,6 +317,7 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <RouterProvider router={router} />
       </ThemeProvider>
+      <ShowNav/>
     </QueryClientProvider>
   );
 };

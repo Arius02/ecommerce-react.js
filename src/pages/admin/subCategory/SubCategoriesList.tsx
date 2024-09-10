@@ -118,8 +118,7 @@ const SubCategoriesList = () => {
       </Typography>
       <MaterialReactTable
         columns={columns}
-        data={cateegories ?? []} //data is undefined on first render
-        // enableFilters={false}
+        data={cateegories ?? []}
         manualFiltering
         manualPagination
         enablePagination

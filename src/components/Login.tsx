@@ -23,7 +23,7 @@ import { loginSchema } from "../validation/auth.validator";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import SnackbarComponent from "./common/SnackBar";
 import useAuthMutationHook from "../hooks/useAuthMutationHook";
-import decode from "../utils/decode";
+import decodeToken from "../utils/decodeToken";
 import useCartQueryHook from "../hooks/useCartQueryHook";
 import useCartMutationHook from "../hooks/useCartMutationHook";
 
@@ -89,7 +89,7 @@ const Login = ({ to }: Props) => {
   });
   useEffect(() => {
     if (data?.data.token) {
-      const { _id: userId } = decode(data.data.token);
+      const { _id: userId } = decodeToken(data.data.token);
       if (cart && localStorage.getItem("cartId") ) {
         mergeCart({
           userId,
@@ -102,7 +102,6 @@ const Login = ({ to }: Props) => {
     <Box
       bgcolor={to ? "transparent" : grey[100]}
       p={to ? 0 : 3}
-      height={{ md: "100vh", xs: to ? "auto" : "100vh" }}
     >
       <Stack alignItems={"center"} gap={3}>
         <img src={logo} style={{ width: "100px" }} loading="lazy" />

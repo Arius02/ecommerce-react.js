@@ -15,7 +15,12 @@ type Props = {
   setLoadingIndecator?: Dispatch<SetStateAction<string>>;
 };
 
-const useCartMutationHook = ({ url, method, setLoadingIndecator,refetch }: Props) => {
+const useCartMutationHook = ({
+  url,
+  method,
+  setLoadingIndecator,
+  refetch,
+}: Props) => {
   const isTokenPresent = Boolean(localStorage.getItem("token"));
   const isCartIdPresent = Boolean(localStorage.getItem("cartId"));
 
@@ -44,7 +49,6 @@ const useCartMutationHook = ({ url, method, setLoadingIndecator,refetch }: Props
       return fetchData(options);
     },
     onSuccess: (data: any) => {
-      
       if (customUrl == "/cart/guest" && method == "POST") {
         localStorage.setItem("cartId", data.data.cart._id);
       }
@@ -52,7 +56,7 @@ const useCartMutationHook = ({ url, method, setLoadingIndecator,refetch }: Props
         localStorage.removeItem("cartId");
       }
       setLoadingIndecator && setLoadingIndecator("");
-       refetch()
+      refetch();
     },
     onError: () => {
       setLoadingIndecator && setLoadingIndecator("");

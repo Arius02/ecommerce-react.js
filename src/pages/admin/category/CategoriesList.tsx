@@ -85,11 +85,6 @@ const CategoriesList = () => {
             />
           ),
         },
-        // {
-        //   accessorKey: "createdBy",
-        //   header:"Created By",
-
-        // }
       ],
       []
     );
@@ -108,7 +103,7 @@ const CategoriesList = () => {
       </Typography>
       <MaterialReactTable
         columns={columns}
-        data={categories ?? []} //data is undefined on first render
+        data={categories ?? []} 
         enableFilters={false}
         manualFiltering
         manualPagination

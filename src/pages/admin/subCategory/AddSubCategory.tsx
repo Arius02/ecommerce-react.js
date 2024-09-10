@@ -2,6 +2,7 @@ import { addSubCategorySchema } from "../../../validation/subCategory.validator.
 import * as React from "react";
 import useMutationHook from "../../../hooks/useMutationHook.tsx";
 import { AddItem } from "../../../components/admin/index.ts";
+import { UseMutateFunction } from "@tanstack/react-query";
 
 const AddSubCategory = () => {
 
@@ -20,7 +21,7 @@ const AddSubCategory = () => {
 
   return (
     <AddItem
-      addItem={addSubCategory}
+      addItem={addSubCategory as UseMutateFunction<any, any, any, any>}
       isPending={isPending}
       name="Sub Category"
       schema={addSubCategorySchema}

@@ -1,16 +1,16 @@
+import React from "react";
 import {
   Typography,
   Stack,
   IconButton,
   Box,
+  FormControl,
+  FormHelperText,
 } from "@mui/material";
-
-import * as React from "react";
-import { styled } from "@mui/material";
-import FormHelperText from "@mui/material/FormHelperText";
-import FormControl from "@mui/material/FormControl";
-import { UseFormSetValue, UseFormRegister } from "react-hook-form";
+import { styled } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
+import { UseFormSetValue, UseFormRegister } from "react-hook-form";
+
 type Props = {
   errors: any;
   register: UseFormRegister<any>;
@@ -20,76 +20,75 @@ type Props = {
   setImagesToDelete: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-const UpdateMultipleImages = ({
+const VisuallyHiddenInput = styled("input")({
+  position: "absolute",
+  inset: 0,
+  opacity: 0,
+  cursor: "pointer",
+});
+
+const UpdateMultipleImages: React.FC<Props> = ({
   errors,
   setValue,
   setSnack,
   images,
   setImagesToDelete,
-}: Props) => {
+}) => {
   const [imagesArr, setImagesArr] = React.useState<any[]>(images);
-  // const [imagesTo]
 
-  const VisuallyHiddenInput = styled("input")({
-    position: "absolute",
-    inset: 0,
-    opacity: 0,
-    cursor: "pointer",
-  });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const images = e.target.files;
+    const newImages = e.target.files;
 
-    if (images) {
-      if (images?.length > 3 || images?.length + imagesArr.length > 3) {
+    if (newImages) {
+      const totalImages = newImages.length + imagesArr.length;
+      if (newImages.length > 3 || totalImages > 3) {
         return setSnack({
           message: "You can upload only 3 images",
           open: true,
           severity: "error",
         });
       }
-      const convertedFilesToUrl = Array.from(images).map((image: File) => {
-        return {
-          secure_url: URL.createObjectURL(image),
-        };
-      });
-      setValue("images", images);
 
-      setImagesArr((prevImsetImagesArr: any) => [
-        ...prevImsetImagesArr,
-        ...convertedFilesToUrl,
-      ]);
+      const convertedFilesToUrl = Array.from(newImages).map((image: File) => ({
+        secure_url: URL.createObjectURL(image),
+      }));
+
+      setValue("images", newImages);
+      setImagesArr((prevImages) => [...prevImages, ...convertedFilesToUrl]);
     }
   };
-  React.useEffect(() => {}, [imagesArr]);
+
   const removeImage = (imageToDelete: any) => {
     if (imageToDelete.public_id) {
-      setImagesToDelete((prev)=>[...prev,imageToDelete.public_id]);
-      console.log(imageToDelete);
+      setImagesToDelete((prev) => [...prev, imageToDelete.public_id]);
     }
+
     const newImagesArr = imagesArr.filter(
-      (image: any) => imageToDelete.secure_url !== image.secure_url
+      (image) => image.secure_url !== imageToDelete.secure_url
     );
     setImagesArr(newImagesArr);
   };
+
   return (
     <FormControl error={!!errors.images} sx={{ width: "100%" }}>
       {imagesArr.length > 0 && (
         <Stack
-          flexDirection={"row"}
-          justifyContent={"space-around"}
+          flexDirection="row"
+          justifyContent="space-around"
           my={3}
-          flexWrap={"wrap"}
+          flexWrap="wrap"
         >
           {imagesArr.map((image) => (
-            <Box sx={{ position: "relative" ,width:{md:"100px",xs:"50px"}}} key={image.secure_url}>
-              <img
-                src={image.secure_url}
-                style={{ width: "100%" }}
-              />
+            <Box
+              key={image.secure_url}
+              sx={{
+                position: "relative",
+                width: { md: "100px", xs: "50px" },
+              }}
+            >
+              <img src={image.secure_url} alt="" style={{ width: "100%" }} />
               <IconButton
-                onClick={() => {
-                  removeImage(image);
-                }}
+                onClick={() => removeImage(image)}
                 sx={{ position: "absolute", top: 0, right: 0 }}
                 aria-label="delete image"
               >
@@ -99,16 +98,15 @@ const UpdateMultipleImages = ({
           ))}
         </Stack>
       )}
+
       {imagesArr.length < 3 && (
         <Stack
           sx={{
             height:
-              imagesArr.length == 1
+              imagesArr.length === 1
                 ? "100px"
-                : imagesArr.length == 2
+                : imagesArr.length === 2
                 ? "50px"
-                : imagesArr.length == 3
-                ? 0
                 : "200px",
             border: "1px black dashed",
             borderRadius: "5px",
@@ -123,7 +121,7 @@ const UpdateMultipleImages = ({
             variant="body1"
             color="gray"
             fontSize={{ md: "18px", xs: "14px" }}
-            fontWeight="smeibold"
+            fontWeight="semiBold"
           >
             Drag & drop Product Images here or{" "}
             <span style={{ color: "black", fontWeight: "bold" }}>Browse</span>

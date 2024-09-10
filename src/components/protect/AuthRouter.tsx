@@ -9,7 +9,6 @@ type Props = {
 
 const AuthRouter = ({ allowedRoles, children }: Props) => {
   const { auth } = useContext(AppContext);
-  console.log(auth);
   const location = useLocation();
   return allowedRoles.includes(auth?.role || "") ? (
     children

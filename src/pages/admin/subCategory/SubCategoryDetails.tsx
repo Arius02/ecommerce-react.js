@@ -11,7 +11,7 @@ import {
 import useMultiQueryHook from "../../../hooks/useMultiQueryHook";
 import { Helmet } from "react-helmet";
 
-const SubbCategoryDetails = () => {
+const SubCategoryDetails = () => {
   const { id } = useParams();
   const [ProductPage, setProductPage] = React.useState(1);
   const [loadingIndecator, setLoadingIndecator] = useState("all");
@@ -60,4 +60,4 @@ const SubbCategoryDetails = () => {
   );
 };
 
-export default SubbCategoryDetails;
+export default SubCategoryDetails;

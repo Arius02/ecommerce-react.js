@@ -58,7 +58,6 @@ const ProductImagesShow = ({
             border={1}
             borderColor={"pink"}
             onClick={() => {
-              console.log(imgToShow);
               setImgToshow(image.secure_url);
             }}
           >

@@ -3,7 +3,6 @@ import { useMemo, useState } from "react";
 import {
   MaterialReactTable,
   type MRT_ColumnDef,
-  // type MRT_ColumnFiltersState,
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
@@ -29,9 +28,6 @@ import { Helmet } from "react-helmet";
 
 import useMutationHook from "../../../hooks/useMutationHook";
 const ProductsList = () => {
-  // const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-  //   []
-  // );
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
   const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -45,7 +41,7 @@ const ProductsList = () => {
       globalFilter,
       pagination,
       url: "product",
-      queryName: "getProducts", 
+      queryName: "getProducts",
     }
   );
   const { mutate: toggleVisibility } = useMutationHook({
@@ -227,9 +223,8 @@ const ProductsList = () => {
       </Typography>
       <MaterialReactTable
         columns={columns}
-        data={data?.products ?? []} //data is undefined on first render
-        // enableFilters={false}
-        pageCount={5}
+        data={data?.products ?? []}
+        pageCount={data?.totalPages ?? 0}
         muiPaginationProps={{
           showLastButton: true,
         }}

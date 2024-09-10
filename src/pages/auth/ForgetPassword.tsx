@@ -42,7 +42,6 @@ const ForgetPassword = () => {
     method: "PATCH",
     message: "Logged In Successfully.",
     setSnack,
-    // handleNavigate,
   });
   const onSubmit = (data: LoginType) => {
     sendEmail(data);

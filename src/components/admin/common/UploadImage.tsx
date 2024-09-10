@@ -1,43 +1,51 @@
-import {  Typography, Stack, Button, IconButton} from "@mui/material";
+import {
+  Typography,
+  Stack,
+  Button,
+  IconButton,
+  FormHelperText,
+  FormControl,
+} from "@mui/material";
 import * as React from "react";
-import {styled} from "@mui/material"
+import { styled } from "@mui/material";
 import { blueGrey, grey } from "@mui/material/colors";
-import FormHelperText from "@mui/material/FormHelperText"
-import FormControl from "@mui/material/FormControl";
-import {UseFormSetValue,UseFormRegister} from "react-hook-form"
+import { UseFormSetValue, UseFormRegister } from "react-hook-form";
 import CloseIcon from "@mui/icons-material/Close";
+
 type Props = {
-    imageUrl:string;
-    errors:any;
-    errorName:string;
-    name:string;
-    register: UseFormRegister<any>;
-    setValue:UseFormSetValue<any>;
-    setImageUrl:React.Dispatch<React.SetStateAction<string>>
-}
-const UploadImage = ({ imageUrl,
-    errors,
-    errorName,
-    name,
-    register,
-    setValue,
-    setImageUrl}: Props) => {
-    const VisuallyHiddenInput = styled("input")({
-      position: "absolute",
-      inset:0,
-      opacity:0,
-      
-    });
+  imageUrl: string;
+  errors: Record<string, any>;
+  errorName: string;
+  name: string;
+  register: UseFormRegister<any>;
+  setValue: UseFormSetValue<any>;
+  setImageUrl: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const VisuallyHiddenInput = styled("input")({
+  position: "absolute",
+  inset: 0,
+  opacity: 0,
+});
+
+const UploadImage: React.FC<Props> = ({
+  imageUrl,
+  errors,
+  errorName,
+  name,
+  register,
+  setValue,
+  setImageUrl,
+}) => {
   return (
     <FormControl error={!!errors[errorName]} sx={{ width: "100%" }}>
-      {imageUrl == "" ? (
+      {imageUrl === "" ? (
         <Stack
           sx={{
             height: "200px",
             backgroundColor: blueGrey[50],
             borderRadius: "5px",
             position: "relative",
-
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
@@ -48,7 +56,7 @@ const UploadImage = ({ imageUrl,
             variant="body1"
             color="gray"
             fontSize={{ md: "18px", xs: "11px" }}
-            fontWeight="smeibold"
+            fontWeight="semibold"
           >
             Drag & drop {name} image here
           </Typography>
@@ -84,11 +92,7 @@ const UploadImage = ({ imageUrl,
             OR
           </Typography>
           <VisuallyHiddenInput type="file" {...register(errorName)} />
-          <Button
-            variant="outlined"
-            sx={{ fontSize: { md: "14px", xs: "12px" } }}
-            // onClick={()=>}
-          >
+          <Button variant="outlined" sx={{ fontSize: { md: "14px", xs: "12px" } }}>
             Select Image
           </Button>
         </Stack>
@@ -110,7 +114,7 @@ const UploadImage = ({ imageUrl,
           >
             <CloseIcon />
           </IconButton>
-          <img src={imageUrl} style={{ width: "50%" }} />
+          <img src={imageUrl} style={{ width: "50%" }} alt={`${name} preview`} />
         </Stack>
       )}
       {errors[errorName] && (
@@ -118,6 +122,6 @@ const UploadImage = ({ imageUrl,
       )}
     </FormControl>
   );
-}
+};
 
-export default UploadImage
+export default UploadImage;

@@ -52,7 +52,6 @@ const ProductCard = ({
   loadingIndecator,
   setLoadingIndecator,
   reduceFromCart,
-  
 }: Props) => {
   const handleClick = (data: any) => {
     AddToCart(data);
@@ -140,7 +139,7 @@ const ProductCard = ({
             auth.role != systemRoles.SuperAdmin &&
             auth.role != systemRoles.Admin && (
               <Stack
-                gap={2}
+                gap={1}
                 justifyContent={"center"}
                 alignItems="center"
                 sx={{ position: "absolute", bottom: 24, right: 10 }}
@@ -149,7 +148,15 @@ const ProductCard = ({
                   cart.products
                     .filter((item: any) => item.productId._id === product._id)
                     .map((item: any) => (
-                      <>
+                      <div
+                        key={item.productId._id}
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          gap: 10,
+                        }}
+                      >
                         <IconButton
                           aria-label="reduce quantity"
                           color="secondary"
@@ -160,6 +167,7 @@ const ProductCard = ({
                               productId: item.productId._id,
                             });
                           }}
+                          disabled={loadingIndecator === product._id}
                         >
                           <RemoveIcon />
                         </IconButton>
@@ -177,7 +185,7 @@ const ProductCard = ({
                             }}
                           />
                         )}
-                      </>
+                      </div>
                     ))}
 
                 <IconButton
@@ -188,6 +196,7 @@ const ProductCard = ({
                     setLoadingIndecator(product._id);
                     handleClick({ productId: product._id, quantity: 1 });
                   }}
+                  disabled={loadingIndecator === product._id}
                 >
                   <AddIcon />
                 </IconButton>

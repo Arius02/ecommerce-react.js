@@ -83,11 +83,6 @@ const BrandsList = () => {
           />
         ),
       },
-      // {
-      //   accessorKey: "createdBy",
-      //   header:"Created By",
-
-      // }
     ],
     []
   );
@@ -106,8 +101,7 @@ const BrandsList = () => {
       </Typography>
       <MaterialReactTable
         columns={columns}
-        data={brands ?? []} //data is undefined on first render
-        // enableFilters={false}
+        data={brands ?? []}
         manualFiltering
         manualPagination
         enablePagination

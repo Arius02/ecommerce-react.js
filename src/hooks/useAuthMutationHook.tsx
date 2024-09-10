@@ -6,9 +6,9 @@ import {
 } from "@tanstack/react-query";
 import fetchData from "../utils/fetchData";
 import { Dispatch, SetStateAction, useContext } from "react";
-import decode from "../utils/decode";
 import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
+import decodeToken from "../utils/decodeToken";
 type Props = {
   url: string;
   method: string;
@@ -44,9 +44,9 @@ const useAuthMutationHook = ({
           message: message || "",
           severity: "success",
         });
-      if (data.data.token) {
+      if (data?.data.token) {
         localStorage.setItem("token", data.data.token);
-        setAuth(decode(localStorage.getItem("token") as string));
+        setAuth(decodeToken(localStorage.getItem("token") as string));
         setAuthDialog({
           open: false,
           to: "",

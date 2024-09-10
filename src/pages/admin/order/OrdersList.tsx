@@ -135,7 +135,7 @@ const OrdersList = () => {
       </Typography>
       <MaterialReactTable
         columns={columns}
-        data={orders ?? []} //data is undefined on first render
+        data={orders ?? []}
         manualFiltering
         manualPagination
         enablePagination

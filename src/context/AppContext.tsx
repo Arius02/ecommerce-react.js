@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, createContext } from "react";
-import decode from "../utils/decode";
+import decodeToken from "../utils/decodeToken";
 
 type AppContext = {
   show: boolean;
@@ -32,7 +32,7 @@ const AppProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [show, setShow] = React.useState(false);
   const [openUserDashboard, setOpenUserDashboard] = React.useState(false);
   const [auth, setAuth] = React.useState(
-    decode(localStorage.getItem("token") || "")
+    decodeToken(localStorage.getItem("token") || "")
   );
   const [authDialog, setAuthDialog] = React.useState({
     open:false,

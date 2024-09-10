@@ -48,6 +48,7 @@ const BrandFilterMenu = ({
       {brands &&
         brands.map((brand: any) => (
           <MenuItem
+            key={brand._id}
             onClick={() => {
               setPage(1);
               setFilterWord(brand._id);

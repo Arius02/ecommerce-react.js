@@ -36,7 +36,7 @@ const Home = () => {
       </Helmet>
       <BigOffersCarousels />
       <Container maxWidth="xl">
-        <Box my={4} px={{ md: 5, xs: 1 }}>
+        <Box mt={4} pb={4} px={{ md: 5, xs: 1 }}>
           <TopRated />
           <NewArrivals />
           <BigDiscountCarousels />
