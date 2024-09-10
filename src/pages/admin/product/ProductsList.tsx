@@ -45,7 +45,7 @@ const ProductsList = () => {
       globalFilter,
       pagination,
       url: "product",
-      queryName: "getProducts", 
+      queryName: "getProducts",
     }
   );
   const { mutate: toggleVisibility } = useMutationHook({
@@ -227,9 +227,8 @@ const ProductsList = () => {
       </Typography>
       <MaterialReactTable
         columns={columns}
-        data={data?.products ?? []} //data is undefined on first render
-        // enableFilters={false}
-        pageCount={5}
+        data={data?.products ?? []}
+        pageCount={data?.totalPages ?? 0}
         muiPaginationProps={{
           showLastButton: true,
         }}

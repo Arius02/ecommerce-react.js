@@ -37,6 +37,7 @@ const BrandFiltersBox = ({
       {brands &&
         brands.map((brand: any) => (
           <Stack
+            key={brand._id}
             sx={{
               backgroundColor: filterWord == "apple" ? "white" : grey[100],
               boxShadow:

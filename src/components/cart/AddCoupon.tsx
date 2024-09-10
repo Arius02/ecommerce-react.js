@@ -69,6 +69,7 @@ const AddCoupon = ({ couponCode, setCouponCode, refetch }: Props) => {
     refetch,
     message: "Coupon Added.",
     setSnack,
+    
   });
   return (
     <>

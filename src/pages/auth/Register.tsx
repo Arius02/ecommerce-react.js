@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Container,
   Stack,
@@ -15,30 +15,28 @@ import {
   Link,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import logo from "../../assets/logo2.svg"
-import { blueGrey, grey } from '@mui/material/colors';
+import logo from "../../assets/logo2.svg";
+import { blueGrey, grey } from "@mui/material/colors";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm,  } from "react-hook-form";
-import { registerSchema } from '../../validation/auth.validator';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import useAuthMutationHook from '../../hooks/useAuthMutationHook';
-import SnackbarComponent from '../../components/common/SnackBar';
+import { useForm } from "react-hook-form";
+import { registerSchema } from "../../validation/auth.validator";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import useAuthMutationHook from "../../hooks/useAuthMutationHook";
+import SnackbarComponent from "../../components/common/SnackBar";
 import { Helmet } from "react-helmet";
 
-
-
 const Register = () => {
-      const [showPassword, setShowPassword] = React.useState(false);
-      const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-      const handleMouseDownPassword = (
-   event: React.MouseEvent<HTMLButtonElement>
- ) => {
-   event.preventDefault();
- };
- const navigate= useNavigate()
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
@@ -51,19 +49,19 @@ const Register = () => {
     message: "",
     severity: "success",
   });
-  const handleNavigate=()=>{
-    navigate("/auth/login")
-  }
-   const { mutate: createAccount, isPending } = useAuthMutationHook({
-     url: "/auth/signup",
-     method: "POST",
-     message: "Account Created Successfully.",
-     setSnack,
-     handleNavigate,
-   });
-  const onSubmit=(data:RgisterType)=>{
+  const handleNavigate = () => {
+    navigate("/auth/login");
+  };
+  const { mutate: createAccount, isPending } = useAuthMutationHook({
+    url: "/auth/signup",
+    method: "POST",
+    message: "Account Created Successfully.",
+    setSnack,
+    handleNavigate,
+  });
+  const onSubmit = (data: RgisterType) => {
     createAccount(data);
-  }
+  };
 
   return (
     <>
@@ -71,7 +69,7 @@ const Register = () => {
         <title>Register</title>
       </Helmet>
       <Box bgcolor={grey[100]}>
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" sx={{ minHeight: "100vh" }}>
           <Paper sx={{ py: 3, px: { md: 7, xs: 2 } }}>
             <Stack alignItems={"center"} gap={3}>
               <img src={logo} style={{ width: "100px" }} loading="lazy" />
@@ -193,6 +191,6 @@ const Register = () => {
       </Box>
     </>
   );
-}
+};
 
-export default Register
+export default Register;

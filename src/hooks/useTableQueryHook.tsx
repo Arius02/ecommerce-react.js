@@ -8,9 +8,9 @@ type Props = {
   sorting: MRT_SortingState;
   globalFilter: string;
   pagination: MRT_PaginationState;
-  url:string;
-  selectedProp?:string;
-  queryName:string
+  url: string;
+  selectedProp?: string;
+  queryName: string;
 };
 
 const useTableQueryHook = ({
@@ -19,19 +19,19 @@ const useTableQueryHook = ({
   pagination,
   url,
   selectedProp,
-  queryName
+  queryName,
 }: Props) => {
   return useQuery({
     queryKey: [
       queryName,
       globalFilter, //refetch when globalFilter changes
-      pagination.pageIndex, //refetch when pagination.pageIndex changes
-      pagination.pageSize, //refetch when pagination.pageSize changes
-      sorting, //refetch when sorting changes
+      pagination.pageIndex,
+      pagination.pageSize,
+      sorting,
     ],
     queryFn: async () => {
       const res: any = await fetchData({
-        url: `/${url}?page=${pagination.pageIndex}&size=${
+        url: `/${url}?page=${pagination.pageIndex+1}&size=${
           pagination.pageSize
         }&search=${globalFilter ? globalFilter : ""}&sort=${sorting
           .map((s) => `${s.desc ? "-" : ""}${s.id}`)
@@ -39,7 +39,7 @@ const useTableQueryHook = ({
         method: "GET",
         token: localStorage.getItem("token") || "",
       });
-      return selectedProp&&res.data[selectedProp] || res.data;
+      return (selectedProp && res.data[selectedProp]) || res.data;
     },
     refetchOnWindowFocus: false,
     refetchOnMount: false,

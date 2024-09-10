@@ -27,10 +27,6 @@ type Props = {
 }    
 
 const ProductReviews = ({id}: Props) => {
-
-  //  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-  //    []
-  //  );
    const [globalFilter, setGlobalFilter] = useState("");
    const [sorting, setSorting] = useState<MRT_SortingState>([]);
    const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -110,10 +106,7 @@ const ProductReviews = ({id}: Props) => {
   return <>
     <MaterialReactTable
       columns={columns}
-      data={cateegories ?? []} //data is undefined on first render
-      // initialState={{ showColumnFilters: true }}
-      // manualFiltering
-      // enableFilters={false}
+      data={cateegories ?? []}
       manualPagination
       enablePagination
       manualSorting

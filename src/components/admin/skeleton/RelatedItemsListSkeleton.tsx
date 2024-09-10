@@ -3,7 +3,7 @@
 import {
   Box,
   Stack,
- 
+
   Skeleton,
 } from "@mui/material";
 const RelatedItemsListSkeleton = () => {

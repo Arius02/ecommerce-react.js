@@ -1,40 +1,45 @@
 import useMultiQueryHook from "../../../hooks/useMultiQueryHook";
 import { useParams } from "react-router-dom";
 import { Box, Stack, Typography, Tooltip, Link } from "@mui/material";
-import { grey} from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import { Link as RouterLink } from "react-router-dom";
 import dayjs from "dayjs";
 import { ProductReviews } from "../../../components/admin";
-import {Helmet} from "react-helmet"
+import { Helmet } from "react-helmet";
+import { useCallback } from "react";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { data: product } = useMultiQueryHook({
-    queries: ["getProduct"],
+    queries: ["getProduct", id || 0],
     url: `/product/${id}`,
     selectedProp: "product",
   });
 
-  const Calssifications = (name:string,url:string,calssification: any) => (
-    <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
-      <Typography>{name}:</Typography>{" "}
-      <Tooltip title="Visit">
-        <Link
-          component={RouterLink}
-          underline="none"
-          color="black"
-          to={`/dashboard/${url}/details/${calssification._id}`}
-          fontWeight={"bold"}
-        >
-          {calssification.name}
-        </Link>
-      </Tooltip>{" "}
-    </Stack>
+  const Classifications = useCallback(
+    (name: string, url: string, classification: any) => (
+      <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
+        <Typography>{name}:</Typography>
+        <Tooltip title="Visit">
+          <Link
+            component={RouterLink}
+            underline="none"
+            color="black"
+            to={`/dashboard/${url}/details/${classification._id}`}
+            fontWeight={"bold"}
+          >
+            {classification?.name}
+          </Link>
+        </Tooltip>
+      </Stack>
+    ),
+    []
   );
+
   return (
     <>
       <Helmet>
-        <title>{product?.neme || "Product Details"}</title>
+        <title>{product?.name || "Product Details"}</title>
       </Helmet>
       {product && (
         <Box>
@@ -51,112 +56,60 @@ const ProductDetails = () => {
                 fontWeight="bold"
                 textTransform={"capitalize"}
               >
-                {product.name}
+                {product?.name}
               </Typography>
-              <Typography
-                fontWeight={"medium"}
-                fontSize={{ md: "20px", xs: "18px" }}
-                mt={2}
-                pl={1}
-              >
-                Main Details:
-              </Typography>
+              <SectionTitle title="Main Details" />
               <Box pl={2}>
-                <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
-                  <Typography>Slug:</Typography>
-                  <Typography fontWeight={"bold"}>{product.slug}</Typography>
-                </Stack>
-                <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
-                  <Typography>Created At:</Typography>
-                  <Typography fontWeight={"bold"}>
-                    {dayjs(product.createdAt).format("DD/MM/YYYY")}
-                  </Typography>
-                </Stack>
-                <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
-                  <Typography>Created By:</Typography>
-                  <Tooltip title={product.createdBy}>
-                    <Typography fontWeight={"bold"} fontSize="14px">
-                      {product.createdBy.slice(0, 9)}...
-                    </Typography>
-                  </Tooltip>
-                </Stack>
-                <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
-                  <Typography>Last Updated At:</Typography>
-                  <Typography fontWeight={"bold"}>
-                    {dayjs(product.updatedAt).format("DD/MM/YYYY")}
-                  </Typography>
-                </Stack>
+                <DetailRow label="Slug" value={product?.slug} />
+                <DetailRow
+                  label="Created At"
+                  value={dayjs(product?.createdAt).format("DD/MM/YYYY")}
+                />
+                <DetailRow
+                  label="Created By"
+                  value={
+                    <Tooltip title={product?.createdBy}>
+                      <Typography fontWeight={"bold"} fontSize="14px">
+                        {product?.createdBy?.slice(0, 9)}...
+                      </Typography>
+                    </Tooltip>
+                  }
+                />
+                <DetailRow
+                  label="Last Updated At"
+                  value={dayjs(product?.updatedAt).format("DD/MM/YYYY")}
+                />
               </Box>
-              <Typography
-                fontWeight={"medium"}
-                fontSize={{ md: "20px", xs: "18px" }}
-                mt={2}
-                pl={1}
-              >
-                Calssifications:
-              </Typography>
+              <SectionTitle title="Classifications" />
               <Box pl={2}>
-                {Calssifications(
+                {Classifications(
                   "Category",
                   "category",
-                  product.category.categoryId
+                  product?.category?.categoryId
                 )}
-                {Calssifications(
+                {Classifications(
                   "Sub Category",
                   "subCategory",
-                  product.subCategory.subCategoryId
+                  product?.subCategory?.subCategoryId
                 )}
-                {Calssifications("Brand", "brand", product.brand)}
+                {Classifications("Brand", "brand", product?.brand)}
               </Box>
-              <Typography
-                fontWeight={"medium"}
-                fontSize={{ md: "20px", xs: "18px" }}
-                mt={2}
-                pl={1}
-              >
-                Pricing:
-              </Typography>
+              <SectionTitle title="Pricing" />
               <Box pl={2}>
-                <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
-                  <Typography>Price:</Typography>
-                  <Typography fontWeight={"bold"}>
-                    {product.price} EGP
-                  </Typography>
-                </Stack>
-                <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
-                  <Typography>Ppplied Discount:</Typography>
-                  <Typography fontWeight={"bold"}>
-                    {product.appliedDiscount}%
-                  </Typography>
-                </Stack>
-                <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
-                  <Typography>Price After Discount:</Typography>
-                  <Typography fontWeight={"bold"}>
-                    {product.priceAfterDiscount} EGP
-                  </Typography>
-                </Stack>
+                <DetailRow label="Price" value={`${product?.price} EGP`} />
+                <DetailRow
+                  label="Applied Discount"
+                  value={`${product?.appliedDiscount}%`}
+                />
+                <DetailRow
+                  label="Price After Discount"
+                  value={`${product?.priceAfterDiscount} EGP`}
+                />
               </Box>
-              <Typography
-                fontWeight={"medium"}
-                fontSize={{ md: "20px", xs: "18px" }}
-                mt={2}
-                pl={1}
-              >
-                Quantities:
-              </Typography>
+              <SectionTitle title="Quantities" />
               <Box pl={2}>
-                <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
-                  <Typography>Stock:</Typography>
-                  <Typography fontWeight={"bold"}>
-                    {product.stock} Qty
-                  </Typography>
-                </Stack>
-                <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
-                  <Typography>Sold:</Typography>
-                  <Typography fontWeight={"bold"}>
-                    {product.sold} Qty
-                  </Typography>
-                </Stack>
+                <DetailRow label="Stock" value={`${product?.stock} Qty`} />
+                <DetailRow label="Sold" value={`${product?.sold} Qty`} />
               </Box>
             </Stack>
             <Stack
@@ -164,28 +117,22 @@ const ProductDetails = () => {
               width={{ md: "50%", xs: "100%" }}
             >
               <img
-                src={product.coverImage.secure_url}
+                src={product?.coverImage?.secure_url}
                 loading="lazy"
                 style={{ width: "300px", height: "300px" }}
+                alt="Product Cover"
               />
             </Stack>
           </Stack>
           <Box>
-            <Typography
-              fontWeight={"medium"}
-              fontSize={{ md: "20px", xs: "18px" }}
-              mt={2}
-              pl={1}
-            >
-              Product Images:
-            </Typography>
+            <SectionTitle title="Product Images" />
             <Stack
               flexDirection="row"
               justifyContent="space-around"
               flexWrap="wrap"
               mt={2}
             >
-              {product.images.map((image: any) => (
+              {product?.images.map((image: any) => (
                 <Stack
                   key={image.secure_url}
                   alignItems="center"
@@ -199,6 +146,7 @@ const ProductDetails = () => {
                       height: "150px",
                       marginTop: "10px",
                     }}
+                    alt="Product"
                   />
                 </Stack>
               ))}
@@ -206,35 +154,41 @@ const ProductDetails = () => {
           </Box>
 
           <Box my={3}>
-            <Typography
-              fontWeight={"medium"}
-              fontSize={{ md: "20px", xs: "18px" }}
-              mb={2}
-            >
-              Description:
-            </Typography>
+            <SectionTitle title="Description" />
             <Typography
               p={2}
               borderRadius={"5px"}
               sx={{ backgroundColor: grey[200] }}
             >
-              {product.desc}
+              {product?.desc}
             </Typography>
           </Box>
-          <Typography
-            fontWeight={"medium"}
-            fontSize={{ md: "20px", xs: "18px" }}
-            mb={2}
-          >
-            Product Reviews:
-          </Typography>
+          <SectionTitle title="Product Reviews" />
           <Box pl={2}>
-            <ProductReviews id={product._id} />
+            <ProductReviews id={product?._id} />
           </Box>
         </Box>
       )}
     </>
   );
 };
+
+const DetailRow = ({ label, value }: { label: string; value: any }) => (
+  <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
+    <Typography>{label}:</Typography>
+    <Typography fontWeight={"bold"}>{value}</Typography>
+  </Stack>
+);
+
+const SectionTitle = ({ title }: { title: string }) => (
+  <Typography
+    fontWeight={"medium"}
+    fontSize={{ md: "20px", xs: "18px" }}
+    mt={2}
+    pl={1}
+  >
+    {title}:
+  </Typography>
+);
 
 export default ProductDetails;

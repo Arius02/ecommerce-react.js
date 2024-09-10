@@ -1,23 +1,27 @@
-import { TextField, Paper, Typography,   } from "@mui/material";
+import { useState } from "react";
+import {
+  TextField,
+  Paper,
+  Typography,
+  Grid,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import Grid from "@mui/material/Unstable_Grid2";
 import { useForm, Controller } from "react-hook-form";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
-import FormLabel from "@mui/material/FormLabel";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { addCouponSchema } from "../../../validation/coupon.validator.ts";
-import * as React from "react";
-import SnackbarComponent from "../../../components/common/SnackBar.tsx";
-import useMutationHook from "../../../hooks/useMutationHook.tsx";
 import { Helmet } from "react-helmet";
+
+import { addCouponSchema } from "../../../validation/coupon.validator";
+import SnackbarComponent from "../../../components/common/SnackBar";
+import useMutationHook from "../../../hooks/useMutationHook";
+import { useNavigate } from "react-router-dom";
 
 const AddCoupon = () => {
   const {
@@ -25,27 +29,37 @@ const AddCoupon = () => {
     formState: { errors },
     control,
     handleSubmit,
-  } = useForm<AddCouponType>({
-    resolver: yupResolver(addCouponSchema) as any,
+  } = useForm({
+    resolver: yupResolver(addCouponSchema),
   });
-  const [snack, setSnack] = React.useState<SnackbarType>({
+
+  const [snack, setSnack] = useState({
     open: false,
     message: "",
     severity: "success",
   });
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    setTimeout(() => {
+      navigate("/dashboard/coupon");
+    }, 500);
+  };
   const { mutate: addCoupon, isPending } = useMutationHook({
     url: "/coupon",
     method: "POST",
     message: "Coupon Added Successfully.",
     setSnack,
+    handleNavigate,
   });
+
   const onSubmit = (data: any) => {
-   addCoupon({
-     fromDate: new Date(data.fromDate).toISOString,
-     toDate: new Date(data.toDate).toISOString,
-     ...data,
-   });
+    addCoupon({
+      ...data,
+      fromDate: new Date(data.fromDate).toISOString(),
+      toDate: new Date(data.toDate).toISOString(),
+    });
   };
+
   return (
     <>
       <Helmet>
@@ -58,39 +72,39 @@ const AddCoupon = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid
             container
-            rowSpacing={1}
+            rowSpacing={2}
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             sx={{ mt: 4 }}
           >
-            <Grid md={6} xs={12}>
+            <Grid item xs={12} md={6}>
               <TextField
                 label="Coupon Code"
+                fullWidth
                 variant="outlined"
-                sx={{ width: "100%" }}
                 {...register("couponCode")}
                 error={!!errors.couponCode}
-                helperText={errors.couponCode && errors.couponCode.message}
+                helperText={errors.couponCode?.message}
               />
             </Grid>
-            <Grid md={6} xs={12}>
+            <Grid item xs={12} md={6}>
               <TextField
                 label="Usage Limit"
+                fullWidth
                 variant="outlined"
-                sx={{ width: "100%" }}
                 {...register("usageLimit")}
                 error={!!errors.usageLimit}
-                helperText={errors.usageLimit ? errors.usageLimit.message : ""}
+                helperText={errors.usageLimit?.message}
               />
             </Grid>
-            <Grid md={6} xs={12}>
+            <Grid item xs={12} md={6}>
               <Controller
                 name="couponType"
                 control={control}
-                defaultValue={"fixed_amount"}
+                defaultValue="fixed_amount"
                 render={({ field }) => (
-                  <FormControl error={!!errors.couponType}>
-                    <FormLabel id="cpoupon-type">Coupon Type</FormLabel>
-                    <RadioGroup row aria-labelledby="cpoupon-type" {...field}>
+                  <FormControl component="fieldset" error={!!errors.couponType}>
+                    <FormLabel component="legend">Coupon Type</FormLabel>
+                    <RadioGroup row {...field}>
                       <FormControlLabel
                         value="fixed_amount"
                         control={<Radio />}
@@ -102,42 +116,35 @@ const AddCoupon = () => {
                         label="Percentage"
                       />
                     </RadioGroup>
-                    {errors.couponType && (
-                      <FormHelperText>
-                        {errors.couponType.message}
-                      </FormHelperText>
-                    )}
+                    <FormHelperText>
+                      {errors.couponType?.message}
+                    </FormHelperText>
                   </FormControl>
                 )}
               />
-            </Grid>{" "}
-            <Grid md={6} xs={12}>
+            </Grid>
+            <Grid item xs={12} md={6}>
               <TextField
                 label="Discount Value"
+                fullWidth
                 variant="outlined"
-                sx={{ width: "100%" }}
                 {...register("discountValue")}
                 error={!!errors.discountValue}
-                helperText={
-                  errors.discountValue && errors.discountValue.message
-                }
+                helperText={errors.discountValue?.message}
               />
-            </Grid>{" "}
-            <Grid md={6} xs={12}>
+            </Grid>
+            <Grid item xs={12} md={6}>
               <Controller
                 name="userRestrictions"
                 control={control}
-                defaultValue={"all"}
+                defaultValue="all"
                 render={({ field }) => (
-                  <FormControl error={!!errors.userRestrictions}>
-                    <FormLabel id="userRestrictions">
-                      User Restrictions
-                    </FormLabel>
-                    <RadioGroup
-                      row
-                      aria-labelledby="userRestrictions"
-                      {...field}
-                    >
+                  <FormControl
+                    component="fieldset"
+                    error={!!errors.userRestrictions}
+                  >
+                    <FormLabel component="legend">User Restrictions</FormLabel>
+                    <RadioGroup row {...field}>
                       <FormControlLabel
                         value="all"
                         control={<Radio />}
@@ -159,95 +166,68 @@ const AddCoupon = () => {
                         label="First Time Shoppers"
                       />
                     </RadioGroup>
-                    {errors.userRestrictions && (
-                      <FormHelperText>
-                        {errors.userRestrictions.message}
-                      </FormHelperText>
-                    )}
+                    <FormHelperText>
+                      {errors.userRestrictions?.message}
+                    </FormHelperText>
                   </FormControl>
                 )}
               />
             </Grid>
-            <Grid md={6} xs={12}>
+            <Grid item xs={12} md={6}>
               <TextField
                 label="Min Purchase Amount"
+                fullWidth
                 variant="outlined"
-                sx={{ width: "100%" }}
                 {...register("minPurchaseAmount")}
                 error={!!errors.minPurchaseAmount}
-                helperText={
-                  errors.minPurchaseAmount && errors.minPurchaseAmount.message
-                }
+                helperText={errors.minPurchaseAmount?.message}
               />
-            </Grid>{" "}
-            <Grid md={6} xs={12}>
+            </Grid>
+            <Grid item xs={12} md={6}>
               <Controller
                 name="fromDate"
                 control={control}
-                defaultValue={null}
-                render={({ field }) => {
-                  return (
-                    <FormControl
-                      error={!!errors.fromDate}
-                      sx={{ width: "100%" }}
-                    >
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoContainer components={["DatePicker"]}>
-                          <DatePicker
-                            value={field.value}
-                            onChange={(date) => {
-                              console.log({ date });
-                              field.onChange(date);
-                            }}
-                            label="Starting Date"
-                            sx={{ width: "100%" }}
-                          />
-                        </DemoContainer>
-                      </LocalizationProvider>
-                      {errors.fromDate && (
-                        <FormHelperText>
-                          {errors.fromDate.message as React.ReactNode}
-                        </FormHelperText>
-                      )}
-                    </FormControl>
-                  );
-                }}
+                defaultValue={undefined}
+                render={({ field }) => (
+                  <FormControl error={!!errors.fromDate} fullWidth>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        label="Starting Date"
+                        value={field.value}
+                        onChange={field.onChange}
+                        format="dd/MM/yyyy"
+                      />
+                    </LocalizationProvider>
+                    <FormHelperText>{errors.fromDate?.message}</FormHelperText>
+                  </FormControl>
+                )}
               />
-            </Grid>{" "}
-            <Grid md={6} xs={12}>
+            </Grid>
+            <Grid item xs={12} md={6}>
               <Controller
                 name="toDate"
                 control={control}
-                defaultValue={null}
-                render={({ field }) => {
-                  return (
-                    <FormControl error={!!errors.toDate} sx={{ width: "100%" }}>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoContainer components={["DatePicker"]}>
-                          <DatePicker
-                            value={field.value}
-                            onChange={(date) => {
-                              field.onChange(date);
-                            }}
-                            label="Ending Date"
-                            sx={{ width: "100%" }}
-                          />
-                        </DemoContainer>
-                      </LocalizationProvider>
-                      {errors.toDate && (
-                        <FormHelperText>
-                          {errors.toDate.message as React.ReactNode}
-                        </FormHelperText>
-                      )}
-                    </FormControl>
-                  );
-                }}
+                defaultValue={undefined}
+                render={({ field }) => (
+                  <FormControl error={!!errors.toDate} fullWidth>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        label="Starting Date"
+                        value={field.value}
+                        onChange={field.onChange}
+                        format="dd/MM/yyyy"
+                      />
+                    </LocalizationProvider>
+                    <FormHelperText>{errors.toDate?.message}</FormHelperText>
+                  </FormControl>
+                )}
               />
-            </Grid>{" "}
+            </Grid>
           </Grid>
           <LoadingButton
-            type={"submit"}
+            type="submit"
             variant="contained"
+            fullWidth
             sx={{ mt: 4 }}
             loading={isPending}
           >

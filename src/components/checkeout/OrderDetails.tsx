@@ -71,7 +71,7 @@ const OrderDetails = ({
             )}
           </Typography>
         </Stack>
-        {cart && cart.priceAfterDiscount && (
+        {cart?.coupon && (
           <Stack
             flexDirection="row"
             alignItems={"cneter"}
@@ -79,6 +79,19 @@ const OrderDetails = ({
             mb={2}
           >
             <Typography>Discount:</Typography>
+            <Typography fontWeight={"bold"}>
+              {cart.coupon.discountValue}{cart.coupon.couponType === "percentage" ? "%" : " EGP"}
+            </Typography>
+          </Stack>
+        )}
+        {cart?.priceAfterDiscount && (
+          <Stack
+            flexDirection="row"
+            alignItems={"cneter"}
+            justifyContent={"space-between"}
+            mb={2}
+          >
+            <Typography>Price after discount:</Typography>
             <Typography fontWeight={"bold"}>
               {formatPrice(cart.priceAfterDiscount)}
             </Typography>

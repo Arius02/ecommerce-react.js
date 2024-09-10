@@ -7,10 +7,7 @@ export const registerSchema = yup.object({
     .min(3, "Name can't be less than 3 characters")
     .max(40, "Name can't be more than 40 characters")
     .required("Name is required"),
-  email: yup
-    .string()
-    .email("Invalid email format")
-    .required("Email is required"),
+    email: yup.string().email().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),
   password: yup
     .string()
     .matches(
@@ -24,10 +21,7 @@ export const registerSchema = yup.object({
     .required("Please confirm your password"),
 });
 export const loginSchema = yup.object({
-  email: yup
-    .string()
-    .email("Invalid email format")
-    .required("Email is required"),
+  email: yup.string().email().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),
   password: yup
     .string()
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/, "Password Not Correct")

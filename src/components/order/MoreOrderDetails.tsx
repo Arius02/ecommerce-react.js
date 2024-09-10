@@ -14,6 +14,7 @@ import { LoadingButton } from "@mui/lab";
 import style from "../../utils/modalStyle";
 import { MutateOptions } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import Footer from "../admin/modals/Footer";
 type Props = {
   order: any;
   cancelOrder: (
@@ -90,25 +91,25 @@ const MoreOrderDetails = ({
         <Typography color={blueGrey[800]} variant="body1">
           Paid by {order.PaymentMethod}
         </Typography>
-        {( order.status == "waitPayment") ||
+        {order.status == "waitPayment" ||
           (order.status == "processing" && (
             <Button
               variant="text"
               color="error"
-              onClick={() =>  setOpen(true)}
+              onClick={() => setOpen(true)}
               sx={{ display: "block", ml: "auto" }}
             >
               Cancel
             </Button>
           ))}
       </Paper>
-      {( order.status == "waitPayment") ||
+      {order.status == "waitPayment" ||
         (order.status == "processing" && (
           <>
             <React.Fragment>
               <Modal
                 open={open}
-                onClose={() =>  setOpen(false)}
+                onClose={() => setOpen(false)}
                 aria-labelledby="cancel-modal-title"
                 aria-describedby="cancel-modal-description"
               >
@@ -131,29 +132,10 @@ const MoreOrderDetails = ({
                       fullWidth
                       sx={{ mb: 2 }}
                     />
-                    <Stack
-                      flexDirection="row"
-                      gap={2}
-                      alignItems="center"
-                      width="fit-content"
-                      ml="auto"
-                    >
-                      <Button
-                        color="primary"
-                        variant="text"
-                        onClick={() => setOpen(false)}
-                      >
-                        Cancel
-                      </Button>
-                      <LoadingButton
-                        color="error"
-                        variant="text"
-                        type="submit"
-                        loading={isPendingCancel }
-                      >
-                        Delete
-                      </LoadingButton>
-                    </Stack>
+                    <Footer
+                      isPending={isPendingCancel}
+                      onClickFn={() => setOpen(false)}
+                    />
                   </form>
                 </Box>
               </Modal>

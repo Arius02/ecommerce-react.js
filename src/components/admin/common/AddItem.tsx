@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   TextField,
   Paper,
@@ -14,24 +13,49 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as React from "react";
-import UploadImage from "./UploadImage.tsx";
+import UploadImage from "./UploadImage";
 import { UseMutateFunction, useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import SnackbarComponent from "../../common/SnackBar.tsx";
-import fetchData from "../../../utils/fetchData.ts";
+import SnackbarComponent from "../../common/SnackBar";
+import fetchData from "../../../utils/fetchData";
 import { Helmet } from "react-helmet";
+
+type SnackbarType = {
+  message: string;
+  severity: "success" | "error" | "warning" | "info";
+  open: boolean;
+};
+
+type Classification = {
+  _id: string;
+  name: string;
+};
+
+type AddItemType = {
+  name: string;
+  image: FileList;
+  categoryId?: string;
+};
 
 type Props = {
   schema: any;
-  addItem: UseMutateFunction<AxiosResponse<any, any>, any, any, unknown>;
+  addItem: UseMutateFunction<AxiosResponse<any>, unknown, FormData, unknown>;
   snack: SnackbarType;
   setSnack: React.Dispatch<React.SetStateAction<SnackbarType>>;
-  isPending:boolean;
-  name:string;
-  enabled?:boolean 
+  isPending: boolean;
+  name: string;
+  enabled?: boolean;
 };
 
-const AddItem = ({schema,addItem,snack,setSnack,isPending,name,enabled=false}: Props) => { 
+const AddItem: React.FC<Props> = ({
+  schema,
+  addItem,
+  snack,
+  setSnack,
+  isPending,
+  name,
+  enabled = false,
+}) => {
   const {
     register,
     formState: { errors },
@@ -39,34 +63,40 @@ const AddItem = ({schema,addItem,snack,setSnack,isPending,name,enabled=false}: P
     handleSubmit,
     watch,
   } = useForm<AddItemType>({
-    resolver: yupResolver(schema) as any,
+    resolver: yupResolver(schema),
   });
-  const [imageUrl, setImageUrl] = React.useState("");
+
+  const [imageUrl, setImageUrl] = React.useState<string>("");
   const image = watch("image");
+
   React.useEffect(() => {
     if (image?.length > 0) {
       setImageUrl(URL.createObjectURL(image[0]));
     }
   }, [image]);
-      const onSubmit = (data: AddItemType) => {
-        const formData = new FormData();
-        formData.append("name", data.name);
-        formData.append("image", data.image[0]);
-   data.categoryId&& formData.append("categoryId", data.categoryId);
 
-        addItem(formData)
-      };
-      const { data: classifications, isPending: isClassificationsLoading } =
-        useQuery({
-          queryKey: ["getClassifications"],
-          queryFn: () =>
-            fetchData({
-              url: "/category/classifications/list",
-              method: "GET",
-            }),
-          enabled,
-          refetchOnWindowFocus: false,
-        });
+  const onSubmit = (data: AddItemType) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("image", data.image[0]);
+    if (data.categoryId) {
+      formData.append("categoryId", data.categoryId);
+    }
+    addItem(formData);
+  };
+
+  const { data: classifications, isPending: isClassificationsLoading } =
+    useQuery({
+      queryKey: ["getClassifications"],
+      queryFn: () =>
+        fetchData({
+          url: "/category/classifications/list",
+          method: "GET",
+        }),
+      enabled,
+      refetchOnWindowFocus: false,
+    });
+
   return (
     <>
       <Helmet>
@@ -104,7 +134,7 @@ const AddItem = ({schema,addItem,snack,setSnack,isPending,name,enabled=false}: P
                     {...register("categoryId")}
                   >
                     {classifications.data.classifications.map(
-                      (category: any) => (
+                      (category: Classification) => (
                         <MenuItem value={category._id} key={category._id}>
                           {category.name}
                         </MenuItem>
@@ -131,7 +161,6 @@ const AddItem = ({schema,addItem,snack,setSnack,isPending,name,enabled=false}: P
                 name={name}
                 register={register}
                 setValue={setValue}
-                key={43866}
               />
             </Grid>
           </Grid>

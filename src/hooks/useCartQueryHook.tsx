@@ -22,12 +22,12 @@ const generateData = () => {
 
 const useCartQueryHook = ({ query, selectedProp }: Props) => {
   const { auth } = useContext(AppContext);
- 
+
   return useQuery({
     queryKey: [query],
     queryFn: async () => {
       const data = generateData();
-      const res = await fetchData({
+      const response = await fetchData({
         url: `/cart/${data.cartId ? "guset/" + data.cartId : ""}`,
         method: "GET",
         data,
@@ -36,18 +36,18 @@ const useCartQueryHook = ({ query, selectedProp }: Props) => {
           : "",
       });
 
-      if (res.data.cart == null) {
+      if (response?.data.cart == null) {
         localStorage.removeItem("cartId");
       }
 
-      return selectedProp ? res.data[selectedProp] : res.data;
+      return selectedProp ? response?.data[selectedProp] : response?.data;
     },
     refetchOnWindowFocus: false,
     staleTime: 500000,
     enabled:
       auth.role != systemRoles.SuperAdmin && auth.role != systemRoles.SuperAdmin
         ? true
-        :localStorage.getItem("cartId")
+        : localStorage.getItem("cartId")
         ? true
         : false,
   });

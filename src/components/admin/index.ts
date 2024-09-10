@@ -1,5 +1,5 @@
 export { default as Navbar } from "./navbar/Navbar";
-export {default as Sidebar} from "./Sidebar"
+export {default as Sidebar} from "./sidebar"
 export {default as ProfileMenu} from './navbar/ProfileMenu';
 export {default as AlertMenu} from './navbar/AlertMenu';
 export {default as ItemDetailsHederSkeleton} from './skeleton/ItemDetailsHederSkeleton';

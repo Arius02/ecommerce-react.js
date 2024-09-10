@@ -188,7 +188,7 @@ const SearchPage = () => {
               )}
               {data?.products.length > 0 &&
                 data.products.map((product: any) => (
-                  <Grid lg={4} md={6} xs={12}>
+                  <Grid lg={4} md={6} xs={12} key={product._id}>
                     <Box px={1}>
                       <ProductCard
                         product={product}

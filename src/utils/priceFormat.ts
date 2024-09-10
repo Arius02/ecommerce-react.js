@@ -1,20 +1,27 @@
+/**
+ * Formats a number as a currency string with thousands separators and optional decimal places.
+ *
+ * @param amount - The number to format.
+ * @param currencySymbol - The currency symbol to prepend to the formatted number (default is '£').
+ * @param decimalPlaces - The number of decimal places to include (default is 0).
+ * @returns The formatted currency string.
+ */
 export const formatPrice = (
-  number: number,
-  currencySymbol = "£",
-  decimalPlaces = 0
-) => {
-  // Ensure the input is a valid number
-  if (isNaN(number)) {
+  amount: number,
+  currencySymbol: string = "£",
+  decimalPlaces: number = 0
+): string => {
+  if (isNaN(amount)) {
     return "Invalid Number";
   }
 
-  // Round the number to the specified decimal places
-  const roundedNumber = Number(number).toFixed(decimalPlaces);
+  const roundedAmount = amount.toFixed(decimalPlaces);
 
-  // Add thousands separators
-  const parts = roundedNumber.split(".");
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const [integerPart, decimalPart] = roundedAmount.split(".");
 
-  // Combine the parts with the currency symbol
-  return currencySymbol + parts.join(".");
+  // Add thousands separators to the integer part
+  const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  // Combine integer and decimal parts, then prepend the currency symbol
+  return `${currencySymbol}${formattedIntegerPart}${decimalPart ? `.${decimalPart}` : ""}`;
 };

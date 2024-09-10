@@ -42,7 +42,7 @@ const RelatedProducts = ({
       {relatedProducts && (
         <Grid container rowGap={2} mt={2}>
           {relatedProducts.map((product: any) => (
-            <Grid lg={3} md={4} sm={6} xs={12}>
+            <Grid lg={3} md={4} sm={6} xs={12} key={product._id}>
               <Box px={2}>
                 <ProductCard
                   product={product}

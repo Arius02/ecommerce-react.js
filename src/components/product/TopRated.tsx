@@ -15,7 +15,6 @@ const TopRated = () => {
     url: `/product?sort=-rating&size=6`,
     selectedProp: "products",
   });
-  console.log(products);
   return (
     <Box mt={5}>
       <SectionHeader Icon={TopRatedIcon} title="Top Ratings" />
