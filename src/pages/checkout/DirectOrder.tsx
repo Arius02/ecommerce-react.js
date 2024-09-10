@@ -25,11 +25,11 @@ const DirectOrder = () => {
   const { id } = useParams();
   const [quantity, setQuantity] = React.useState(1);
   const [couponCode, setCouponCode] = useState("");
-  const [snack, setSnack] = useState({
+  const [snack, setSnack] = useState<SnackbarType>({
     open: false,
     message: "",
     severity: "success",
-  })
+  });
   const [paymentMethod, setPaymentMethod] = useState("card");
   const { data:placeOrderData, mutate: placeOrder, isPending } = useMutationHook({
     url: `/order/create/${

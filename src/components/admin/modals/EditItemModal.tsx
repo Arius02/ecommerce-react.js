@@ -7,9 +7,7 @@ import {
 import style from "../../../utils/modalStyle";
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import useMutationHook from "../../../hooks/useMutationHook";
-import LoadingButton from "@mui/lab/LoadingButton";
 import SnackbarComponent from "../../common/SnackBar";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -22,7 +20,6 @@ import {
   Select,
   MenuItem,
   Skeleton,
-  Stack,
 } from "@mui/material";
 import fetchData from "../../../utils/fetchData";
 import { UploadImage } from "../index";

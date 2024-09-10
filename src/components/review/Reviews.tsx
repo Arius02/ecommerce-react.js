@@ -42,6 +42,7 @@ const Reviews = ({ id }: Props) => {
   });
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    console.log(event);
     setReviewPage(value);
   };
 

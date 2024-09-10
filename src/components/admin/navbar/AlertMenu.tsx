@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from 'react';
+import  { MouseEvent, useState } from 'react';
 import { Typography, Stack, IconButton, Tooltip, Menu, MenuItem } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import NotificationsIcon from '@mui/icons-material/Notifications';
