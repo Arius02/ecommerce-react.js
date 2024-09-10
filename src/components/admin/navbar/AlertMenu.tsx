@@ -24,7 +24,7 @@ const AlertMenu = () => {
           sx={{
             display: 'flex',
             '&:hover': {
-              bgcolor: 'transparent', // Remove hover background color
+              bgcolor: 'transparent',  
             },
           }}
           aria-controls={open ? 'notification-menu' : undefined}

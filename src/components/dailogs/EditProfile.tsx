@@ -134,7 +134,6 @@ const EditProfile = ({ user, refetch, setOpen, open }: Props) => {
 
 export default EditProfile;
 
-// Dialog Header Component
 const DialogHeader = () => (
   <Stack flexDirection={"row"} alignItems={"center"} gap={1} p={2}>
     <PersonIcon sx={{ color: pink[500] }} />
@@ -144,7 +143,6 @@ const DialogHeader = () => (
   </Stack>
 );
 
-// Text Input Field Component
 const TextInputField = ({
   label,
   id,
@@ -168,7 +166,6 @@ const TextInputField = ({
   />
 );
 
-// Select Input Field Component
 const SelectInputField = ({
   label,
   id,
@@ -197,7 +194,6 @@ const SelectInputField = ({
   </FormControl>
 );
 
-// Date Picker Field Component
 const DatePickerField = ({
   label,
   control,
@@ -228,7 +224,6 @@ const DatePickerField = ({
   />
 );
 
-// Utility Function to Get Updated Fields
 const getUpdatedFields = (data: EditProfileType, user: any) => {
   const updatedData: any = {};
   const keys = ["name", "email", "gender"];

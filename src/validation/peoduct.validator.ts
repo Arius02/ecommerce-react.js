@@ -60,7 +60,6 @@ export const addProductSchema = yup.object().shape({
     .test("fileSize", "Size of eaech image must be less than 5MB", (value) => {
       if (value && value.length > 0) {
         for (let i = 0; i < value.length; i++) {
-          console.log(value[i].size >= imageSize);
           if (value[i].size >= imageSize) {
             return false;
           }
@@ -73,7 +72,6 @@ export const addProductSchema = yup.object().shape({
       "Unsupported image type [jpeg,png,jpg] only are supported",
       (value) => {
         if (value && value.length > 0) {
-          console.log(value[0].type);
           for (let i = 0; i < value.length; i++) {
             const isValidType =imageType.includes(value[i].type);
             if (!!isValidType) {
@@ -138,7 +136,6 @@ export const editProductSchema = yup.object().shape({
     .test("fileSize", "Size of eaech image must be less than 5MB", (value) => {
       if (value && value.length > 0) {
         for (let i = 0; i < value.length; i++) {
-          console.log(value[i].size >= imageSize);
           if (value[i].size >= imageSize) {
             return false;
           }

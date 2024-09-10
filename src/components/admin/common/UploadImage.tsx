@@ -14,7 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 type Props = {
   imageUrl: string;
-  errors: Record<string, any>; // Adjusted to a more specific type
+  errors: Record<string, any>;
   errorName: string;
   name: string;
   register: UseFormRegister<any>;

@@ -124,10 +124,7 @@ const {show,setOpenUserDashboard}=useContext(AppContext)
                     <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
                       <Tooltip title="soon">
                         <IconButton
-                          onClick={() => {
-                            // setIdToDelete(info._id);
-                            // setDeleteOpen(true);
-                          }}
+                       
                         >
                           <EditIcon sx={{ fontSize: "20px", color: "grey" }} />
                         </IconButton>

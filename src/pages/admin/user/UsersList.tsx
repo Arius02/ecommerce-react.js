@@ -99,8 +99,7 @@ const UsersList = () => {
       {
         accessorKey: "deliveryDetails",
         header: "Phone",
-        Cell: ({ renderedCellValue, row }) => {
-          console.log(row.original);
+        Cell: ({ renderedCellValue }) => {
           return (
             <Typography variant="body2" fontWeight="bold">
               {renderedCellValue && (renderedCellValue as any[]).length
@@ -176,8 +175,8 @@ const UsersList = () => {
       </Typography>
       <MaterialReactTable
         columns={columns}
-        data={users ?? []} //data is undefined on first render
-        // enableFilters={false}
+        data={users ?? []}
+
         manualPagination
         enablePagination
         manualSorting

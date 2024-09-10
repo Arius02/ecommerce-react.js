@@ -182,7 +182,6 @@ const EditProductModal = ({ open, setOpen, product, refetch }: Props) => {
               rowSpacing={1}
               columnSpacing={{ xs: 1, sm: 2 }}
               sx={{ mt: 4 }}
-              // gap{1}
             >
               <Grid xs={12}>
                 <TextField

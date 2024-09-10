@@ -9,7 +9,7 @@ const ShowNav = () => {
   };
 
   useEffect(() => {
-    handleShow(); // Initial check on mount
+    handleShow(); 
     window.addEventListener("resize", handleShow);
 
     return () => window.removeEventListener("resize", handleShow);

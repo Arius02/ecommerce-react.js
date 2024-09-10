@@ -153,7 +153,6 @@ const CartDrawer = ({ setCartDrawerOpen, cartDrawerOpen }: Props) => {
 
 export default CartDrawer;
 
-// Smaller components
 const DrawerHeader = ({
   cartItemsCount,
   onClose,

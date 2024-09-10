@@ -81,7 +81,6 @@ export const editProfileSchema = yup.object({
   birth: yup
     .date()
     .test("is-before-today", "Date must be before today", (value) => {
-      console.log(dayjs(value, "DD/MM/YYYY").isBefore(dayjs(), "day"));
       return dayjs(value, { format: "DD/MM/YYYY" }).isBefore(dayjs(), "day");
     })
     .required("Date field is required"),

@@ -3,7 +3,6 @@ import { useMemo, useState } from "react";
 import {
   MaterialReactTable,
   type MRT_ColumnDef,
-  // type MRT_ColumnFiltersState,
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
@@ -29,9 +28,6 @@ import { Helmet } from "react-helmet";
 
 import useMutationHook from "../../../hooks/useMutationHook";
 const ProductsList = () => {
-  // const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-  //   []
-  // );
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
   const [pagination, setPagination] = useState<MRT_PaginationState>({

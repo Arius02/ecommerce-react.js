@@ -40,7 +40,6 @@ const useMutationHook = ({
       return fetchData({ url, method, data, token });
     },
     onSuccess: (data: any) => {
-      console.log(data);
       if (data?.error) {
         setSnack?.({
           open: true,
