@@ -1,4 +1,4 @@
-import { Container, Grid, Box, Typography, Stack } from "@mui/material";
+import { Container, Grid, Box } from "@mui/material";
 import useQueryHook from "../../hooks/useQueryHook";
 import UserInfo from "../../components/user/UserInfo";
 import PaymentMethod from "../../components/checkeout/PaymentMethod";
@@ -6,7 +6,7 @@ import useMutationHook from "../../hooks/useMutationHook";
 import { useState } from "react";
 import OrderDetails from "../../components/checkeout/OrderDetails";
 import { Helmet } from "react-helmet";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { EmptyCart } from "../CartPage";
 
 const Checkout = () => {

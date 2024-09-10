@@ -1,4 +1,3 @@
-import { memo } from "react";
 
 const Gift = () => {
   return (
@@ -11,4 +10,4 @@ const Gift = () => {
   );
 };
 
-export default memo(Gift);
+export default Gift;

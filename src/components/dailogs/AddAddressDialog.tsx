@@ -38,7 +38,7 @@ type CityType = {
 };
 
 const AddAddressDialog = ({ open, setOpen, refetch }: Props) => {
-  const [snack, setSnack] = useState({
+  const [snack, setSnack] = useState<SnackbarType>({
     open: false,
     message: "",
     severity: "success",

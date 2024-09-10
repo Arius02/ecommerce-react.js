@@ -33,7 +33,7 @@ const AddCoupon = () => {
     resolver: yupResolver(addCouponSchema),
   });
 
-  const [snack, setSnack] = useState({
+  const [snack, setSnack] = useState<SnackbarType>({
     open: false,
     message: "",
     severity: "success",
