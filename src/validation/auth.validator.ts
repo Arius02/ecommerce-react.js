@@ -7,8 +7,11 @@ export const registerSchema = yup.object({
     .min(3, "Name can't be less than 3 characters")
     .max(40, "Name can't be more than 40 characters")
     .required("Name is required"),
-    email: yup.string().email().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),
-  password: yup
+    email: yup
+    .string()
+    .email("Invalid email format")
+    .matches(/^[\w-\.]+@([\w-]+\.)+(?:com|net|org)$/, "Email must end with .com, .net, or .org"),
+   password: yup
     .string()
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
@@ -21,7 +24,10 @@ export const registerSchema = yup.object({
     .required("Please confirm your password"),
 });
 export const loginSchema = yup.object({
-  email: yup.string().email().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .matches(/^[\w-\.]+@([\w-]+\.)+(?:com|net|org)$/, "Email must end with .com, .net, or .org"),
   password: yup
     .string()
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/, "Password Not Correct")
@@ -31,6 +37,7 @@ export const forgetPasswordSchema = yup.object({
   email: yup
     .string()
     .email("Invalid email format")
+    .matches(/^[\w-\.]+@([\w-]+\.)+(?:com|net|org)$/, "Email must end with .com, .net, or .org")
     .required("Email is required"),
 });
 export const resetPasswordSchema = yup.object({
@@ -76,6 +83,7 @@ export const editProfileSchema = yup.object({
   email: yup
     .string()
     .email("Invalid email format")
+    .matches(/^[\w-\.]+@([\w-]+\.)+(?:com|net|org)$/, "Email must end with .com, .net, or .org")
     .required("Email is required"),
   gender: yup.string().oneOf(["Male", "Female"]).required("Gender is required"),
   birth: yup

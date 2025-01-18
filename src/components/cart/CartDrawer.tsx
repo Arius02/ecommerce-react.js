@@ -40,6 +40,7 @@ const CartDrawer = ({ setCartDrawerOpen, cartDrawerOpen }: Props) => {
   } = useCartQueryHook({
     query: "getCart",
     selectedProp: "cart",
+    
   });
 
   const { mutate: addToCart } = useCartMutationHook({
@@ -127,6 +128,7 @@ const CartDrawer = ({ setCartDrawerOpen, cartDrawerOpen }: Props) => {
           bgcolor: "white",
           height: "100%",
           p: 2,
+          maxWidth: "450px",
         },
       }}
     >
@@ -242,7 +244,7 @@ const DeleteButton = ({ onDelete }: { onDelete: () => void }) => (
 );
 
 const CheckoutSection = ({ cart, onCheckout }: any) => (
-  <Box sx={{ position: "absolute", bottom: 0 }}>
+  <Box sx={{ position: "absolute", bottom: 12, left: 12, right: 12 }}>
     <Button
       variant="contained"
       color="secondary"

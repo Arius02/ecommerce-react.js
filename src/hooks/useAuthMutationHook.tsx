@@ -38,12 +38,6 @@ const useAuthMutationHook = ({
         token: localStorage.getItem("token") || "",
       }),
     onSuccess: (data) => {
-      setSnack &&
-        setSnack({
-          open: true,
-          message: message || "",
-          severity: "success",
-        });
       if (data?.data.token) {
         localStorage.setItem("token", data.data.token);
         setAuth(decodeToken(localStorage.getItem("token") as string));
@@ -52,7 +46,12 @@ const useAuthMutationHook = ({
           to: "",
         });
       }
-
+      setSnack &&
+        setSnack({
+          open: true,
+          message: message || "",
+          severity: "success",
+        });
       refetch && refetch();
       handleNavigate && handleNavigate();
       if (url == "/auth/logout") {

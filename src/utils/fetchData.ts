@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 /**
  * Fetches data from a specified URL using axios.
@@ -10,6 +10,7 @@ import axios, { AxiosRequestConfig } from "axios";
  * @param params.token - Optional token for authorization.
  *
  * @returns A promise that resolves to the axios response.
+ * @throws Will throw an error if the request fails
  */
 const fetchData = async ({
   url,
@@ -21,7 +22,7 @@ const fetchData = async ({
   method: string;
   data?: any;
   token?: string;
-}) => {
+}): Promise<AxiosResponse> => {
   const baseURL = `${import.meta.env.VITE_BASE_URL}${url}`;
   const bearerToken = import.meta.env.VITE_BEARRER_TOKEN;
 
@@ -37,9 +38,9 @@ const fetchData = async ({
   try {
     const response = await axios(config);
     return response;
-  } catch (error: any) {
-    console.error(error);
-    return error.response.data;
+  } catch (error) {
+    console.error('API Request Failed:', error);
+    throw error;
   }
 };
 
