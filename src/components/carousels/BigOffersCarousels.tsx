@@ -1,6 +1,7 @@
-import { Stack, Button, Typography,  } from "@mui/material";
+import { Stack, Button, Typography, Container,  } from "@mui/material";
 import offerImage from "../../assets/nike-black.png"
 import { blueGrey, grey,  } from "@mui/material/colors";
+import { Link as RouterLink } from "react-router-dom";
 import Slider from "react-slick";
    const settings = {
      dots: true,
@@ -14,16 +15,18 @@ const BigOffersCarousels = () => {
   const items = [
     {
       name: "50% Off For Your First Shopping",
-      description: "Probably the most random thing you have ever seen!",
+      description: "Sign up now and get an exclusive 50% discount on your first purchase. Limited time offer!",
     },
     {
-      name: "Random Name #2",
-      description: "Hello World!",
+      name: "35% Off For Your First Order",
+      description: "New customers get 35% off their first order. Join us today and start saving!",
     },
   ];
 
   return (
     <Stack bgcolor={"white"} sx={{overflowX:"hidden", overflowY:"visible"}}>
+    <Container maxWidth="xl">
+
       <Slider
         {...settings}
         >
@@ -48,10 +51,12 @@ const BigOffersCarousels = () => {
               >
                 {item.name}
               </Typography>
-              <Typography color={grey[400]}>{item.description}</Typography>
+              <Typography color={grey[700]}>{item.description}</Typography>
               <Button
                 variant="contained"
                 color={"secondary"}
+                component={RouterLink}
+                to="#top-rated"
                 sx={{
                   maxWidth: "150px",
                   my: 2,
@@ -77,6 +82,7 @@ const BigOffersCarousels = () => {
           </Stack>
         ))} 
       </Slider>
+      </Container>
     </Stack>
   );
 }
