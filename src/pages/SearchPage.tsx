@@ -203,17 +203,18 @@ const SearchPage = () => {
                     </Box>
                   </Grid>
                 ))}
-            </Grid>
             {data?.products.length == 0 && (
               <Typography
                 color="grey"
                 fontWeight="bold"
                 textAlign="center"
                 width="100%"
+                mt={10}
               >
                 No search result
               </Typography>
             )}
+            </Grid>
             {data?.products.length > 0 && (
               <Pagination
                 count={data.totalPages}
