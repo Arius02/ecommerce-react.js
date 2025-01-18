@@ -44,6 +44,7 @@ const useCartQueryHook = ({ query, selectedProp }: Props) => {
     },
     refetchOnWindowFocus: false,
     staleTime: 500000,
+    retry: false,
     enabled:
       auth.role != systemRoles.SuperAdmin && auth.role != systemRoles.SuperAdmin
         ? true

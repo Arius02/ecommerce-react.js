@@ -53,7 +53,7 @@ const MoreOrderDetails = ({
           Shipping Address
         </Typography>
         <Typography color={blueGrey[700]} variant="body2" mt={2}>
-          {order.deliveryDetails.city},{order.deliveryDetails.street}
+          {order.deliveryDetails?.city},{order.deliveryDetails?.street}
         </Typography>
       </Paper>
       <Paper sx={{ p: 2, width: { md: "48%", xs: "100%" }, mb: 2 }}>
